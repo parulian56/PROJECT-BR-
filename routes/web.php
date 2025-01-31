@@ -1,20 +1,12 @@
 <?php
-use App\Http\Controllers\DatabaseController;
-use App\Http\Controllers\MainController;
-use App\Http\Controllers\DataController;
-use App\Http\Controllers\ReportController;
-use Illuminate\Support\Facades\Route;
+ use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::resource('data', DataController::class);
-Route::resource('main', MainController::class);
-Route::resource('report', ReportController::class);
-Route::resource('database', DatabaseController::class);
-
-
-DB::table('data')->get();
-DB::table('main')->get();
-DB::table('report')->get();
-DB::table('database')->get();
+ // Halaman Welcome
+ Route::get('/', function () {
+     return view('welcome');
+ })->name('welcome');
+ 
+ // Halaman Kasir
+ Route::get('/cashier', function () {
+     return view('cashier');
+ })->name('cashier');
