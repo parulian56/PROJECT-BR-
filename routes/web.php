@@ -7,6 +7,3 @@
  })->name('welcome');
  
  // Halaman Kasir
- Route::get('/cashier', function () {
-     return view('cashier');
- })->name('cashier');

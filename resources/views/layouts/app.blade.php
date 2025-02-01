@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 </head>
 <body>
-    <!-- Include Navigation Component -->
+ 
     <x-navigation />
 
     <div class="main-content">
@@ -25,9 +25,9 @@
             </div>
         </div>
         <div class="content">
-            <!-- Konten Kasir -->
+            Konten Kasir
             <x-cashier />
         </div>
     </div>
 </body>
-</html>
+</html> -->
