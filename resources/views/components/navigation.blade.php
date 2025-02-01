@@ -1,4 +1,4 @@
-<div x-data="{ isSidebarOpen: true }">
+<!-- <div x-data="{ isSidebarOpen: true }">
     <div class="sidebar" :class="{ 'sidebar-collapsed': !isSidebarOpen }">
         <img alt="Logo" height="40" src="https://storage.googleapis.com/a1aa/image/slN8CqsLk76FNJ7ZpNUY51JfYkS5SfadoSmSFX1HetxpQ0NoA.jpg" width="40"/>
         <a href="{{ route('main') }}"><i class="fas fa-home"></i><span x-show="isSidebarOpen">Dashboard</span></a>
@@ -13,4 +13,4 @@
             <i :class="isSidebarOpen ? 'fas fa-chevron-left' : 'fas fa-chevron-right'"></i>
         </button>
     </div>
-</div>
+</div> -->
