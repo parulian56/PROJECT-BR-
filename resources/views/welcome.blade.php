@@ -12,7 +12,7 @@
         <div class="welcome-content">
             <h1>Selamat Datang di Aplikasi Kasir</h1>
             <p>Aplikasi kasir ini dirancang untuk memudahkan Anda dalam mengelola transaksi penjualan dengan cepat dan efisien.</p>
-            <a href="{{ route('cashier') }}" class="start-button">Mulai Transaksi</a>
+            <a href=class="start-button">Mulai Transaksi</a>
         </div>
     </div>
 </body>
