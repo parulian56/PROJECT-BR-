@@ -1,5 +1,5 @@
 <?php
-use App\Http\Controllers\MuridController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\ReportController;
@@ -11,4 +11,5 @@ Route::get('/', function () {
 Route::resource('data', DataController::class);
 Route::resource('main', MainController::class);
 Route::resource('report', MainController::class);
-Route::resource('murid', MainController::class);
+Route::resource('transaksi', MainController::class);
+
