@@ -1,64 +1,54 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Data;
 
 class DataController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('data.data');
+        $data = Data::all();
+        return view('data.layout', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('data.tambahdata');
+        return view('data.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'content' => 'nullable'
+        ]);
+
+        Data::create($request->all());
+
+        return redirect()->route('data.layout')->with('success', 'Data berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Data $data)
     {
-        //
+        return view('data.edit', compact('data'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Data $data)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'content' => 'nullable'
+        ]);
+
+        $data->update($request->all());
+
+        return redirect()->route('data.index')->with('success', 'Data berhasil diperbarui.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Data $data)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $data->delete();
+        return redirect()->route('data.index')->with('success', 'Data berhasil dihapus.');
     }
 }

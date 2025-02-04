@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Data extends Model
 {
-    use HasFactory;
-
-    protected $fillable = ['nama', 'kelas', 'jurusan'];
-    protected $table = 'data'; 
-
+    public function up()
+{
+    Schema::create('data', function (Blueprint $table) {
+        $table->id();
+        $table->string('title');
+        $table->text('content')->nullable();
+        $table->timestamps();
+    });
 }
 
+}
