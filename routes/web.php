@@ -15,5 +15,7 @@ Route::resource('report', ReportController::class);
 Route::resource('transaksi', TransaksiController::class);
 use App\Http\Controllers\DashboardController;
 
+// Menyambungkan URL ke controller yang benar
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 

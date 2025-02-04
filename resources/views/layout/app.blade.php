@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard')</title>
+    <title>@yield('title', '')</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
@@ -13,7 +13,7 @@
     <!-- Sidebar -->
     <div class="w-64 bg-white p-6 shadow-md h-screen">
         <img alt="Logo" class="w-10 h-10 mx-auto mb-4" src="https://storage.googleapis.com/a1aa/image/slN8CqsLk76FNJ7ZpNUY51JfYkS5SfadoSmSFX1HetxpQ0NoA.jpg"/>
-        <a href="{{ url('layout') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="{{ url('dashboard') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-home"></i> Dashboard</a>
         <a href="{{ url('data') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-folder"></i> Data</a>
         <a href="{{ url('transaksi') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-file-alt"></i> Transaksi</a>
         <a href="#" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-chart-line"></i> Reports</a>
