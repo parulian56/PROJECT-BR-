@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layout.app')
 
 @section('content')
     <h2>Tambah Data</h2>
