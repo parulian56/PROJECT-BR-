@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Transaksi; 
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -11,7 +11,18 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard'); 
+        // Ambil data penjualan bulanan dari database (sesuaikan dengan skema Anda)
+        $penjualan = Transaksi::selectRaw('MONTH(created_at) as bulan, SUM(total_harga) as total_penjualan')
+                            ->groupBy('bulan')
+                            ->orderBy('bulan', 'asc')
+                            ->get();
+
+        // Mengubah data menjadi format yang bisa digunakan di Chart.js
+        $bulan = $penjualan->pluck('bulan');
+        $totalPenjualan = $penjualan->pluck('total_penjualan');
+
+        // Kirim data ke view
+        return view('dashboard', compact('bulan', 'totalPenjualan'));
     }
 
     /**

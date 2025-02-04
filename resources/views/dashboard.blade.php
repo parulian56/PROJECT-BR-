@@ -21,17 +21,23 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
-        // Chart.js untuk grafik penjualan
         document.addEventListener("DOMContentLoaded", function() {
             var ctx = document.getElementById('myChart').getContext('2d');
+            
+            // Ambil data dari controller
+            var bulan = @json($bulan);
+            var totalPenjualan = @json($totalPenjualan);
+
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei'],
+                    labels: bulan.map(b => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][b - 1]), // Menampilkan nama bulan
                     datasets: [{
                         label: 'Penjualan',
-                        data: [100, 200, 150, 300, 250],
+                        data: totalPenjualan,
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 2,
                         fill: false
@@ -40,9 +46,24 @@
                 options: {
                     responsive: true,
                     scales: {
-                        y: { beginAtZero: true }
+                        y: { beginAtZero: true },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Bulan'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Total Penjualan (Rp)'
+                            },
+                            ticks: {
+                                callback: function(value) { return 'Rp ' + value.toLocaleString(); }
+                            }
+                        }
                     }
-                });
+                }
             });
         });
     </script>
