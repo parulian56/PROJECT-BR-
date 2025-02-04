@@ -1,9 +1,14 @@
 <?php
- use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MuridController;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\DataController;
+use App\Http\Controllers\ReportController;
+use Illuminate\Support\Facades\Route;
 
- // Halaman Welcome
- Route::get('/', function () {
-     return view('welcome');
- })->name('welcome');
- 
- // Halaman Kasir
+Route::get('/', function () {
+    return view('welcome');
+});
+Route::resource('data', DataController::class);
+Route::resource('main', MainController::class);
+Route::resource('report', MainController::class);
+Route::resource('murid', MainController::class);
