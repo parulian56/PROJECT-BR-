@@ -11,20 +11,23 @@
 <body class="bg-gray-100 flex">
 
     <!-- Sidebar -->
-    <div class="w-64 bg-white p-6 shadow-md h-screen">
-        <img alt="Logo" class="w-10 h-10 mx-auto mb-4" src="https://storage.googleapis.com/a1aa/image/slN8CqsLk76FNJ7ZpNUY51JfYkS5SfadoSmSFX1HetxpQ0NoA.jpg"/>
-        <a href="{{ url('dashboard') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="{{ url('data') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-folder"></i> Data</a>
-        <a href="{{ url('transaksi') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-file-alt"></i> Transaksi</a>
-        <a href="#" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-chart-line"></i> Reports</a>
-        <div class="mt-6">
+    <div class="w-64 bg-white p-6 shadow-md h-screen flex flex-col justify-between">
+        <div>
+            <img alt="Logo" class="w-10 h-10 mx-auto mb-4" src="https://storage.googleapis.com/a1aa/image/slN8CqsLk76FNJ7ZpNUY51JfYkS5SfadoSmSFX1HetxpQ0NoA.jpg"/>
+            <a href="{{ url('dashboard') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="{{ url('data') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-folder"></i> Data</a>
+            <a href="{{ url('transaksi') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-file-alt"></i> Transaksi</a>
+            <a href="#" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-chart-line"></i> Reports</a>
+        </div>
+
+        <!-- Settings dipindahkan ke bagian paling bawah -->
+        <div class="mt-auto">
             <a href="#" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-cog"></i> Settings</a>
         </div>
     </div>
 
     <!-- Main Content -->
     <div class="flex-1 p-6">
-
         <!-- Header -->
         <div class="flex justify-between items-center mb-4">
             <div class="text-lg font-bold">@yield('header', 'Dashboard')</div>
@@ -39,7 +42,6 @@
         <div class="bg-white p-6 rounded-lg shadow">
             @yield('content')
         </div>
-        
     </div>
 
 </body>

@@ -13,6 +13,7 @@ Route::resource('data', DataController::class);
 
 
 Route::resource('transaksi', TransaksiController::class);
+Route::get('/transaksi/{id}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
 
 
 

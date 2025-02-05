@@ -9,13 +9,13 @@ class TransaksiController extends Controller
 {
     // Menampilkan semua transaksi
     public function index()
-    {
-        // Ambil semua data transaksi
-        $transaksis = Transaksi::all();
+{
+    // Ambil semua data transaksi
+    $transaksis = Transaksi::all();
 
-        // Kirim data transaksi ke tampilan
-        return view('transaksi.index', compact('transaksi'));
-    }
+    // Kirim data transaksi ke tampilan
+    return view('transaksi.index', compact('transaksis')); // Ganti 'transaksi' menjadi 'transaksis'
+}
 
     // Menampilkan form untuk menambah transaksi
     public function create()
