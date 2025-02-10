@@ -7,13 +7,20 @@
     <h3 class="text-xl font-semibold mb-4">Selamat datang di Dashboard!</h3>
     <p class="mb-6">Ini adalah halaman utama dashboard tempat Anda dapat memantau statistik dan informasi penting.</p>
 
+    @if(session('error'))
+        <div class="alert alert-warning">{{ session('error') }}</div>
+    @endif
+
+    <p>Data Bulan: {{ json_encode($bulan) }}</p>
+    <p>Data Total Penjualan: {{ json_encode($totalPenjualan) }}</p>
+
     <!-- Chart -->
     <div class="bg-white p-6 rounded-lg shadow mb-6">
         <h3 class="text-lg font-semibold mb-2">Sales Overview</h3>
         <canvas id="myChart"></canvas>
     </div>
 
-    <!-- Another Section (optional) -->
+    <!-- Statistik Pengguna -->
     <div class="bg-white p-6 rounded-lg shadow mb-6">
         <h3 class="text-lg font-semibold mb-2">Statistik Pengguna</h3>
         <p>Data statistik pengguna dan transaksi akan ditampilkan di sini.</p>
@@ -27,26 +34,36 @@
         document.addEventListener("DOMContentLoaded", function() {
             var ctx = document.getElementById('myChart').getContext('2d');
             
-            // Ambil data dari controller
-            var bulan = @json($bulan);
+            var bulan = @json($bulan);  // Pastikan ini berupa array nama bulan, bukan angka
             var totalPenjualan = @json($totalPenjualan);
 
+            if (bulan.length === 0 || totalPenjualan.length === 0) {
+                document.getElementById('myChart').parentNode.innerHTML = 
+                    "<p class='text-red-600'>Tidak ada data transaksi untuk ditampilkan.</p>";
+                return;
+            }
+
             new Chart(ctx, {
-                type: 'line',
+                type: 'bar', // Ubah ke 'bar' jika ingin coba format lain
                 data: {
-                    labels: bulan.map(b => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][b - 1]), // Menampilkan nama bulan
+                    labels: bulan,
                     datasets: [{
-                        label: 'Penjualan',
+                        label: 'Total Penjualan (Rp)',
                         data: totalPenjualan,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
                         borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 2,
-                        fill: false
+                        borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
                     scales: {
-                        y: { beginAtZero: true },
                         x: {
                             title: {
                                 display: true,
@@ -54,6 +71,7 @@
                             }
                         },
                         y: {
+                            beginAtZero: true,
                             title: {
                                 display: true,
                                 text: 'Total Penjualan (Rp)'
