@@ -10,5 +10,7 @@ class Transaksi extends Model
     use HasFactory;
 
     protected $fillable = ['nama_produk', 'jumlah', 'harga', 'total_harga', 'bayar', 'kembalian'];
+
+    protected $table = 'transaksi'; // Pastikan Laravel menggunakan tabel "transaksi"
 }
 
