@@ -1,29 +1,40 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Transaksi; 
+
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        // Ambil data penjualan bulanan dari database (sesuaikan dengan skema Anda)
+        // Ambil data transaksi per bulan
         $penjualan = Transaksi::selectRaw('MONTH(created_at) as bulan, SUM(total_harga) as total_penjualan')
-                            ->groupBy('bulan')
-                            ->orderBy('bulan', 'asc')
-                            ->get();
+            ->whereYear('created_at', date('Y')) // Hanya ambil tahun ini
+            ->groupBy('bulan')
+            ->orderBy('bulan', 'asc')
+            ->get();
 
-        // Mengubah data menjadi format yang bisa digunakan di Chart.js
-        $bulan = $penjualan->pluck('bulan');
+        // Daftar nama bulan
+        $namaBulan = [
+            1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr',
+            5 => 'Mei', 6 => 'Jun', 7 => 'Jul', 8 => 'Agu',
+            9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'
+        ];
+
+        // Konversi angka bulan ke nama bulan
+        $bulan = $penjualan->pluck('bulan')->map(fn($b) => $namaBulan[$b] ?? 'Unknown');
         $totalPenjualan = $penjualan->pluck('total_penjualan');
 
-        // Kirim data ke view
+        // Debugging untuk cek data
+        if ($penjualan->isEmpty()) {
+            return view('dashboard', compact('bulan', 'totalPenjualan'))->with('error', 'Tidak ada data transaksi untuk grafik.');
+        }
+
         return view('dashboard', compact('bulan', 'totalPenjualan'));
     }
+
 
     /**
      * Show the form for creating a new resource.
