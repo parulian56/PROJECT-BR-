@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('data', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('content')->nullable();
-            $table->timestamps();
+        Schema::create('transaksi', function (Blueprint $table) {
+            $table->id(); // ID transaksi
+            $table->string('id'); // Nama produk
+            $table->integer('nama_produk'); // Jumlah produk
+            $table->decimal('jumlah', 15, 2); // Harga produk, bisa menampung hingga milyaran
+            $table->decimal('harga_satuan', 15, 2); // Total harga (jumlah * harga)
+            $table->decimal('lokasi_penyimpanan', 15, 2); // Uang yang dibayar
+            $table->timestamps(); // Kolom created_at dan updated_at
         });
     }
 

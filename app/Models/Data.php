@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Data extends Model
 {
+    protected $guarded = [
+        // Kolom yang tidak boleh diisi massal
+    ];
+
+
     public function up()
 {
     Schema::create('data', function (Blueprint $table) {
