@@ -2,110 +2,101 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaksi;
+use App\Models\TransaksiKasir;
 use Illuminate\Http\Request;
 
-class TransaksiController extends Controller
+class TransaksiKasirController extends Controller
 {
     // Menampilkan semua transaksi
     public function index()
-{
-    // Ambil semua data transaksi
-    $transaksis = Transaksi::all();
-
-    // Kirim data transaksi ke tampilan
-    return view('transaksi.index', compact('transaksis')); // Ganti 'transaksi' menjadi 'transaksis'
-}
+    {
+        $transaksis = TransaksiKasir::all();
+        return view('transaksi.index', compact('transaksis'));
+    }
 
     // Menampilkan form untuk menambah transaksi
     public function create()
     {
-        // Tampilkan form tambah transaksi
         return view('transaksi.create');
     }
 
     // Menampilkan form edit transaksi
     public function edit($id)
     {
-        // Pastikan variabel transaksi sudah diambil dengan benar
-        $transaksi = Transaksi::findOrFail($id);
-    
-        // Mengirimkan data transaksi ke view
+        $transaksi = TransaksiKasir::findOrFail($id);
         return view('transaksi.edit', compact('transaksi'));
     }
-    
 
     // Menyimpan transaksi baru
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'nama_produk' => 'required',
-           'jumlah' => 'required|integer|min:1|max:9999',
-            'harga' => 'required|numeric',
+            'jumlah' => 'required|integer|min:1|max:9999',
+            'harga_satuan' => 'required|numeric',
             'bayar' => 'required|numeric',
-        ]);
+            'metode_pembayaran' => 'required|string',
+        ],
+    [
+        'nama_produk' => 'tidak boleh kosong',
+        'jumlah' => 'tidak boleh kosong, harus angka, dan harus diisi',
+        'harga_satuan' => 'tidak boleh kosong, dan harus angka',
+        'bayar' => 'tidak boleh kosong, dan harus angka',
+        'metode_pembayaran' => 'tidak boleh kosong',
+    ]);
 
         // Hitung total harga dan kembalian
-        $total_harga = $request->jumlah * $request->harga;
+        $total_harga = $request->jumlah * $request->harga_satuan;
         $kembalian = $request->bayar - $total_harga;
 
-        // Simpan transaksi baru
-        Transaksi::create([
+        TransaksiKasir::create([
             'nama_produk' => $request->nama_produk,
             'jumlah' => $request->jumlah,
-            'harga' => $request->harga,
+            'harga_satuan' => $request->harga_satuan,
             'total_harga' => $total_harga,
             'bayar' => $request->bayar,
             'kembalian' => $kembalian,
+            'metode_pembayaran' => $request->metode_pembayaran,
         ]);
 
-        // Redirect ke daftar transaksi dengan pesan sukses
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil disimpan');
     }
 
     // Menyimpan perubahan transaksi
     public function update(Request $request, $id)
     {
-        // Validasi input
         $request->validate([
             'nama_produk' => 'required',
             'jumlah' => 'required|integer',
-            'harga' => 'required|numeric',
+            'harga_satuan' => 'required|numeric',
             'bayar' => 'required|numeric',
+            'metode_pembayaran' => 'required|string',
         ]);
 
-        // Ambil data transaksi berdasarkan ID
-        $transaksi = Transaksi::findOrFail($id);
+        $transaksi = TransaksiKasir::findOrFail($id);
 
-        // Hitung total harga dan kembalian
-        $total_harga = $request->jumlah * $request->harga;
+        $total_harga = $request->jumlah * $request->harga_satuan;
         $kembalian = $request->bayar - $total_harga;
 
-        // Update data transaksi
         $transaksi->update([
             'nama_produk' => $request->nama_produk,
             'jumlah' => $request->jumlah,
-            'harga' => $request->harga,
+            'harga_satuan' => $request->harga_satuan,
             'total_harga' => $total_harga,
             'bayar' => $request->bayar,
             'kembalian' => $kembalian,
+            'metode_pembayaran' => $request->metode_pembayaran,
         ]);
 
-        // Redirect ke daftar transaksi dengan pesan sukses
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui');
     }
 
     // Menghapus transaksi
     public function destroy($id)
     {
-        // Ambil data transaksi berdasarkan ID
-        $transaksi = Transaksi::findOrFail($id);
-
-        // Hapus transaksi
+        $transaksi = TransaksiKasir::findOrFail($id);
         $transaksi->delete();
 
-        // Redirect ke daftar transaksi dengan pesan sukses
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus');
     }
 }

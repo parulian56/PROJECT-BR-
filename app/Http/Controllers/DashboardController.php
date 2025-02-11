@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
+use App\Models\TransaksiKasir;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -10,7 +11,7 @@ class DashboardController extends Controller
     public function index()
     {
         // Ambil data transaksi per bulan
-        $penjualan = Transaksi::selectRaw('MONTH(created_at) as bulan, SUM(total_harga) as total_penjualan')
+        $penjualan = TransaksiKasir::selectRaw('MONTH(created_at) as bulan, SUM(total_harga) as total_penjualan')
             ->whereYear('created_at', date('Y')) // Hanya ambil tahun ini
             ->groupBy('bulan')
             ->orderBy('bulan', 'asc')
