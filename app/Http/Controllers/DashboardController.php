@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaksi;
 use App\Models\TransaksiKasir;
 use Illuminate\Http\Request;
 
@@ -12,76 +11,33 @@ class DashboardController extends Controller
     {
         // Ambil data transaksi per bulan
         $penjualan = TransaksiKasir::selectRaw('MONTH(created_at) as bulan, SUM(total_harga) as total_penjualan')
-            ->whereYear('created_at', date('Y')) // Hanya ambil tahun ini
+            ->whereYear('created_at', date('Y')) // Hanya ambil transaksi tahun ini
             ->groupBy('bulan')
             ->orderBy('bulan', 'asc')
-            ->get();
+            ->get()
+            ->keyBy('bulan'); // Mengubah menjadi associative array berdasarkan bulan
 
-        // Daftar nama bulan
+        // Nama bulan dalam format singkatan
         $namaBulan = [
             1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr',
             5 => 'Mei', 6 => 'Jun', 7 => 'Jul', 8 => 'Agu',
             9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'
         ];
 
-        // Konversi angka bulan ke nama bulan
-        $bulan = $penjualan->pluck('bulan')->map(fn($b) => $namaBulan[$b] ?? 'Unknown');
-        $totalPenjualan = $penjualan->pluck('total_penjualan');
-
-        // Debugging untuk cek data
-        if ($penjualan->isEmpty()) {
-            return view('dashboard', compact('bulan', 'totalPenjualan'))->with('error', 'Tidak ada data transaksi untuk grafik.');
+        // Pastikan semua bulan ada dalam array (isi 0 jika tidak ada transaksi)
+        $bulan = [];
+        $totalPenjualan = [];
+        foreach ($namaBulan as $key => $name) {
+            $bulan[] = $name;
+            $totalPenjualan[] = $penjualan[$key]->total_penjualan ?? 0;
         }
 
-        return view('dashboard', compact('bulan', 'totalPenjualan'));
-    }
+        // Ambil daftar barang yang terjual terbaru
+        $barangTerjual = TransaksiKasir::select('nama_produk', 'jumlah', 'total_harga', 'created_at')
+            ->orderBy('created_at', 'desc')
+            ->limit(10) // Ambil 10 transaksi terbaru
+            ->get();
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('dashboard', compact('bulan', 'totalPenjualan', 'barangTerjual'));
     }
 }

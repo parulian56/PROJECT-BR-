@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transaksi_kasir', function (Blueprint $table) { // Perbaiki nama tabel
             $table->id(); // ID transaksi (auto-increment)
             $table->string('nama_produk'); // Nama produk
-            $table->decimal('jumlah', 15, 2); // Jumlah produk
+            $table->decimal('jumlah', 15); // Jumlah produk
             $table->decimal('harga_satuan', 15, 2); // Harga satuan produk
             $table->decimal('total_harga', 15, 2); // Total harga
             $table->decimal('bayar', 15, 2); // Jumlah uang yang dibayarkan

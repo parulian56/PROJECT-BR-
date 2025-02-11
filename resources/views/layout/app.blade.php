@@ -1,45 +1,59 @@
-<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', '')</title>
+    <title>@yield('title', 'Dashboard')</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 </head>
-<body class="bg-gray-100 flex">
+<body class="bg-blue-100 flex">
 
     <!-- Sidebar -->
-    <div class="w-64 bg-white p-6 shadow-md h-screen flex flex-col justify-between">
-        <div>
-            <img alt="Logo" class="w-10 h-10 mx-auto mb-4" src="https://storage.googleapis.com/a1aa/image/slN8CqsLk76FNJ7ZpNUY51JfYkS5SfadoSmSFX1HetxpQ0NoA.jpg"/>
-            <a href="{{ url('dashboard') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-home"></i> Dashboard</a>
-            <a href="{{ url('data') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-folder"></i> Data</a>
-            <a href="{{ url('transaksi') }}" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-file-alt"></i> Transaksi</a>
-            <a href="#" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-chart-line"></i> Reports</a>
+    <div class="w-64 bg-gray-800 text-yellow-500 flex flex-col justify-between rounded-r-3xl">
+        <div class="mt-10">
+            <!-- Logo -->
+            <img alt="Logo" class="w-13 h-12 mx-auto mb-4" src="/asset/image/logo amaliah.png"/>
+            
+            <!-- Menu Items -->
+            <a href="{{ url('dashboard') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
+                <i class="fas fa-th-large mr-3"></i> 
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url('data') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
+                <i class="fas fa-database mr-3"></i> 
+                <span>Data</span>
+            </a>
+            <a href="{{ url('transaksi') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
+                <i class="fas fa-exchange-alt mr-3"></i> 
+                <span>Transaksi</span>
+            </a>
+            <a href="#" class="flex items-center py-4 px-6 hover:bg-gray-700">
+                <i class="fas fa-chart-line mr-3"></i> 
+                <span>Reports</span>
+            </a>
         </div>
 
-        <!-- Settings dipindahkan ke bagian paling bawah -->
-        <div class="mt-auto">
-            <a href="#" class="block py-2 px-4 hover:bg-gray-200"><i class="fas fa-cog"></i> Settings</a>
+        <!-- Settings -->
+        <div class="mb-10">
+            <a href="#" class="flex items-center py-4 px-6 bg-gray-700 text-white rounded-l-full">
+                <i class="fas fa-cog mr-3"></i> 
+                <span>Settings</span>
+            </a>
         </div>
     </div>
 
     <!-- Main Content -->
     <div class="flex-1 p-6">
         <!-- Header -->
-        <div class="flex justify-between items-center mb-4">
-            <div class="text-lg font-bold">@yield('header', 'Dashboard')</div>
-            <div class="flex items-center space-x-4">
-                <i class="fas fa-bell text-gray-500"></i>
-                <img alt="Profile" class="w-8 h-8 rounded-full" src="https://storage.googleapis.com/a1aa/image/miGc9xemrAUTSaqlYxkb4UHT9khpUc3YLdId0cCAe3yVI6GUA.jpg"/>
-                <span>Tom Cook</span>
-            </div>
+        <div class="flex justify-end items-center space-x-4">
+            <i class="fas fa-bell text-yellow-500"></i>
+            <i class="fas fa-bars text-yellow-500"></i>
+            <div class="bg-yellow-500 w-10 h-10 rounded-full"></div>
         </div>
 
         <!-- Content Section -->
-        <div class="bg-white p-6 rounded-lg shadow">
+        <div class="bg-white p-6 rounded-lg shadow mt-4">
             @yield('content')
         </div>
     </div>
