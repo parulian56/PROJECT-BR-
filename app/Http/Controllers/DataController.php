@@ -103,4 +103,6 @@ class DataController extends Controller
         // Redirect ke daftar data penyimpanan dengan pesan sukses
         return redirect()->route('data.index')->with('success', 'Data penyimpanan berhasil dihapus');
     }
+
+    
 }
