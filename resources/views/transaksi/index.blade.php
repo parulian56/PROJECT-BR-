@@ -19,7 +19,7 @@
                 <tr class="border-b border-gray-200">
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Nama Produk</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Jumlah</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Harga</th>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Harga Satuan</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Total Harga</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Bayar</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Kembalian</th>
@@ -27,28 +27,29 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach ($transaksis as $transaksi) <!-- Ganti dari $transaksi menjadi $transaksis -->
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
-        <td class="py-3 px-4 text-sm text-gray-800">{{ $transaksi->nama_produk }}</td>
-        <td class="py-3 px-4 text-sm text-gray-800">{{ $transaksi->jumlah }}</td>
-        <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->harga, 0, ',', '.') }}</td>
-        <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
-        <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->bayar, 0, ',', '.') }}</td>
-        <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->kembalian, 0, ',', '.') }}</td>
-        <td class="py-3 px-4">
-            <a href="{{ route('transaksi.edit', $transaksi->id) }}" class="text-yellow-600 hover:text-yellow-700 mr-3">
-                <i class="fas fa-edit"></i> Edit
-            </a>
-            <form action="{{ route('transaksi.destroy', $transaksi->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus transaksi ini?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="text-red-600 hover:text-red-700">
-                    <i class="fas fa-trash"></i> Hapus
-                </button>
-            </form>
-        </td>
-    </tr>
-@endforeach
+            @foreach ($transaksis as $transaksi)
+                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                    <td class="py-3 px-4 text-sm text-gray-800">{{ $transaksi->nama_produk }}</td>
+                    <td class="py-3 px-4 text-sm text-gray-800">{{ $transaksi->jumlah }}</td>
+                    <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->harga_satuan, 0, ',', '.') }}</td>
+                    <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
+                    <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->bayar, 0, ',', '.') }}</td>
+                    <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->kembalian, 0, ',', '.') }}</td>
+                    
+                    <td class="py-3 px-4">
+                        <a href="{{ route('transaksi.edit', $transaksi->id) }}" class="text-yellow-600 hover:text-yellow-700 mr-3">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form action="{{ route('transaksi.destroy', $transaksi->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin hapus transaksi ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:text-red-700">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
