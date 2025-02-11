@@ -17,6 +17,5 @@ class TransaksiKasir extends Model
         'total_harga', 
         'bayar', 
         'kembalian', 
-        'metode_pembayaran'
     ];
 }

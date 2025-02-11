@@ -19,7 +19,6 @@ return new class extends Migration
             $table->decimal('total_harga', 15, 2); // Total harga
             $table->decimal('bayar', 15, 2); // Jumlah uang yang dibayarkan
             $table->decimal('kembalian', 15, 2); // Uang kembalian
-            $table->string('metode_pembayaran'); // Metode pembayaran (cash, debit, dll.)
             $table->timestamps(); // Kolom created_at dan updated_at
         });
     }

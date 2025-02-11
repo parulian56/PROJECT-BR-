@@ -23,7 +23,7 @@
     <div class="bg-white shadow-lg rounded-lg p-4 max-w-lg mx-auto">
         <form action="{{ route('transaksi.update', $transaksi->id) }}" method="POST">
             @csrf
-            @method('PUT') <!-- Metode PUT untuk update -->
+            @method('PUT') 
 
             <div class="mb-2">
                 <label for="nama_produk" class="block text-gray-600 font-semibold">Nama Produk</label>

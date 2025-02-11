@@ -35,14 +35,13 @@ class TransaksiKasirController extends Controller
             'jumlah' => 'required|integer|min:1|max:9999',
             'harga_satuan' => 'required|numeric',
             'bayar' => 'required|numeric',
-            'metode_pembayaran' => 'required|string',
+            
         ],
     [
         'nama_produk' => 'tidak boleh kosong',
         'jumlah' => 'tidak boleh kosong, harus angka, dan harus diisi',
         'harga_satuan' => 'tidak boleh kosong, dan harus angka',
         'bayar' => 'tidak boleh kosong, dan harus angka',
-        'metode_pembayaran' => 'tidak boleh kosong',
     ]);
 
         // Hitung total harga dan kembalian
@@ -56,7 +55,6 @@ class TransaksiKasirController extends Controller
             'total_harga' => $total_harga,
             'bayar' => $request->bayar,
             'kembalian' => $kembalian,
-            'metode_pembayaran' => $request->metode_pembayaran,
         ]);
 
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil disimpan');
@@ -70,7 +68,6 @@ class TransaksiKasirController extends Controller
             'jumlah' => 'required|integer',
             'harga_satuan' => 'required|numeric',
             'bayar' => 'required|numeric',
-            'metode_pembayaran' => 'required|string',
         ]);
 
         $transaksi = TransaksiKasir::findOrFail($id);
@@ -85,7 +82,7 @@ class TransaksiKasirController extends Controller
             'total_harga' => $total_harga,
             'bayar' => $request->bayar,
             'kembalian' => $kembalian,
-            'metode_pembayaran' => $request->metode_pembayaran,
+           
         ]);
 
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui');
