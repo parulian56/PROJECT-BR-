@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transaksi', function (Blueprint $table) {
-            $table->id(); // ID transaksi
-            $table->string('id'); // Nama produk
-            $table->integer('nama_produk'); // Jumlah produk
-            $table->decimal('jumlah', 15, 2); // Harga produk, bisa menampung hingga milyaran
-            $table->decimal('harga_satuan', 15, 2); // Total harga (jumlah * harga)
-            $table->decimal('lokasi_penyimpanan', 15, 2); // Uang yang dibayar
+            $table->id(); // ID transaksi (auto-increment)
+            $table->string('nama_produk'); // Nama produk (tipe data string)
+            $table->decimal('jumlah', 15, 2); // Jumlah produk (tipe data decimal)
+            $table->decimal('harga_satuan', 15, 2); // Harga satuan produk (tipe data decimal)
+            $table->string('lokasi_penyimpanan'); // Lokasi penyimpanan (tipe data string)
             $table->timestamps(); // Kolom created_at dan updated_at
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data_transaksi');
+        Schema::dropIfExists('transaksi'); // Menghapus tabel 'transaksi'
     }
 };
