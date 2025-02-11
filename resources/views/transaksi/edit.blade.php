@@ -1,41 +1,64 @@
 @extends('layout.app')
 
 @section('content')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+<head> <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"></head>
+<div class="container mx-auto px-6 py-8">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-2">Edit Transaksi</h2>
+    
+    <a href="{{ route('transaksi.index') }}" class="inline-block text-blue-600 hover:text-blue-800 mb-2">
+        <i class="fas fa-arrow-left"></i> Kembali ke Daftar Transaksi
+    </a>
 
-<div class="container mx-auto p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-3xl font-semibold text-gray-800">Edit Transaksi</h2>
-        <a href="{{ route('transaksi.index') }}" class="px-6 py-2 bg-gray-600 text-white rounded-lg shadow-md hover:bg-gray-700 transition">Kembali ke Daftar Transaksi</a>
+    <!-- Tampilkan Error Validasi -->
+    @if ($errors->any())
+        <div class="bg-red-200 text-red-800 p-4 rounded-lg mb-4">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="bg-white shadow-lg rounded-lg p-4 max-w-lg mx-auto">
+        <form action="{{ route('transaksi.update', $transaksi->id) }}" method="POST">
+            @csrf
+            @method('PUT') <!-- Metode PUT untuk update -->
+
+            <div class="mb-2">
+                <label for="nama_produk" class="block text-gray-600 font-semibold">Nama Produk</label>
+                <input type="text" name="nama_produk" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3" value="{{ old('nama_produk', $transaksi->nama_produk) }}">
+            </div>
+
+            <div class="mb-2">
+                <label for="jumlah" class="block text-gray-600 font-semibold">Jumlah</label>
+                <input type="number" name="jumlah" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3" value="{{ old('jumlah', $transaksi->jumlah) }}">
+            </div>
+
+            <div class="mb-2">
+                <label for="harga_satuan" class="block text-gray-600 font-semibold">Harga Satuan</label>
+                <input type="number" name="harga_satuan" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3" value="{{ old('harga_satuan', $transaksi->harga_satuan) }}">
+            </div>
+
+            <div class="mb-2">
+                <label for="bayar" class="block text-gray-600 font-semibold">Bayar</label>
+                <input type="number" name="bayar" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3" value="{{ old('bayar', $transaksi->bayar) }}">
+            </div>
+
+            <div class="mb-2">
+                <label for="metode_pembayaran" class="block text-gray-600 font-semibold">Metode Pembayaran</label>
+                <select name="metode_pembayaran" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3">
+                    <option value="cash" {{ old('metode_pembayaran', $transaksi->metode_pembayaran) == 'cash' ? 'selected' : '' }}>Cash</option>
+                    <option value="transfer" {{ old('metode_pembayaran', $transaksi->metode_pembayaran) == 'transfer' ? 'selected' : '' }}>Transfer</option>
+                </select>
+            </div>
+
+            <div class="flex justify-end mt-2">
+                <button type="submit" class="bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-200">
+                    Update
+                </button>
+            </div>
+        </form>
     </div>
-
-    <form action="{{ route('transaksi.update', $transaksi->id) }}" method="POST" class="bg-white p-6 rounded-lg shadow-md">
-        @csrf
-        @method('PUT')
-
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-600" for="nama_produk">Nama Produk</label>
-            <input type="text" name="nama_produk" class="form-control w-full px-4 py-2 border rounded-lg" value="{{ old('nama_produk', $transaksi->nama_produk) }}" required>
-        </div>
-
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-600" for="jumlah">Jumlah</label>
-            <input type="number" name="jumlah" class="form-control w-full px-4 py-2 border rounded-lg" value="{{ old('jumlah', $transaksi->jumlah) }}" required>
-        </div>
-
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-600" for="harga">Harga</label>
-            <input type="number" name="harga" class="form-control w-full px-4 py-2 border rounded-lg" value="{{ old('harga', $transaksi->harga) }}" required>
-        </div>
-
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-600" for="bayar">Bayar</label>
-            <input type="number" name="bayar" class="form-control w-full px-4 py-2 border rounded-lg" value="{{ old('bayar', $transaksi->bayar) }}" required>
-        </div>
-
-        <button type="submit" class="w-full py-2 px-4 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition">
-            Perbarui Transaksi
-        </button>
-    </form>
 </div>
-@endsection
+@endsection  
