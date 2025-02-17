@@ -87,9 +87,11 @@
                 datasets: [{
                     label: 'Total Penjualan (Rp)',
                     data: totalPenjualan,
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 2
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)', // Warna batang
+                    borderColor: 'rgba(54, 162, 235, 1)', // Warna border batang
+                    borderWidth: 2,
+                    hoverBackgroundColor: 'rgba(54, 162, 235, 0.8)', // Warna saat hover
+                    hoverBorderColor: 'rgba(54, 162, 235, 1.2)' // Warna border saat hover
                 }]
             },
             options: {
@@ -105,14 +107,20 @@
                     x: {
                         title: {
                             display: true,
-                            text: 'Bulan'
+                            text: 'Bulan',
+                            font: {
+                                size: 14
+                            }
                         }
                     },
                     y: {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Total Penjualan (Rp)'
+                            text: 'Total Penjualan (Rp)',
+                            font: {
+                                size: 14
+                            }
                         },
                         ticks: {
                             callback: function(value) { return 'Rp ' + value.toLocaleString('id-ID'); }
@@ -124,3 +132,4 @@
     });
 </script>
 @endpush
+
