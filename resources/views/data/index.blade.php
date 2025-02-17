@@ -19,6 +19,7 @@
                 <tr class="border-b border-gray-200">
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Id</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Nama Barang</th>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Deskripsi</th> <!-- Tambahan Deskripsi -->
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Jumlah</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Harga Satuan</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Total Nilai</th>
@@ -31,6 +32,7 @@
                     <tr class="border-b border-gray-200 hover:bg-gray-50">
                         <td class="py-3 px-4 text-sm text-gray-700">{{ $data->id }}</td>
                         <td class="py-3 px-4 text-sm text-gray-700">{{ $data->nama_barang }}</td>
+                        <td class="py-3 px-4 text-sm text-gray-700">{{ $data->deskripsi ?? '-' }}</td> <!-- Menampilkan Deskripsi -->
                         <td class="py-3 px-4 text-sm text-gray-700">{{ $data->jumlah }}</td>
                         <td class="py-3 px-4 text-sm text-gray-700">{{ number_format($data->harga_satuan, 2) }}</td>
                         <td class="py-3 px-4 text-sm text-gray-700">{{ number_format($data->total_nilai, 2) }}</td>
