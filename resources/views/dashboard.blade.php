@@ -6,35 +6,7 @@
 @section('content')
 <p class="mb-6">Ini adalah halaman utama dashboard tempat Anda dapat memantau statistik dan informasi penting.</p>
 
-<!-- Barang Terjual -->
-<div class="bg-white p-6 rounded-lg shadow mb-6">
-    <h3 class="text-lg font-semibold mb-2">Barang Terjual Terbaru</h3>
-    
-    @if ($barangTerjual->isEmpty())
-        <p class="text-gray-600">Belum ada transaksi barang yang terjual.</p>
-    @else
-        <div class="overflow-x-auto">
-            <table class="min-w-full bg-white border border-gray-200 rounded-lg">
-                <thead>
-                    <tr class="bg-gray-100 border-b border-gray-300">
-                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Nama Produk</th>
-                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Jumlah</th>
-                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Tanggal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($barangTerjual as $barang)
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="py-3 px-4 text-sm text-gray-800">{{ $barang->nama_produk }}</td>
-                            <td class="py-3 px-4 text-sm text-gray-800">{{ number_format($barang->jumlah, 0, ',', '.') }}</td>
-                            <td class="py-3 px-4 text-sm text-gray-800">{{ $barang->created_at->format('d M Y') }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    @endif
-</div>
+
 
 @if(session('error'))
     <div class="alert alert-warning">{{ session('error') }}</div>
@@ -87,9 +59,11 @@
                 datasets: [{
                     label: 'Total Penjualan (Rp)',
                     data: totalPenjualan,
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 2
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)', // Warna batang
+                    borderColor: 'rgba(54, 162, 235, 1)', // Warna border batang
+                    borderWidth: 2,
+                    hoverBackgroundColor: 'rgba(54, 162, 235, 0.8)', // Warna saat hover
+                    hoverBorderColor: 'rgba(54, 162, 235, 1.2)' // Warna border saat hover
                 }]
             },
             options: {
@@ -105,14 +79,20 @@
                     x: {
                         title: {
                             display: true,
-                            text: 'Bulan'
+                            text: 'Bulan',
+                            font: {
+                                size: 14
+                            }
                         }
                     },
                     y: {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Total Penjualan (Rp)'
+                            text: 'Total Penjualan (Rp)',
+                            font: {
+                                size: 14
+                            }
                         },
                         ticks: {
                             callback: function(value) { return 'Rp ' + value.toLocaleString('id-ID'); }
@@ -124,3 +104,4 @@
     });
 </script>
 @endpush
+
