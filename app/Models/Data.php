@@ -2,23 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory; 
 use Illuminate\Database\Eloquent\Model;
 
 class Data extends Model
 {
-    protected $guarded = [
-        // Kolom yang tidak boleh diisi massal
+    use HasFactory;
+
+    protected $table = 'data';
+
+    protected $fillable = [
+        'nama_barang',
+        'nama_produk',
+        'jumlah',
+        'harga_satuan',
+        'lokasi_penyimpanan',
     ];
-
-
-    public function up()
-{
-    Schema::create('data', function (Blueprint $table) {
-        $table->id();
-        $table->string('title');
-        $table->text('content')->nullable();
-        $table->timestamps();
-    });
-}
-
 }
