@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('data', function (Blueprint $table) {
             $table->id(); // ID transaksi (auto-increment)
-            $table->string('nama_produk'); // Nama produk (tipe data string)
+            $table->string('nama_barang'); // Nama produk (tipe data string)
             $table->decimal('jumlah', 15, 2); // Jumlah produk (tipe data decimal)
             $table->decimal('harga_satuan', 15, 2); // Harga satuan produk (tipe data decimal)
             $table->string('lokasi_penyimpanan'); // Lokasi penyimpanan (tipe data string)
