@@ -19,26 +19,38 @@
 
     <form action="{{ route('data.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow-md">
         @csrf
+
+        <!-- Input Transaction ID -->
         <div class="mb-4">
-            <label for="nama_barang" class="block text-sm font-medium text-gray-700">Transactioni d</label>
-            <input type="text" name="nama_barang" id="nama_barang" value="{{ old('transaction_id') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <label for="transaction_id" class="block text-sm font-medium text-gray-700">Transaction ID</label>
+            <input type="text" name="transaction_id" id="transaction_id" value="{{ old('transaction_id') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
         </div>
 
+        <!-- Input Nama Barang -->
         <div class="mb-4">
             <label for="nama_barang" class="block text-sm font-medium text-gray-700">Nama Barang</label>
             <input type="text" name="nama_barang" id="nama_barang" value="{{ old('nama_barang') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
         </div>
 
+        <!-- Input Deskripsi -->
+        <div class="mb-4">
+            <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+            <textarea name="deskripsi" id="deskripsi" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ old('deskripsi') }}</textarea>
+        </div>
+
+        <!-- Input Jumlah -->
         <div class="mb-4">
             <label for="jumlah" class="block text-sm font-medium text-gray-700">Jumlah</label>
             <input type="number" name="jumlah" id="jumlah" value="{{ old('jumlah') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
         </div>
 
+        <!-- Input Harga Satuan -->
         <div class="mb-4">
             <label for="harga_satuan" class="block text-sm font-medium text-gray-700">Harga Satuan</label>
             <input type="number" step="0.01" name="harga_satuan" id="harga_satuan" value="{{ old('harga_satuan') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
         </div>
 
+        <!-- Input Lokasi Penyimpanan -->
         <div class="mb-4">
             <label for="lokasi_penyimpanan" class="block text-sm font-medium text-gray-700">Lokasi Penyimpanan</label>
             <input type="text" name="lokasi_penyimpanan" id="lokasi_penyimpanan" value="{{ old('lokasi_penyimpanan') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">

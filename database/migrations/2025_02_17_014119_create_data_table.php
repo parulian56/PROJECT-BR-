@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('data', function (Blueprint $table) {
             $table->id(); // ID transaksi (auto-increment)
             $table->string('nama_barang'); // Nama produk (tipe data string)
+            $table->text('deskripsi')->nullable(); // Deskripsi produk (bisa kosong)
             $table->decimal('jumlah', 15, 2); // Jumlah produk (tipe data decimal)
             $table->decimal('harga_satuan', 15, 2); // Harga satuan produk (tipe data decimal)
             $table->string('lokasi_penyimpanan'); // Lokasi penyimpanan (tipe data string)
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data'); // Menghapus tabel 'transaksi'
+        Schema::dropIfExists('data'); // Menghapus tabel 'data' jika rollback
     }
 };
