@@ -5,6 +5,51 @@ namespace App\Http\Controllers;
 use App\Models\TransaksiKasir;
 use Illuminate\Http\Request;
 
+class DashboardController extends Controller
+{
+    public function index()
+    {
+        $currentYear = date('Y');
+        
+        // Ambil data transaksi per bulan
+        $penjualan = TransaksiKasir::selectRaw('MONTH(created_at) as bulan, SUM(total_harga) as total_penjualan')
+            ->whereYear('created_at', $currentYear)
+            ->groupBy('bulan')
+            ->orderBy('bulan', 'asc')
+            ->get()
+            ->keyBy('bulan');
+
+        // Inisialisasi semua bulan dengan nilai 0
+        $allMonths = collect(range(1, 12))->mapWithKeys(function ($month) {
+            return [$month => [
+                'bulan' => $month,
+                'total_penjualan' => 0
+            ]];
+        });
+
+        // Gabungkan data aktual dengan bulan yang tidak memiliki transaksi
+        $mergedPenjualan = $allMonths->map(function ($monthData) use ($penjualan) {
+            $actualData = $penjualan->get($monthData['bulan']);
+            return $actualData ?: $monthData;
+        });
+
+        // Konversi ke format yang diperlukan
+        $namaBulan = [
+            1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr',
+            5 => 'Mei', 6 => 'Jun', 7 => 'Jul', 8 => 'Agu',
+            9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'
+        ];
+
+        $bulan = $mergedPenjualan->pluck('bulan')->map(fn($b) => $namaBulan[$b]);
+        $totalPenjualan = $mergedPenjualan->pluck('total_penjualan');
+
+        // Ambil daftar barang terjual
+        $barangTerjual = TransaksiKasir::latest()->limit(10)->get();
+
+        return view('dashboard', compact('bulan', 'totalPenjualan', 'barangTerjual'));
+    }
+}
+
 class TransaksiKasirController extends Controller
 {
     // Menampilkan semua transaksi
@@ -35,17 +80,14 @@ class TransaksiKasirController extends Controller
             'jumlah' => 'required|integer|min:1|max:9999',
             'harga_satuan' => 'required|numeric',
             'bayar' => 'required|numeric',
-            'metode_pembayaran' => 'required|string',
         ],
-    [
-        'nama_produk' => 'tidak boleh kosong',
-        'jumlah' => 'tidak boleh kosong, harus angka, dan harus diisi',
-        'harga_satuan' => 'tidak boleh kosong, dan harus angka',
-        'bayar' => 'tidak boleh kosong, dan harus angka',
-        'metode_pembayaran' => 'tidak boleh kosong',
-    ]);
+        [
+            'nama_produk.required' => 'tidak boleh kosong',
+            'jumlah.required' => 'tidak boleh kosong, harus angka, dan harus diisi',
+            'harga_satuan.required' => 'tidak boleh kosong, dan harus angka',
+            'bayar.required' => 'tidak boleh kosong, dan harus angka',
+        ]);
 
-        // Hitung total harga dan kembalian
         $total_harga = $request->jumlah * $request->harga_satuan;
         $kembalian = $request->bayar - $total_harga;
 
@@ -56,7 +98,6 @@ class TransaksiKasirController extends Controller
             'total_harga' => $total_harga,
             'bayar' => $request->bayar,
             'kembalian' => $kembalian,
-            'metode_pembayaran' => $request->metode_pembayaran,
         ]);
 
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil disimpan');
@@ -70,7 +111,6 @@ class TransaksiKasirController extends Controller
             'jumlah' => 'required|integer',
             'harga_satuan' => 'required|numeric',
             'bayar' => 'required|numeric',
-            'metode_pembayaran' => 'required|string',
         ]);
 
         $transaksi = TransaksiKasir::findOrFail($id);
@@ -85,7 +125,6 @@ class TransaksiKasirController extends Controller
             'total_harga' => $total_harga,
             'bayar' => $request->bayar,
             'kembalian' => $kembalian,
-            'metode_pembayaran' => $request->metode_pembayaran,
         ]);
 
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui');

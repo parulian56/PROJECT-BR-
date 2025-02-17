@@ -1,88 +1,126 @@
 @extends('layout.app')
 
-@section('title', 'Dashboard') <!-- Judul halaman -->
-@section('header', 'Dashboard') <!-- Judul di bagian header -->
+@section('title', 'Dashboard') 
+@section('header', 'Dashboard')
 
 @section('content')
-    <h3 class="text-xl font-semibold mb-4">Selamat datang di Dashboard!</h3>
-    <p class="mb-6">Ini adalah halaman utama dashboard tempat Anda dapat memantau statistik dan informasi penting.</p>
+<p class="mb-6">Ini adalah halaman utama dashboard tempat Anda dapat memantau statistik dan informasi penting.</p>
 
-    @if(session('error'))
-        <div class="alert alert-warning">{{ session('error') }}</div>
+<!-- Barang Terjual -->
+<div class="bg-white p-6 rounded-lg shadow mb-6">
+    <h3 class="text-lg font-semibold mb-2">Barang Terjual Terbaru</h3>
+    
+    @if ($barangTerjual->isEmpty())
+        <p class="text-gray-600">Belum ada transaksi barang yang terjual.</p>
+    @else
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                <thead>
+                    <tr class="bg-gray-100 border-b border-gray-300">
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Nama Produk</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Jumlah</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Tanggal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($barangTerjual as $barang)
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm text-gray-800">{{ $barang->nama_produk }}</td>
+                            <td class="py-3 px-4 text-sm text-gray-800">{{ number_format($barang->jumlah, 0, ',', '.') }}</td>
+                            <td class="py-3 px-4 text-sm text-gray-800">{{ $barang->created_at->format('d M Y') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     @endif
+</div>
 
-    <p>Data Bulan: {{ json_encode($bulan) }}</p>
-    <p>Data Total Penjualan: {{ json_encode($totalPenjualan) }}</p>
+@if(session('error'))
+    <div class="alert alert-warning">{{ session('error') }}</div>
+@endif
 
-    <!-- Chart -->
-    <div class="bg-white p-6 rounded-lg shadow mb-6">
-        <h3 class="text-lg font-semibold mb-2">Sales Overview</h3>
-        <canvas id="myChart"></canvas>
-    </div>
-
-    <!-- Statistik Pengguna -->
-    <div class="bg-white p-6 rounded-lg shadow mb-6">
-        <h3 class="text-lg font-semibold mb-2">Statistik Pengguna</h3>
-        <p>Data statistik pengguna dan transaksi akan ditampilkan di sini.</p>
-    </div>
+<!-- Chart -->
+<div class="bg-white p-6 rounded-lg shadow mb-6">
+    <h3 class="text-lg font-semibold mb-2">Sales Overview</h3>
+    <canvas id="myChart"></canvas>
+</div>
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var ctx = document.getElementById('myChart').getContext('2d');
-            
-            var bulan = @json($bulan);  // Pastikan ini berupa array nama bulan, bukan angka
-            var totalPenjualan = @json($totalPenjualan);
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var canvas = document.getElementById('myChart');
 
-            if (bulan.length === 0 || totalPenjualan.length === 0) {
-                document.getElementById('myChart').parentNode.innerHTML = 
-                    "<p class='text-red-600'>Tidak ada data transaksi untuk ditampilkan.</p>";
-                return;
-            }
+        if (!canvas) {
+            console.error("Canvas 'myChart' tidak ditemukan!");
+            return;
+        }
 
-            new Chart(ctx, {
-                type: 'bar', // Ubah ke 'bar' jika ingin coba format lain
-                data: {
-                    labels: bulan,
-                    datasets: [{
-                        label: 'Total Penjualan (Rp)',
-                        data: totalPenjualan,
-                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 2
-                    }]
+        var ctx = canvas.getContext('2d');
+
+        // Hapus chart sebelumnya jika ada (agar tidak duplikat saat reload)
+        if (window.myChart instanceof Chart) {
+            window.myChart.destroy();
+        }
+
+        // Ambil data dari controller
+        var bulan = @json($bulan);
+        var totalPenjualan = @json($totalPenjualan).map(Number);
+
+        console.log("Bulan:", bulan);
+        console.log("Total Penjualan:", totalPenjualan);
+
+        // Cek jika data kosong
+        if (!bulan.length || !totalPenjualan.length) {
+            canvas.parentNode.innerHTML = "<p class='text-red-600 text-center'>Tidak ada data transaksi untuk ditampilkan.</p>";
+            return;
+        }
+
+        // Buat chart baru
+        window.myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: bulan,
+                datasets: [{
+                    label: 'Total Penjualan (Rp)',
+                    data: totalPenjualan,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
                 },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
+                scales: {
+                    x: {
+                        title: {
                             display: true,
-                            position: 'top'
+                            text: 'Bulan'
                         }
                     },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Bulan'
-                            }
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Total Penjualan (Rp)'
                         },
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Total Penjualan (Rp)'
-                            },
-                            ticks: {
-                                callback: function(value) { return 'Rp ' + value.toLocaleString(); }
-                            }
+                        ticks: {
+                            callback: function(value) { return 'Rp ' + value.toLocaleString('id-ID'); }
                         }
                     }
                 }
-            });
+            }
         });
-    </script>
+    });
+</script>
 @endpush

@@ -23,7 +23,7 @@
     <div class="bg-white shadow-lg rounded-lg p-4 max-w-lg mx-auto">
         <form action="{{ route('transaksi.update', $transaksi->id) }}" method="POST">
             @csrf
-            @method('PUT') <!-- Metode PUT untuk update -->
+            @method('PUT') 
 
             <div class="mb-2">
                 <label for="nama_produk" class="block text-gray-600 font-semibold">Nama Produk</label>
@@ -45,13 +45,7 @@
                 <input type="number" name="bayar" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3" value="{{ old('bayar', $transaksi->bayar) }}">
             </div>
 
-            <div class="mb-2">
-                <label for="metode_pembayaran" class="block text-gray-600 font-semibold">Metode Pembayaran</label>
-                <select name="metode_pembayaran" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3">
-                    <option value="cash" {{ old('metode_pembayaran', $transaksi->metode_pembayaran) == 'cash' ? 'selected' : '' }}>Cash</option>
-                    <option value="transfer" {{ old('metode_pembayaran', $transaksi->metode_pembayaran) == 'transfer' ? 'selected' : '' }}>Transfer</option>
-                </select>
-            </div>
+            
 
             <div class="flex justify-end mt-2">
                 <button type="submit" class="bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-200">

@@ -17,6 +17,13 @@ class TransaksiKasir extends Model
         'total_harga', 
         'bayar', 
         'kembalian', 
-        'metode_pembayaran'
+    ];
+
+    protected $casts = [
+        'jumlah' => 'integer',
+        'harga_satuan' => 'decimal:2',
+        'total_harga' => 'decimal:2',
+        'bayar' => 'decimal:2',
+        'kembalian' => 'decimal:2',
     ];
 }
