@@ -59,4 +59,8 @@
     </div>
 
 </body>
+<!-- Layout -->
+@stack('scripts')
+
 </html>
+
