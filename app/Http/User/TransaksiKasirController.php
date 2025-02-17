@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller; 
+use App\Http\Controllers\Controller;
 use App\Models\TransaksiKasir;
 use Illuminate\Http\Request;
 
@@ -46,7 +46,7 @@ class TransaksiKasirController extends Controller
     public function edit($id)
     {
         $transaksi = TransaksiKasir::findOrFail($id);
-        return view('user.transaksi.edit', compact('transaksi')); // 🔹 Pastikan path view benar
+        return view('user.transaksi.edit', compact('transaksi'));
     }
 
     public function update(Request $request, $id)
