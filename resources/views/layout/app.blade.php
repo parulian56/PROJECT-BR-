@@ -16,17 +16,13 @@
             <img alt="Logo" class="w-13 h-12 mx-auto mb-4" src="/asset/image/logo amaliah.png"/>
             
             <!-- Menu Items -->
-            <a href="{{ url('dashboard') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
+            <a href="{{ url('admin/dashboard') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
                 <i class="fas fa-th-large mr-3"></i> 
                 <span>Dashboard</span>
             </a>
-            <a href="{{ url('data') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
+            <a href="{{ url('admin/data') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
                 <i class="fas fa-database mr-3"></i> 
                 <span>Data</span>
-            </a>
-            <a href="{{ url('transaksi') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
-                <i class="fas fa-exchange-alt mr-3"></i> 
-                <span>Transaksi</span>
             </a>
             <a href="#" class="flex items-center py-4 px-6 hover:bg-gray-700">
                 <i class="fas fa-chart-line mr-3"></i> 

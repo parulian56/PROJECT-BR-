@@ -53,7 +53,7 @@ class DashboardController extends Controller
         $totalPenjualan = $mergedPenjualan->pluck('totalPenjualan')->toArray(); // Konversi ke array
 
         // Kirim data ke view
-        return view('dashboard', [
+        return view('admin.dashboard', [
             'bulan' => $bulan,
             'totalPenjualan' => $totalPenjualan,
             'barangTerjual' => $barangTerjual
