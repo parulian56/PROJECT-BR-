@@ -19,89 +19,72 @@
 </div>
 @endsection
 
+@push('styles')
+    <style>
+        #myChart {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+@endpush
+
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        var canvas = document.getElementById('myChart');
-
-        if (!canvas) {
-            console.error("Canvas 'myChart' tidak ditemukan!");
-            return;
-        }
-
-        var ctx = canvas.getContext('2d');
-
-        // Hapus chart sebelumnya jika ada (agar tidak duplikat saat reload)
-        if (window.myChart instanceof Chart) {
-            window.myChart.destroy();
-        }
-
-        // Ambil data dari controller
         var bulan = @json($bulan);
         var totalPenjualan = @json($totalPenjualan).map(Number);
 
-        console.log("Bulan:", bulan);
-        console.log("Total Penjualan:", totalPenjualan);
+        console.log(bulan); // Debug output
+        console.log(totalPenjualan); // Debug output
 
-        // Cek jika data kosong
-        if (!bulan.length || !totalPenjualan.length) {
-            canvas.parentNode.innerHTML = "<p class='text-red-600 text-center'>Tidak ada data transaksi untuk ditampilkan.</p>";
-            return;
-        }
+        // Tampilkan Chart jika data tersedia
+        if (bulan.length && totalPenjualan.length) {
+            var ctx = document.getElementById('myChart').getContext('2d');
 
-        // Buat chart baru
-        window.myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: bulan,
-                datasets: [{
-                    label: 'Total Penjualan (Rp)',
-                    data: totalPenjualan,
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)', // Warna batang
-                    borderColor: 'rgba(54, 162, 235, 1)', // Warna border batang
-                    borderWidth: 2,
-                    hoverBackgroundColor: 'rgba(54, 162, 235, 0.8)', // Warna saat hover
-                    hoverBorderColor: 'rgba(54, 162, 235, 1.2)' // Warna border saat hover
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: bulan,
+                    datasets: [{
+                        label: 'Total Penjualan (Rp)',
+                        data: totalPenjualan,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2
+                    }]
                 },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Bulan',
-                            font: {
-                                size: 14
-                            }
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Total Penjualan (Rp)',
-                            font: {
-                                size: 14
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Bulan'
                             }
                         },
-                        ticks: {
-                            callback: function(value) { return 'Rp ' + value.toLocaleString('id-ID'); }
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Total Penjualan (Rp)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return 'Rp ' + value.toLocaleString('id-ID');
+                                }
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        } else {
+            console.log("Data bulan atau total penjualan kosong.");
+            // Jika data kosong, tampilkan pesan kesalahan
+            document.getElementById('myChart').parentNode.innerHTML = "<p class='text-red-600 text-center'>Tidak ada data transaksi untuk ditampilkan.</p>";
+        }
     });
 </script>
 @endpush
-
