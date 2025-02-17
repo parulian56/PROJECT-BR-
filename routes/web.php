@@ -11,5 +11,8 @@ Route::get('/', function () {
 // Rute transaksi
 Route::resource('transaksi', TransaksiKasirController::class);
 
+//Rute Data
+
+
 // Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
