@@ -10,7 +10,9 @@ Route::get('/', function () {
 
 // Rute transaksi untuk user (dengan prefix 'user')
 use App\Http\Controllers\TransaksiKasirController;
+
 Route::resource('user/transaksi', TransaksiKasirController::class);
+
 
 
 // Rute Data untuk admin

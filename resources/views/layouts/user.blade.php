@@ -20,13 +20,19 @@
 <body class="bg-gray-100 flex">
 
     <!-- Sidebar -->
-    <aside class="w-64 bg-blue-900 text-white min-h-screen p-6">
+    <!-- Sidebar -->
+<aside class="w-64 bg-blue-900 text-white min-h-screen p-6 flex flex-col justify-between">
+    <div>
         <h2 class="text-2xl font-bold">Kasir</h2>
         <nav class="mt-6">
             <a href="{{ url('user/transaksi') }}" class="block py-2 px-4 rounded-lg hover:bg-blue-700">Transaksi</a>
         </nav>
+    </div>
 
-    </aside>
+    <!-- Tombol Kembali ke Login -->
+    
+</aside>
+
 
     <!-- Main Content -->
     <main class="flex-1 p-6">
