@@ -1,7 +1,9 @@
 @extends('layouts.user')
 
 @section('content')
-<head> <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"></head>
+<head> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+</head>
 <div class="container mx-auto px-6 py-8">
     <h2 class="text-3xl font-semibold text-gray-800 mb-2">Tambah Transaksi</h2>
     
@@ -43,8 +45,6 @@
                 <label for="bayar" class="block text-gray-600 font-semibold">Bayar</label>
                 <input type="number" name="bayar" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3" value="{{ old('bayar') }}">
             </div>
-
-            
 
             <div class="flex justify-end mt-2">
                 <button type="submit" class="bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-200">

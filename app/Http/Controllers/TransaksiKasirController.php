@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers; 
 
 use App\Http\Controllers\Controller;
 use App\Models\TransaksiKasir;
@@ -11,7 +10,7 @@ class TransaksiKasirController extends Controller
 {
     public function index()
     {
-        $transaksis = TransaksiKasir::latest()->get();
+        $transaksis = TransaksiKasir::all();
         return view('user.transaksi.index', compact('transaksis'));
     }
 
@@ -41,16 +40,15 @@ class TransaksiKasirController extends Controller
             'kembalian' => $kembalian,
         ]);
 
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil disimpan.');
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil ditambahkan!');
     }
 
-    public function edit($id)
+    public function edit(TransaksiKasir $transaksi)
     {
-        $transaksi = TransaksiKasir::findOrFail($id);
         return view('user.transaksi.edit', compact('transaksi'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, TransaksiKasir $transaksi)
     {
         $request->validate([
             'nama_produk' => 'required|string|max:255',
@@ -59,7 +57,6 @@ class TransaksiKasirController extends Controller
             'bayar' => 'required|numeric|min:1',
         ]);
 
-        $transaksi = TransaksiKasir::findOrFail($id);
         $total_harga = $request->jumlah * $request->harga_satuan;
         $kembalian = max(0, $request->bayar - $total_harga);
 
@@ -72,12 +69,18 @@ class TransaksiKasirController extends Controller
             'kembalian' => $kembalian,
         ]);
 
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui.');
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui!');
     }
 
-    public function destroy($id)
+    public function destroy(TransaksiKasir $transaksi)
     {
-        TransaksiKasir::findOrFail($id)->delete();
-        return redirect()->back()->with('success', 'Transaksi berhasil dihapus.');
+        $transaksi->delete();
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus!');
+    }
+
+    public function hapusSemua()
+    {
+        TransaksiKasir::truncate(); // Menghapus semua data dari tabel transaksi
+        return redirect()->route('transaksi.index')->with('success', 'Semua transaksi berhasil dihapus.');
     }
 }
