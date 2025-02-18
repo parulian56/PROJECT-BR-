@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layouts.user')
 
 @section('content')
 <head> <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"></head>
