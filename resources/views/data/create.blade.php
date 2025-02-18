@@ -32,6 +32,11 @@
             <input type="text" name="nama_barang" id="nama_barang" value="{{ old('nama_barang') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
         </div>
 
+        <div class="mb-4">
+            <label for="kategori" class="block text-sm font-medium text-gray-700">Kategori</label>
+            <input type="text" name="kategori" id="kategori" value="{{ old('kategori') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+        </div>
+
         <!-- Input Deskripsi -->
         <div class="mb-4">
             <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi</label>
@@ -44,10 +49,16 @@
             <input type="number" name="jumlah" id="jumlah" value="{{ old('jumlah') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
         </div>
 
+                <!-- Input Harga pokok -->
+        <div class="mb-4">
+            <label for="harga_pokok" class="block text-sm font-medium text-gray-700">Harga Pokok</label>
+            <input type="number" step="0.01" name="harga_pokok" id="harga_pokok" value="{{ old('harga_pokok') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+        </div>
+
         <!-- Input Harga Satuan -->
         <div class="mb-4">
-            <label for="harga_satuan" class="block text-sm font-medium text-gray-700">Harga Satuan</label>
-            <input type="number" step="0.01" name="harga_satuan" id="harga_satuan" value="{{ old('harga_satuan') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <label for="harga_jual" class="block text-sm font-medium text-gray-700">Harga Jual</label>
+            <input type="number" step="0.01" name="harga_jual" id="harga_jual" value="{{ old('harga_jual') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
         </div>
 
         <!-- Input Lokasi Penyimpanan -->

@@ -33,6 +33,11 @@
             </div>
 
             <div class="mb-4">
+                <label for="kategori" class="block text-gray-600 font-semibold">Kategori</label>
+                <input type="text" name="kategori" id="kategori" placeholder="Masukkan kategori" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500" value="{{ old('kategori', $data->kategori) }}">
+            </div>
+
+            <div class="mb-4">
                 <label for="deskripsi" class="block text-gray-600 font-semibold">Deskripsi</label>
                 <input type="text" name="deskripsi" id="deskripsi" placeholder="Masukkan deskripsi" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500" value="{{ old('deskripsi', $data->deskripsi) }}">
             </div>
@@ -43,8 +48,13 @@
             </div>
 
             <div class="mb-4">
-                <label for="harga_satuan" class="block text-gray-600 font-semibold">Harga Satuan</label>
-                <input type="number" step="0.01" name="harga_satuan" id="harga_satuan" placeholder="Masukkan harga satuan" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500" value="{{ old('harga_satuan', $data->harga_satuan) }}">
+                <label for="harga_pokok" class="block text-gray-600 font-semibold">Harga Pokok</label>
+                <input type="number" step="0.01" name="harga_pokok" id="harga_pokok" placeholder="Masukkan harga pokok" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500" value="{{ old('harga_pokok', $data->harga_pokok) }}">
+            </div>
+
+            <div class="mb-4">
+                <label for="harga_jual" class="block text-gray-600 font-semibold">Harga jual</label>
+                <input type="number" step="0.01" name="harga_jual" id="harga_jual" placeholder="Masukkan harga jual" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500" value="{{ old('harga_satuan', $data->harga_jual) }}">
             </div>
 
             <div class="mb-4">

@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations.  
      */
     public function up(): void
     {
         Schema::create('transaksi_kasir', function (Blueprint $table) { // Perbaiki nama tabel
             $table->id(); // ID transaksi (auto-increment)
-            $table->string('nama_produk'); // Nama produk
+            $table->string('nama_produk'); // Nama produk   
             $table->decimal('jumlah', 15); // Jumlah produk
             $table->decimal('harga_satuan', 15, 2); // Harga satuan produk
             $table->decimal('total_harga', 15, 2); // Total harga

@@ -33,22 +33,24 @@ class DataController extends Controller
         // Validasi input
         $request->validate([
             'nama_barang' => 'required|string',
+            'kategori' => 'required|string',
             'deskripsi' => 'nullable|string',
             'jumlah' => 'required|integer|min:1|max:9999',
-            'harga_satuan' => 'required|numeric',
+            'harga_pokok' => 'required|numeric',
+            'harga_jual' => 'required|numeric',
             'lokasi_penyimpanan' => 'required|string',
-        ]);
+        ]);   
 
         // Hitung total nilai
-        $total_nilai =$jumlah*$harga_satuan;
 
         // Simpan data penyimpanan baru
         Data::create([
             'nama_barang' => $request->nama_barang,
+            'kategori' => $request->kategori,
             'deskripsi' => $request->deskripsi,
             'jumlah' => $request->jumlah,
-            'harga_satuan' => $request->harga_satuan,
-            'total_nilai' => $total_nilai,
+            'harga_pokok' => $request->harga_pokok,
+            'harga_jual' => $request->harga_jual,
             'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
         ]);
 
@@ -61,9 +63,11 @@ class DataController extends Controller
         // Validasi input
         $request->validate([
             'nama_barang' => 'required|string',
+            'kategori' => 'required|string',
             'deskripsi' => 'nullable|string',
             'jumlah' => 'required|integer',
-            'harga_satuan' => 'required|numeric',
+            'harga_pokok' => 'required|numeric',
+            'harga_jual' => 'required|numeric',
             'lokasi_penyimpanan' => 'required|string',
         ]);
 
@@ -71,15 +75,15 @@ class DataController extends Controller
         $data = Data::findOrFail($id);
 
         // Hitung total nilai
-        $total_nilai = $request->jumlah * $request->harga_satuan;
 
         // Update data penyimpanan
         $data->update([
             'nama_barang' => $request->nama_barang,
+            'kategori' => $request->kategori,
             'deskripsi' => $request->deskripsi,
             'jumlah' => $request->jumlah,
-            'harga_satuan' => $request->harga_satuan,
-            'total_nilai' => $total_nilai,
+            'harga_pokok' => $request->harga_pokok,
+            'harga_jual' => $request->harga_jual,
             'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
         ]);
 
