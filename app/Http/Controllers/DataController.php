@@ -14,7 +14,7 @@ class DataController extends Controller
         $datas = Data::all();
 
         // Kirim data penyimpanan ke tampilan
-        return view('data.index', compact('datas'));
+        return view('admin.data.index', compact('datas'));
     }
 
     // Menampilkan form untuk menambah data penyimpanan
@@ -62,7 +62,7 @@ class DataController extends Controller
         ]);
 
         // Redirect ke daftar data penyimpanan dengan pesan sukses
-        return redirect()->route('data.index')->with('success', 'Data penyimpanan berhasil disimpan');
+        return redirect()->route('admin.data.index')->with('success', 'Data penyimpanan berhasil disimpan');
     }
 
     // Menyimpan perubahan data penyimpanan
@@ -96,7 +96,7 @@ class DataController extends Controller
         ]);
 
         // Redirect ke daftar data penyimpanan dengan pesan sukses
-        return redirect()->route('data.index')->with('success', 'Data penyimpanan berhasil diperbarui');
+        return redirect()->route('admin.data.index')->with('success', 'Data penyimpanan berhasil diperbarui');
     }
 
     // Menghapus data penyimpanan
@@ -109,7 +109,7 @@ class DataController extends Controller
         $data->delete();
 
         // Redirect ke daftar data penyimpanan dengan pesan sukses
-        return redirect()->route('data.index')->with('success', 'Data penyimpanan berhasil dihapus');
+        return redirect()->route('admin.data.index')->with('success', 'Data penyimpanan berhasil dihapus');
     }
 
     
