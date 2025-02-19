@@ -1,32 +1,37 @@
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard')</title>
+    <title>@yield('title', 'Dashboard Admin')</title>
+    
+    <!-- Vite untuk Tailwind CSS -->
     @vite('resources/css/app.css')
+
+    <!-- Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x/dist/cdn.min.js" defer></script>
+
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
+    @stack('styles')
 </head>
 <body class="bg-blue-100 flex">
 
     <!-- Sidebar -->
-    <div class="w-64 bg-gray-800 text-yellow-500 flex flex-col justify-between rounded-r-3xl">
+    <div class="w-64 bg-gray-800 text-yellow-500 flex flex-col justify-between rounded-r-3xl min-h-screen">
         <div class="mt-10">
             <!-- Logo -->
-            <img alt="Logo" class="w-13 h-12 mx-auto mb-4" src="/asset/image/logo amaliah.png"/>
+            <img alt="Logo" class="w-16 h-16 mx-auto mb-4" src="{{ asset('asset/image/logo amaliah.png') }}"/>
             
             <!-- Menu Items -->
-            <a href="{{ url('dashboard') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
+            <a href="{{ url('admin/dashboard') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
                 <i class="fas fa-th-large mr-3"></i> 
                 <span>Dashboard</span>
             </a>
-            <a href="{{ url('data') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
+            <a href="{{ url('admin/data') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
                 <i class="fas fa-database mr-3"></i> 
                 <span>Data</span>
-            </a>
-            <a href="{{ url('transaksi') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
-                <i class="fas fa-exchange-alt mr-3"></i> 
-                <span>Transaksi</span>
             </a>
             <a href="#" class="flex items-center py-4 px-6 hover:bg-gray-700">
                 <i class="fas fa-chart-line mr-3"></i> 
@@ -59,8 +64,5 @@
     </div>
 
 </body>
-<!-- Layout -->
 @stack('scripts')
-
 </html>
-

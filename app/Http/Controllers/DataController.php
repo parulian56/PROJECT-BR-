@@ -10,21 +10,28 @@ class DataController extends Controller
     // Menampilkan semua data penyimpanan
     public function index()
     {
+        // Ambil semua data penyimpanan
         $datas = Data::all();
+
+        // Kirim data penyimpanan ke tampilan
         return view('data.index', compact('datas'));
     }
 
     // Menampilkan form untuk menambah data penyimpanan
     public function create()
     {
-        return view('data.create');
+        // Tampilkan form tambah data penyimpanan
+        return view('admin.data.create');
     }
 
     // Menampilkan form edit data penyimpanan
     public function edit($id)
     {
+        // Ambil data penyimpanan berdasarkan ID
         $data = Data::findOrFail($id);
-        return view('data.edit', compact('data'));
+
+        // Mengirimkan data penyimpanan ke view
+        return view('admin.data.edit', compact('data'));
     }
 
     // Menyimpan data penyimpanan baru
@@ -54,6 +61,7 @@ class DataController extends Controller
             'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
         ]);
 
+        // Redirect ke daftar data penyimpanan dengan pesan sukses
         return redirect()->route('data.index')->with('success', 'Data penyimpanan berhasil disimpan');
     }
 
@@ -87,15 +95,22 @@ class DataController extends Controller
             'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
         ]);
 
+        // Redirect ke daftar data penyimpanan dengan pesan sukses
         return redirect()->route('data.index')->with('success', 'Data penyimpanan berhasil diperbarui');
     }
 
     // Menghapus data penyimpanan
     public function destroy($id)
     {
+        // Ambil data penyimpanan berdasarkan ID
         $data = Data::findOrFail($id);
+
+        // Hapus data penyimpanan
         $data->delete();
 
+        // Redirect ke daftar data penyimpanan dengan pesan sukses
         return redirect()->route('data.index')->with('success', 'Data penyimpanan berhasil dihapus');
     }
+
+    
 }

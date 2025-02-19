@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Http\Controllers\Controller;
 use App\Models\TransaksiKasir;
 use Illuminate\Http\Request;
 
@@ -10,12 +12,12 @@ class TransaksiKasirController extends Controller
     public function index()
     {
         $transaksis = TransaksiKasir::latest()->get();
-        return view('transaksi.index', compact('transaksis'));
+        return view('user.transaksi.index', compact('transaksis'));
     }
 
     public function create()
     {
-        return view('transaksi.create');
+        return view('user.transaksi.create');
     }
 
     public function store(Request $request)
@@ -45,7 +47,7 @@ class TransaksiKasirController extends Controller
     public function edit($id)
     {
         $transaksi = TransaksiKasir::findOrFail($id);
-        return view('transaksi.edit', compact('transaksi'));
+        return view('user.transaksi.edit', compact('transaksi'));
     }
 
     public function update(Request $request, $id)

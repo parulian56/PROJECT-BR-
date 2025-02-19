@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends('layouts.user')
+
+@section('title', 'Halaman Transaksi')
 
 @section('content')
 <div class="container mx-auto p-6">
@@ -30,7 +32,7 @@
             @foreach ($transaksis as $transaksi)
                 <tr class="border-b border-gray-100 hover:bg-gray-50">
                     <td class="py-3 px-4 text-sm text-gray-800">{{ $transaksi->nama_produk }}</td>
-                    <td class="py-3 px-4 text-sm text-gray-800">{{ number_format($transaksi->jumlah, 0, ',', '.') }}</td> <!-- Tanpa Rp -->
+                    <td class="py-3 px-4 text-sm text-gray-800">{{ number_format($transaksi->jumlah, 0, ',', '.') }}</td>
                     <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->harga_satuan, 0, ',', '.') }}</td>
                     <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
                     <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->bayar, 0, ',', '.') }}</td>
