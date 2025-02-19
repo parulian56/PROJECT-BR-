@@ -10,12 +10,6 @@ class TransaksiKasir extends Model
     use HasFactory;
     protected $table = 'transaksi_kasir';
 
-    protected $fillable = [
-        'nama_produk', 
-        'jumlah', 
-        'harga_satuan', 
-        'total_harga', 
-        'bayar', 
-        'kembalian',
-    ];
+    protected $fillable = ['plu', 'deskripsi', 'qty', 'harga', 'diskon', 'fee'];
+
 }

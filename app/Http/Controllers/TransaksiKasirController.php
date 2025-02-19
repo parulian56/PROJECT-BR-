@@ -17,14 +17,14 @@ class TransaksiKasirController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'plu' => 'required',
+           'plu' => 'required|string',
             'deskripsi' => 'required',
             'qty' => 'required|integer',
             'harga' => 'required|numeric',
             'diskon' => 'nullable|numeric',
             'fee' => 'nullable|numeric',
         ]);
-
+        
         $total = ($request->qty * $request->harga) - $request->diskon + $request->fee;
 
         TransaksiKasir::create([
@@ -49,7 +49,7 @@ class TransaksiKasirController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'plu' => 'required',
+            'plu' => 'required|string',
             'deskripsi' => 'required',
             'qty' => 'required|integer',
             'harga' => 'required|numeric',
