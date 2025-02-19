@@ -1,17 +1,12 @@
 @extends('layouts.user')
 
 @section('content')
-<head> <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"></head>
-<div class="container mx-auto px-6 py-8">
-    <h2 class="text-3xl font-semibold text-gray-800 mb-2">Edit Transaksi</h2>
-    
-    <a href="{{ route('transaksi.index') }}" class="inline-block text-blue-600 hover:text-blue-800 mb-2">
-        <i class="fas fa-arrow-left"></i> Kembali ke Daftar Transaksi
-    </a>
+<div class="container mx-auto p-6">
+    <h2 class="text-2xl font-semibold mb-4">Edit Transaksi</h2>
+    <a href="{{ route('transaksi.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded mb-3 inline-block">Kembali</a>
 
-    <!-- Tampilkan Error Validasi -->
     @if ($errors->any())
-        <div class="bg-red-200 text-red-800 p-4 rounded-lg mb-4">
+        <div class="bg-red-500 text-white p-3 rounded mb-3">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -20,39 +15,43 @@
         </div>
     @endif
 
-    <div class="bg-white shadow-lg rounded-lg p-4 max-w-lg mx-auto">
-        <form action="{{ route('transaksi.update', $transaksi->id) }}" method="POST">
-            @csrf
-            @method('PUT') 
+    <form action="{{ route('transaksi.update', $transaksi->id) }}" method="POST" class="bg-white p-6 rounded shadow-md">
+        @csrf
+        @method('PUT')
 
-            <div class="mb-2">
-                <label for="nama_produk" class="block text-gray-600 font-semibold">Nama Produk</label>
-                <input type="text" name="nama_produk" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3" value="{{ old('nama_produk', $transaksi->nama_produk) }}">
-            </div>
+        <div class="mb-4">
+            <label class="block text-gray-700">PLU</label>
+            <input type="text" name="plu" class="w-full px-4 py-2 border rounded" value="{{ old('plu', $transaksi->plu) }}" required>
+        </div>
 
-            <div class="mb-2">
-                <label for="jumlah" class="block text-gray-600 font-semibold">Jumlah</label>
-                <input type="number" name="jumlah" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3" value="{{ old('jumlah', $transaksi->jumlah) }}">
-            </div>
+        <div class="mb-4">
+            <label class="block text-gray-700">Deskripsi</label>
+            <input type="text" name="deskripsi" class="w-full px-4 py-2 border rounded" value="{{ old('deskripsi', $transaksi->deskripsi) }}" required>
+        </div>
 
-            <div class="mb-2">
-                <label for="harga_satuan" class="block text-gray-600 font-semibold">Harga Satuan</label>
-                <input type="number" name="harga_satuan" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3" value="{{ old('harga_satuan', $transaksi->harga_satuan) }}">
-            </div>
+        <div class="mb-4">
+            <label class="block text-gray-700">Qty</label>
+            <input type="number" name="qty" class="w-full px-4 py-2 border rounded" value="{{ old('qty', $transaksi->qty) }}" required>
+        </div>
 
-            <div class="mb-2">
-                <label for="bayar" class="block text-gray-600 font-semibold">Bayar</label>
-                <input type="number" name="bayar" class="form-input mt-2 block w-full border border-gray-300 rounded-lg p-3" value="{{ old('bayar', $transaksi->bayar) }}">
-            </div>
+        <div class="mb-4">
+            <label class="block text-gray-700">Harga</label>
+            <input type="number" name="harga" class="w-full px-4 py-2 border rounded" value="{{ old('harga', $transaksi->harga) }}" required>
+        </div>
 
-            
+        <div class="mb-4">
+            <label class="block text-gray-700">Diskon</label>
+            <input type="number" name="diskon" class="w-full px-4 py-2 border rounded" value="{{ old('diskon', $transaksi->diskon) }}" required>
+        </div>
 
-            <div class="flex justify-end mt-2">
-                <button type="submit" class="bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-200">
-                    Update
-                </button>
-            </div>
-        </form>
-    </div>
+        <div class="mb-4">
+            <label class="block text-gray-700">Fee</label>
+            <input type="number" name="fee" class="w-full px-4 py-2 border rounded" value="{{ old('fee', $transaksi->fee) }}" required>
+        </div>
+
+        <div class="flex justify-end mt-2">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
+        </div>
+    </form>
 </div>
-@endsection  
+@endsection

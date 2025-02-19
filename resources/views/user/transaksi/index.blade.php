@@ -1,59 +1,87 @@
 @extends('layouts.user')
 
-@section('title', 'Halaman Transaksi')
-
 @section('content')
-<div class="container mx-auto p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-3xl font-semibold text-gray-800">Daftar Transaksi</h2>
-        <a href="{{ route('transaksi.create') }}" class="btn btn-primary px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition">Tambah Transaksi</a>
-    </div>
-
-    @if (session('success'))
-        <div class="alert alert-success mt-4 bg-green-200 text-green-800 p-4 rounded-lg">
-            {{ session('success') }}
+<div class="container mx-auto p-6 flex justify-center">
+    <div class="w-3/4">
+        <h2 class="text-2xl font-semibold mb-4 text-center">Daftar Transaksi</h2>
+        
+        @if (session('success'))
+            <div class="bg-green-500 text-white p-3 rounded mb-3 text-center">{{ session('success') }}</div>
+        @endif
+        
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse border border-gray-300 text-center">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="border border-gray-300 px-4 py-2">PLU</th>
+                        <th class="border border-gray-300 px-4 py-2">Deskripsi</th>
+                        <th class="border border-gray-300 px-4 py-2">Qty</th>
+                        <th class="border border-gray-300 px-4 py-2">Harga</th>
+                        <th class="border border-gray-300 px-4 py-2">Diskon</th>
+                        <th class="border border-gray-300 px-4 py-2">Fee</th>
+                        <th class="border border-gray-300 px-4 py-2">Total</th>
+                        <th class="border border-gray-300 px-4 py-2">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($transaksis as $transaksi)
+                    <tr class="hover:bg-gray-100">
+                        <td class="border border-gray-300 px-4 py-2">{{ $transaksi->plu }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $transaksi->deskripsi }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $transaksi->qty }}</td>
+                        <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($transaksi->harga, 0, ',', '.') }}</td>
+                        <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($transaksi->diskon, 0, ',', '.') }}</td>
+                        <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($transaksi->fee, 0, ',', '.') }}</td>
+                        <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($transaksi->total, 0, ',', '.') }}</td>
+                        <td class="border border-gray-300 px-4 py-2 flex justify-center gap-2">
+                            <a href="{{ route('transaksi.edit', $transaksi->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded">Edit</a>
+                            <form action="{{ route('transaksi.destroy', $transaksi->id) }}" method="POST">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-    @endif
-
-    <div class="overflow-x-auto bg-white rounded-lg shadow-md">
-        <table class="min-w-full bg-white">
-            <thead>
-                <tr class="border-b border-gray-200">
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Nama Produk</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Jumlah</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Harga Satuan</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Total Harga</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Bayar</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Kembalian</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach ($transaksis as $transaksi)
-                <tr class="border-b border-gray-100 hover:bg-gray-50">
-                    <td class="py-3 px-4 text-sm text-gray-800">{{ $transaksi->nama_produk }}</td>
-                    <td class="py-3 px-4 text-sm text-gray-800">{{ number_format($transaksi->jumlah, 0, ',', '.') }}</td>
-                    <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->harga_satuan, 0, ',', '.') }}</td>
-                    <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
-                    <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->bayar, 0, ',', '.') }}</td>
-                    <td class="py-3 px-4 text-sm text-gray-800">Rp {{ number_format($transaksi->kembalian, 0, ',', '.') }}</td>
-                    
-                    <td class="py-3 px-4">
-                        <a href="{{ route('transaksi.edit', $transaksi->id) }}" class="text-yellow-600 hover:text-yellow-700 mr-3">
-                            <i class="fas fa-edit"></i> Edit
-                        </a>
-                        <form action="{{ route('transaksi.destroy', $transaksi->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin hapus transaksi ini?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:text-red-700">
-                                <i class="fas fa-trash"></i> Hapus
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+    </div>
+    
+    <div class="w-1/4 p-4 bg-gray-100 rounded-lg ml-6">
+        <h3 class="text-xl font-semibold mb-4">Tambah Transaksi</h3>
+        <form action="{{ route('transaksi.store') }}" method="POST">
+            @csrf
+            <div class="mb-2">
+                <label class="block text-sm font-medium">PLU</label>
+                <input type="text" name="plu" class="w-full border rounded p-2">
+            </div>
+            <div class="mb-2">
+                <label class="block text-sm font-medium">Deskripsi</label>
+                <input type="text" name="deskripsi" class="w-full border rounded p-2">
+            </div>
+            <div class="mb-2">
+                <label class="block text-sm font-medium">Qty</label>
+                <input type="number" name="qty" class="w-full border rounded p-2">
+            </div>
+            <div class="mb-2">
+                <label class="block text-sm font-medium">Harga</label>
+                <input type="number" name="harga" class="w-full border rounded p-2">
+            </div>
+            <div class="mb-2">
+                <label class="block text-sm font-medium">Diskon</label>
+                <input type="number" name="diskon" class="w-full border rounded p-2">
+            </div>
+            <div class="mb-2">
+                <label class="block text-sm font-medium">Fee</label>
+                <input type="number" name="fee" class="w-full border rounded p-2">
+            </div>
+            <button type="submit" class="bg-blue-500 text-white w-full py-2 rounded mt-2">Tambah</button>
+        </form>
+        <form action="{{ route('transaksi.hapusSemua') }}" method="POST" class="mt-4">
+            @csrf
+            @method('POST')
+            <button type="submit" class="bg-red-500 text-white w-full py-2 rounded" onclick="return confirm('Yakin ingin menghapus semua transaksi?')">Hapus Semua</button>
+        </form>
     </div>
 </div>
 @endsection

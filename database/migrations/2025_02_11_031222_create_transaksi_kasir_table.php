@@ -4,30 +4,22 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-    /**
-     * Run the migrations.  
-     */
-    public function up(): void
-    {
-        Schema::create('transaksi_kasir', function (Blueprint $table) { // Perbaiki nama tabel
-            $table->id(); // ID transaksi (auto-increment)
-            $table->string('nama_produk'); // Nama produk   
-            $table->decimal('jumlah', 15); // Jumlah produk
-            $table->decimal('harga_satuan', 15, 2); // Harga satuan produk
-            $table->decimal('total_harga', 15, 2); // Total harga
-            $table->decimal('bayar', 15, 2); // Jumlah uang yang dibayarkan
-            $table->decimal('kembalian', 15, 2); // Uang kembalian
+return new class extends Migration {
+    public function up() {
+        Schema::create('transaksi_kasir', function (Blueprint $table) {
+            $table->id();
+            $table->string('plu')->unique(); // PLU (Product Lookup Code)
+            $table->string('deskripsi'); // Deskripsi produk
+            $table->integer('qty'); // Jumlah produk
+            $table->decimal('harga', 10, 2); // Harga produk
+            $table->decimal('diskon', 10, 2)->default(0); // Diskon produk
+            $table->decimal('fee', 10, 2)->default(0); // Fee tambahan
+            $table->decimal('total', 10, 2); // Total harga produk
             $table->timestamps(); // Kolom created_at dan updated_at
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('transaksi_kasir'); // Menghapus tabel 'transaksi_kasir'
+    public function down() {
+        Schema::dropIfExists('transaksis'); // Menghapus tabel 'transaksis'
     }
 };

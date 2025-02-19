@@ -9,9 +9,10 @@ Route::get('/', function () {
 });
 
 // Rute transaksi untuk user (dengan prefix 'user')
-use App\Http\Controllers\TransaksiKasirController;
-Route::resource('user/transaksi', TransaksiKasirController::class);
+use App\Http\Controllers\TransaksiKasirController; // Menyesuaikan dengan folder
 
+Route::resource('user/transaksi', TransaksiKasirController::class);
+Route::delete('user/transaksi/hapus-semua', [TransaksiKasirController::class, 'hapusSemua'])->name('transaksi.hapusSemua');
 
 // Rute Data untuk admin
 Route::resource('admin/data', DataController::class);
