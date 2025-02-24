@@ -9,54 +9,45 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
-    {
-        $currentYear = Carbon::now()->year;
+   public function index()
+{
+    $currentYear = now()->year;
 
-        // Ambil data transaksi per bulan dengan nama bulan
-        $transaksi = TransaksiKasir::select(
-            DB::raw("MONTH(created_at) as bulan"),
-            DB::raw("MONTHNAME(created_at) as nama_bulan"),
-            DB::raw("SUM(total_harga) as totalPenjualan")
-        )
-            ->whereYear('created_at', $currentYear) // Hanya tahun ini
-            ->groupBy('bulan', 'nama_bulan')
-            ->orderByRaw("MONTH(created_at)")
-            ->get();
+    $transaksi = TransaksiKasir::select(
+        DB::raw("MONTH(created_at) as bulan"),
+        DB::raw("MONTHNAME(created_at) as nama_bulan"),
+        DB::raw("SUM(total_harga) as totalPenjualan")
+    )
+    ->whereYear('created_at', $currentYear)
+    ->groupBy('bulan', 'nama_bulan')
+    ->orderByRaw("MONTH(created_at)")
+    ->get();
 
-        // List nama bulan dalam urutan benar
-        $namaBulan = [
-            1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'Mei', 6 => 'Jun',
-            7 => 'Jul', 8 => 'Agu', 9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'
-        ];
+    $namaBulan = [
+        1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'Mei', 6 => 'Jun',
+        7 => 'Jul', 8 => 'Agu', 9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'
+    ];
 
-        // Inisialisasi semua bulan dengan nilai 0 jika tidak ada transaksi
-        $dataPenjualan = collect(range(1, 12))->mapWithKeys(fn($m) => [$m => [
-            'bulan' => $namaBulan[$m],
-            'totalPenjualan' => 0
-        ]]);
+    $dataPenjualan = collect(range(1, 12))->mapWithKeys(fn($m) => [$m => [
+        'bulan' => $namaBulan[$m],
+        'totalPenjualan' => 0
+    ]]);
 
-        // Gabungkan data aktual dengan bulan yang tidak ada transaksi
-        $mergedPenjualan = $dataPenjualan->map(function ($data, $key) use ($transaksi) {
-            $matching = $transaksi->firstWhere('bulan', $key);
-            return $matching ? [
-                'bulan' => $matching->nama_bulan,
-                'totalPenjualan' => $matching->totalPenjualan
-            ] : $data;
-        });
+    $mergedPenjualan = $dataPenjualan->map(function ($data, $key) use ($transaksi) {
+        $matching = $transaksi->firstWhere('bulan', $key);
+        return $matching ? [
+            'bulan' => $matching->nama_bulan,
+            'totalPenjualan' => (float) $matching->totalPenjualan // Pastikan tipe data float
+        ] : $data;
+    });
 
-        // Ambil daftar transaksi terbaru
-        $barangTerjual = TransaksiKasir::latest()->limit(10)->get();
+    $bulan = array_values($mergedPenjualan->pluck('bulan')->toArray());
+    $totalPenjualan = array_values($mergedPenjualan->pluck('totalPenjualan')->toArray());
 
-        // Data bulan dan total penjualan untuk grafik
-        $bulan = $mergedPenjualan->pluck('bulan')->toArray(); // Konversi ke array
-        $totalPenjualan = $mergedPenjualan->pluck('totalPenjualan')->toArray(); // Konversi ke array
+    // Debugging (Hapus setelah dicek)
+    // dd($bulan, $totalPenjualan);
 
-        // Kirim data ke view
-        return view('admin.dashboard', [
-            'bulan' => $bulan,
-            'totalPenjualan' => $totalPenjualan,
-            'barangTerjual' => $barangTerjual
-        ]);
-    }
+    return view('admin.dashboard', compact('bulan', 'totalPenjualan'));
+}
+
 }

@@ -15,6 +15,7 @@ class TransaksiKasirController extends Controller
     }
 
     public function store(Request $request)
+
     {
         $request->validate([
            'plu' => 'required|integer',
@@ -27,18 +28,22 @@ class TransaksiKasirController extends Controller
         
         $total = ($request->qty * $request->harga) - $request->diskon + $request->fee;
 
-        TransaksiKasir::create([
-            'plu' => $request->plu,
-            'deskripsi' => $request->deskripsi,
-            'qty' => $request->qty,
-            'harga' => $request->harga,
-            'diskon' => $request->diskon,
-            'fee' => $request->fee,
-            'total' => $total,
-        ]);
 
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil ditambahkan.');
-    }
+    // Perhitungan total
+    $total = ($request->qty * $request->harga) - ($request->diskon ?? 0) + ($request->fee ?? 0);
+
+    TransaksiKasir::create([
+        'plu' => $request->plu,
+        'deskripsi' => $request->deskripsi,
+        'qty' => $request->qty,
+        'harga' => $request->harga,
+        'diskon' => $request->diskon ?? 0,
+        'fee' => $request->fee ?? 0,
+        'total' => $total,
+    ]);
+
+    return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil ditambahkan.');
+}
 
     public function edit($id)
     {
@@ -56,23 +61,24 @@ class TransaksiKasirController extends Controller
             'diskon' => 'nullable|numeric',
             'fee' => 'nullable|numeric',
         ]);
-
-        $total = ($request->qty * $request->harga) - $request->diskon + $request->fee;
-
+    
+        // Perhitungan total
+        $total = ($request->qty * $request->harga) - ($request->diskon ?? 0) + ($request->fee ?? 0);
+    
         $transaksi = TransaksiKasir::findOrFail($id);
         $transaksi->update([
             'plu' => $request->plu,
             'deskripsi' => $request->deskripsi,
             'qty' => $request->qty,
             'harga' => $request->harga,
-            'diskon' => $request->diskon,
-            'fee' => $request->fee,
+            'diskon' => $request->diskon ?? 0,
+            'fee' => $request->fee ?? 0,
             'total' => $total,
         ]);
-
+    
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui.');
     }
-
+    
     public function destroy($id)
     {
         $transaksi = TransaksiKasir::findOrFail($id);
@@ -86,4 +92,5 @@ class TransaksiKasirController extends Controller
         TransaksiKasir::truncate();
         return redirect()->route('transaksi.index')->with('success', 'Semua transaksi berhasil dihapus.');
     }
+    
 }

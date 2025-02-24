@@ -78,10 +78,10 @@
             <button type="submit" class="bg-blue-500 text-white w-full py-2 rounded mt-2">Tambah</button>
         </form>
         <form action="{{ route('transaksi.hapusSemua') }}" method="POST" class="mt-4">
-            @csrf
-            @method('POST')
-            <button type="submit" class="bg-red-500 text-white w-full py-2 rounded" onclick="return confirm('Yakin ingin menghapus semua transaksi?')">Hapus Semua</button>
-        </form>
+             @csrf
+            @method('DELETE') <!-- Harusnya DELETE, bukan POST -->
+         <button type="submit" class="bg-red-500 text-white w-full py-2 rounded" onclick="return confirm('Yakin ingin menghapus semua transaksi?')">Hapus Semua</button>
+    </form>
     </div>
 </div>
 @endsection

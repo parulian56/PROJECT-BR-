@@ -12,7 +12,7 @@ Route::get('/', function () {
 use App\Http\Controllers\TransaksiKasirController; // Menyesuaikan dengan folder
 
 Route::resource('user/transaksi', TransaksiKasirController::class);
-Route::delete('user/transaksi/hapus-semua', [TransaksiKasirController::class, 'hapusSemua'])->name('transaksi.hapusSemua');
+Route::delete('user/transaksi', [TransaksiKasirController::class, 'hapusSemua'])->name('transaksi.hapusSemua');
 
 // Rute Data untuk admin
 Route::resource('admin/data', DataController::class);
