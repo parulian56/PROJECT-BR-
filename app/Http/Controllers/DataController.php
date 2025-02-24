@@ -17,6 +17,35 @@ class DataController extends Controller
         return view('admin.data.index', compact('datas'));
     }
 
+    public function makanan()
+    {
+        return view('admin.data.kategori.makanan.index');
+    }
+
+    public function minuman()
+    {
+        return view('admin.data.kategori.minuman.index');
+    }
+
+    public function alat_tulis()
+    {
+        return view('admin.data.kategori.alat_tulis.index');
+    }
+
+    public function seragam()
+    {
+        return view('admin.data.kategori.seragam.index');
+    }
+    public function kesehatandankebersihan()
+    {
+        return view('admin.data.kategori.kesehatandankebersihan.index');
+    }
+
+    public function lainya()
+    {
+        return view('admin.data.kategori.lainya.index');
+    }
+
     // Menampilkan form untuk menambah data penyimpanan
     public function create()
     {
