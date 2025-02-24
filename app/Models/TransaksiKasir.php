@@ -12,4 +12,10 @@ class TransaksiKasir extends Model
 
     protected $fillable = ['plu', 'deskripsi', 'qty', 'harga', 'diskon', 'fee'];
 
+    protected $attributes = [
+        'diskon' => 0,
+        'fee' => 0,
+        'total' => 0,
+    ];
+    
 }
