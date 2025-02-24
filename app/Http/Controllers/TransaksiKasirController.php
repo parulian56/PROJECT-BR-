@@ -15,15 +15,19 @@ class TransaksiKasirController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'plu' => 'required|string',
-        'deskripsi' => 'required',
-        'qty' => 'required|integer',
-        'harga' => 'required|numeric',
-        'diskon' => 'nullable|numeric',
-        'fee' => 'nullable|numeric',
-    ]);
+
+    {
+        $request->validate([
+           'plu' => 'required|integer',
+            'deskripsi' => 'required',
+            'qty' => 'required|integer',
+            'harga' => 'required|numeric',
+            'diskon' => 'nullable|numeric',
+            'fee' => 'nullable|numeric',
+        ]);
+        
+        $total = ($request->qty * $request->harga) - $request->diskon + $request->fee;
+
 
     // Perhitungan total
     $total = ($request->qty * $request->harga) - ($request->diskon ?? 0) + ($request->fee ?? 0);
@@ -33,10 +37,11 @@ class TransaksiKasirController extends Controller
         'deskripsi' => $request->deskripsi,
         'qty' => $request->qty,
         'harga' => $request->harga,
-        'diskon' => $request->diskon ?? 0,
+        'diskon' => $request->diskon ?? 0, // Pastikan nilai default
         'fee' => $request->fee ?? 0,
         'total' => $total,
     ]);
+    
 
     return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil ditambahkan.');
 }
@@ -71,7 +76,8 @@ class TransaksiKasirController extends Controller
             'fee' => $request->fee ?? 0,
             'total' => $total,
         ]);
-    
+      
+
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui.');
     }
     

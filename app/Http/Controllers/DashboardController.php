@@ -12,16 +12,17 @@ class DashboardController extends Controller
    public function index()
 {
     $currentYear = now()->year;
-
     $transaksi = TransaksiKasir::select(
         DB::raw("MONTH(created_at) as bulan"),
         DB::raw("MONTHNAME(created_at) as nama_bulan"),
-        DB::raw("SUM(total_harga) as totalPenjualan")
+        DB::raw("SUM(total) as totalPenjualan") // Gunakan total, bukan total_harga
     )
     ->whereYear('created_at', $currentYear)
     ->groupBy('bulan', 'nama_bulan')
     ->orderByRaw("MONTH(created_at)")
     ->get();
+    
+    
 
     $namaBulan = [
         1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'Mei', 6 => 'Jun',
