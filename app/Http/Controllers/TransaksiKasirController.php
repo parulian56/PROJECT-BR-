@@ -17,7 +17,7 @@ class TransaksiKasirController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-           'plu' => 'required|string',
+           'plu' => 'required|integer',
             'deskripsi' => 'required',
             'qty' => 'required|integer',
             'harga' => 'required|numeric',
