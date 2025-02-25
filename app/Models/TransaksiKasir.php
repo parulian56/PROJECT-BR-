@@ -19,13 +19,29 @@ class TransaksiKasir extends Model
         'total' => 0,
     ];
 
-    // Jika tabel tidak memiliki timestamps (created_at, updated_at), tambahkan ini:
     public $timestamps = false;
 
-    // Mutator untuk menghitung total secara otomatis
-    public function setTotalAttribute()
+    // Event untuk menghitung total sebelum transaksi disimpan
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($transaksi) {
+            if (TransaksiKasir::where('plu', $transaksi->plu)->exists()) {
+                throw new \Exception('PLU sudah digunakan!');
+            }
+            $transaksi->hitungTotal();
+        });
+
+        static::updating(function ($transaksi) {
+            $transaksi->hitungTotal();
+        });
+    }
+
+    // Metode untuk menghitung total transaksi
+    public function hitungTotal()
     {
         $hargaSetelahDiskon = ($this->harga - $this->diskon);
-        $this->attributes['total'] = ($hargaSetelahDiskon * $this->qty) + $this->fee;
+        $this->total = ($hargaSetelahDiskon * $this->qty) + $this->fee;
     }
 }
