@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up() {
         Schema::create('transaksi_kasir', function (Blueprint $table) {
             $table->id();
-            $table->string('plu')->nullable();// PLU (Product Lookup Code)
+            $table->string('plu')->unique();// PLU (Product Lookup Code)
             $table->string('deskripsi'); // Deskripsi produk
             $table->integer('qty'); // Jumlah produk
             $table->decimal('harga', 10, 2); // Harga produk
