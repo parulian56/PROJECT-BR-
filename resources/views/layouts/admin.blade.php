@@ -5,64 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard Admin')</title>
     
-    <!-- Vite untuk Tailwind CSS -->
+    <!-- Tailwind CSS -->
     @vite('resources/css/app.css')
-
+    
     <!-- Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x/dist/cdn.min.js" defer></script>
-
+    
     <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    
     @stack('styles')
 </head>
-<body class="bg-blue-100 flex">
-
+<body class="bg-gradient-to-b from-blue-200 to-blue-400 flex text-gray-800">
+    
     <!-- Sidebar -->
-    <div class="w-64 bg-gray-800 text-yellow-500 flex flex-col justify-between rounded-r-3xl min-h-screen">
-        <div class="mt-10">
+    <aside class="w-72 bg-gradient-to-b from-blue-500 to-blue-700 text-gray-100 flex flex-col justify-between min-h-screen p-4 rounded-r-xl shadow-lg">
+        <div>
             <!-- Logo -->
-            <img alt="Logo" class="w-16 h-16 mx-auto mb-4" src="{{ asset('asset/image/logo amaliah.png') }}"/>
+            <div class="flex items-center space-x-3 mb-6">
+                <img alt="Logo" class="w-12 h-12" src="{{ asset('asset/image/logo amaliah.png') }}"/>
+                <span class="text-lg font-semibold">Admin Panel</span>
+            </div>
             
             <!-- Menu Items -->
-            <a href="{{ url('admin/dashboard') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
-                <i class="fas fa-th-large mr-3"></i> 
-                <span>Dashboard</span>
-            </a>
-            <a href="{{ url('admin/data') }}" class="flex items-center py-4 px-6 hover:bg-gray-700">
-                <i class="fas fa-database mr-3"></i> 
-                <span>Data</span>
-            </a>
-            <a href="#" class="flex items-center py-4 px-6 hover:bg-gray-700">
-                <i class="fas fa-chart-line mr-3"></i> 
-                <span>Reports</span>
-            </a>
+            <nav>
+                <a href="{{ url('admin/dashboard') }}" class="flex items-center py-3 px-4 rounded-lg hover:bg-blue-600 transition">
+                    <i class="fas fa-th-large mr-3"></i> Dashboard
+                </a>
+                <a href="{{ url('admin/data') }}" class="flex items-center py-3 px-4 rounded-lg hover:bg-blue-600 transition">
+                    <i class="fas fa-database mr-3"></i> Data
+                </a>
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-blue-600 transition">
+                    <i class="fas fa-chart-line mr-3"></i> Reports
+                </a>
+            </nav>
         </div>
-
+        
         <!-- Settings -->
-        <div class="mb-10">
-            <a href="#" class="flex items-center py-4 px-6 bg-gray-700 text-white rounded-l-full">
-                <i class="fas fa-cog mr-3"></i> 
-                <span>Settings</span>
+        <div>
+            <a href="#" class="flex items-center py-3 px-4 bg-blue-600 rounded-lg hover:bg-blue-500 transition">
+                <i class="fas fa-cog mr-3"></i> Settings
             </a>
         </div>
-    </div>
-
+    </aside>
+    
     <!-- Main Content -->
-    <div class="flex-1 p-6">
+    <main class="flex-1 p-6">
         <!-- Header -->
-        <div class="flex justify-end items-center space-x-4">
-            <i class="fas fa-bell text-yellow-500"></i>
-            <i class="fas fa-bars text-yellow-500"></i>
-            <div class="bg-yellow-500 w-10 h-10 rounded-full"></div>
-        </div>
-
+        <header class="flex justify-between items-center bg-white p-4 shadow rounded-lg">
+            <h2 class="text-xl font-semibold text-gray-700">@yield('title')</h2>
+            <div class="flex items-center space-x-4">
+                <i class="fas fa-bell text-gray-600 hover:text-blue-500 cursor-pointer"></i>
+                <i class="fas fa-bars text-gray-600 hover:text-blue-500 cursor-pointer"></i>
+                <div class="bg-blue-500 w-10 h-10 rounded-full"></div>
+            </div>
+        </header>
+        
         <!-- Content Section -->
-        <div class="bg-white p-6 rounded-lg shadow mt-4">
+        <section class="bg-white p-6 rounded-lg shadow mt-4">
             @yield('content')
-        </div>
-    </div>
+        </section>
+    </main>
+    
     @stack('scripts')
 </body>
-
 </html>

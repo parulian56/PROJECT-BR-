@@ -24,7 +24,7 @@ class DashboardController extends Controller
         ->orderByRaw("MONTH(created_at)")
         ->get();
         
-        dd($transaksi);
+   
         // Daftar bulan dengan nilai default
         $namaBulan = [
             1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'Mei', 6 => 'Jun',
