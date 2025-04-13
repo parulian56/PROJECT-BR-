@@ -19,7 +19,7 @@
 <body class="bg-gradient-to-b from-blue-200 to-blue-400 flex text-gray-800">
     
     <!-- Sidebar -->
-    <aside class="w-72 bg-gradient-to-b from-blue-500 to-blue-700 text-gray-100 flex flex-col justify-between min-h-screen p-4 rounded-r-xl shadow-lg">
+    <aside class="w-69 bg-gradient-to-b from-blue-500 to-blue-700 text-gray-100 flex flex-col justify-between min-h-screen p-4 rounded-r-xl shadow-lg">
         <div>
             <!-- Logo -->
             <div class="flex items-center space-x-3 mb-6">

@@ -78,7 +78,7 @@
                     <label class="block text-sm font-medium">Harga</label>
                     <input type="number" name="harga" class="w-full border rounded p-2 focus:ring focus:ring-blue-200">
                 </div>
-                <div class="mb-2">
+                   <div class="mb-2">
                     <label class="block text-sm font-medium">Diskon</label>
                     <input type="number" name="diskon" class="w-full border rounded p-2 focus:ring focus:ring-blue-200">
                 </div>
