@@ -33,6 +33,12 @@
                     <i class="fas fa-cash-register mr-3"></i> Transaksi
                 </a>
             </nav>
+
+            <nav>
+                <a href="{{ url('user/transaksi') }}" class="flex items-center py-3 px-4 rounded-lg hover:bg-blue-600 transition">
+                    <i class="fas fa-cash-register mr-3"></i> Transaksi
+                </a>
+            </nav>
         </div>
         
         <!-- Logout Button -->

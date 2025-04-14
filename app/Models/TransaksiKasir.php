@@ -41,6 +41,6 @@ class TransaksiKasir extends Model
     public function hitungTotal()
     {
         $hargaSetelahDiskon = ($this->harga - $this->diskon);
-        $this->total = ($hargaSetelahDiskon * $this->qty) + $this->fee;
+      
     }
 }
