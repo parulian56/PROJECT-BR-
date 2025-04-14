@@ -44,11 +44,6 @@
             <input type="number" name="diskon" class="w-full px-4 py-2 border rounded" value="{{ old('diskon', $transaksi->diskon) }}" required>
         </div>
 
-        <div class="mb-4">
-            <label class="block text-gray-700">Fee</label>
-            <input type="number" name="fee" class="w-full px-4 py-2 border rounded" value="{{ old('fee', $transaksi->fee) }}" required>
-        </div>
-
         <div class="flex justify-end mt-2">
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
         </div>

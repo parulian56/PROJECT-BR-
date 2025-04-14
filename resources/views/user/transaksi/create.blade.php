@@ -53,10 +53,6 @@
                     <input type="number" name="diskon" class="w-full border rounded p-2" value="{{ old('diskon', $transaksi->diskon ?? '') }}">
                 </div>
 
-                <div class="mb-2">
-                    <label for="fee" class="block text-sm font-medium">Fee</label>
-                    <input type="number" name="fee" class="w-full border rounded p-2" value="{{ old('fee', $transaksi->fee ?? '') }}">
-                </div>
 
                 <div class="flex justify-end mt-2">
                     <button type="submit" class="bg-blue-500 text-white w-full py-2 rounded mt-2">{{ isset($transaksi) ? 'Update' : 'Tambah' }}</button>

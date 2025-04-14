@@ -21,7 +21,6 @@
                         <th class="border border-gray-300 px-4 py-2">Qty</th>
                         <th class="border border-gray-300 px-4 py-2">Harga</th>
                         <th class="border border-gray-300 px-4 py-2">Diskon</th>
-                        <th class="border border-gray-300 px-4 py-2">Fee</th>
                         <th class="border border-gray-300 px-4 py-2">Total</th>
                         <th class="border border-gray-300 px-4 py-2">Aksi</th>
                     </tr>
@@ -36,7 +35,6 @@
                         <td class="border border-gray-300 px-4 py-2">{{ $transaksi->qty }}</td>
                         <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($transaksi->harga, 0, ',', '.') }}</td>
                         <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($transaksi->diskon, 0, ',', '.') }}</td>
-                        <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($transaksi->fee, 0, ',', '.') }}</td>
                         <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($transaksi->total, 0, ',', '.') }}</td>
                         <td class="border border-gray-300 px-4 py-2 flex justify-center gap-2">
                             <a href="{{ route('transaksi.edit', $transaksi->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition">Edit</a>
@@ -81,10 +79,6 @@
                    <div class="mb-2">
                     <label class="block text-sm font-medium">Diskon</label>
                     <input type="number" name="diskon" class="w-full border rounded p-2 focus:ring focus:ring-blue-200">
-                </div>
-                <div class="mb-2">
-                    <label class="block text-sm font-medium">Fee</label>
-                    <input type="number" name="fee" class="w-full border rounded p-2 focus:ring focus:ring-blue-200">
                 </div>
                 <button type="submit" class="bg-blue-500 text-white w-full py-2 rounded mt-2 hover:bg-blue-600 transition">Tambah</button>
             </form>

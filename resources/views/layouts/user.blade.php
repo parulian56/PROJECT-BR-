@@ -45,15 +45,6 @@
     
     <!-- Main Content -->
     <main class="flex-1 p-6">
-        <!-- Header -->
-        <header class="flex justify-between items-center bg-white p-4 shadow rounded-lg">
-            <h2 class="text-xl font-semibold text-gray-700">@yield('header', 'Transaksi Kasir')</h2>
-            <div class="flex items-center space-x-4">
-                <i class="fas fa-bell text-gray-600 hover:text-blue-500 cursor-pointer"></i>
-                <i class="fas fa-bars text-gray-600 hover:text-blue-500 cursor-pointer"></i>
-                <div class="bg-blue-500 w-10 h-10 rounded-full"></div>
-            </div>
-        </header>
         
         <!-- Content Section -->
         <section class="bg-white p-6 rounded-lg shadow mt-4">
