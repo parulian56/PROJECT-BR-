@@ -13,7 +13,6 @@ return new class extends Migration {
             $table->integer('qty'); // Jumlah produk
             $table->decimal('harga', 10, 2); // Harga produk
             $table->decimal('diskon', 10, 2)->default(0); // Diskon produk
-            $table->decimal('fee', 10, 2)->default(0); // Fee tambahan
             $table->decimal('total', 10, 2); // Total harga produk
             $table->timestamps(); // Kolom created_at dan updated_at
         });

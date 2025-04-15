@@ -22,7 +22,7 @@ class TransaksiKasirController extends Controller
         'qty' => 'required|integer|min:1',
         'harga' => 'required|numeric|min:0',
         'diskon' => 'nullable|numeric|min:0',
-        'fee' => 'nullable|numeric|min:0',
+        
     ], [
         'plu.unique' => 'PLU sudah digunakan, silakan gunakan PLU yang berbeda.',
         'plu.required' => 'PLU wajib diisi.',
@@ -31,7 +31,7 @@ class TransaksiKasirController extends Controller
     ]);
 
     // Hitung total harga
-    $total = ($request->harga * $request->qty) - $request->diskon + $request->fee;
+    $total = ($request->harga * $request->qty) - $request->diskon;
 
     // Simpan transaksi
     TransaksiKasir::create([
@@ -40,7 +40,7 @@ class TransaksiKasirController extends Controller
         'qty' => $request->qty,
         'harga' => $request->harga,
         'diskon' => $request->diskon ?? 0,
-        'fee' => $request->fee ?? 0,
+        
         'total' => $total,
     ]);
 
@@ -62,10 +62,9 @@ class TransaksiKasirController extends Controller
             'qty' => 'required|integer',
             'harga' => 'required|numeric',
             'diskon' => 'nullable|numeric',
-            'fee' => 'nullable|numeric',
-        ]);
+          ]);
     
-        $total = ($request->qty * $request->harga) - ($request->diskon ?? 0) + ($request->fee ?? 0);
+        $total = ($request->qty * $request->harga) - ($request->diskon ?? 0) ;
     
         $transaksi = TransaksiKasir::findOrFail($id);
         $transaksi->update([
@@ -74,7 +73,7 @@ class TransaksiKasirController extends Controller
             'qty' => $request->qty,
             'harga' => $request->harga,
             'diskon' => $request->diskon ?? 0,
-            'fee' => $request->fee ?? 0,
+            
             'total' => $total,
         ]);
     
