@@ -37,11 +37,6 @@
 
                     <!-- Navigation -->
                     <nav class="p-4">
-                        <div class="mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider pl-4">Menu</div>
-                        <a href="{{ url('user/dashboard') }}" class="flex items-center my-1 px-4 py-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all">
-                            <i class="fas fa-home mr-3 text-lg"></i>
-                            <span>Dashboard</span>
-                        </a>
                         <a href="{{ url('user/transaksi') }}" class="flex items-center my-1 px-4 py-3 rounded-lg bg-blue-50 text-blue-600 font-medium">
                             <i class="fas fa-cash-register mr-3 text-lg"></i>
                             <span>Transaksi</span>
@@ -50,29 +45,11 @@
                             <i class="fas fa-box mr-3 text-lg"></i>
                             <span>Produk</span>
                         </a>
-                        <a href="{{ url('user/laporan') }}" class="flex items-center my-1 px-4 py-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all">
-                            <i class="fas fa-chart-line mr-3 text-lg"></i>
-                            <span>Laporan</span>
-                        </a>
                     </nav>
                 </div>
 
                 <!-- User Profile & Logout -->
                 <div class="p-4 border-t border-gray-100">
-                    <div class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 mb-2 cursor-pointer">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="ml-3">
-                                <p class="font-medium text-sm">Kasir</p>
-                                <p class="text-xs text-gray-500">Online</p>
-                            </div>
-                        </div>
-                        <div>
-                            <i class="fas fa-ellipsis-v text-gray-400"></i>
-                        </div>
-                    </div>
                     <a href="{{ url('logout') }}" class="flex items-center justify-center w-full py-2 mt-2 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-all">
                         <i class="fas fa-sign-out-alt mr-2"></i>
                         <span>Logout</span>
