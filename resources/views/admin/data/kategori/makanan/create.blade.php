@@ -4,7 +4,7 @@
 <div class="container mx-auto p-6">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-3xl font-semibold text-gray-800">Tambah Data Penyimpanan</h2>
-        <a href="{{ route('data.index') }}" class="btn btn-primary px-6 py-2 bg-gray-600 text-white rounded-lg shadow-md hover:bg-gray-700 transition">Kembali</a>
+        <a href="{{ route('admin.data.kategori.makanan.index') }}" class="btn btn-primary px-6 py-2 bg-gray-600 text-white rounded-lg shadow-md hover:bg-gray-700 transition">Kembali</a>
     </div>
 
     @if ($errors->any())

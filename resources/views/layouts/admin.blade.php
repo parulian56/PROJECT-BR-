@@ -16,10 +16,10 @@
     
     @stack('styles')
 </head>
-<body class="bg-gradient-to-b from-blue-200 to-blue-400 flex text-gray-800">
+<body class="bg-stone-400 flex flex-col md:flex-row text-gray-800 min-h-screen">
     
     <!-- Sidebar -->
-    <aside class="w-72 bg-gradient-to-b from-blue-500 to-blue-700 text-gray-100 flex flex-col justify-between min-h-screen p-4 rounded-r-xl shadow-lg">
+    <aside class="w-full md:w-72 bg-stone-300 text-gray-900 flex flex-col justify-between min-h-screen p-4 shadow-lg md:rounded-r-xl">
         <div>
             <!-- Logo -->
             <div class="flex items-center space-x-3 mb-6">
@@ -29,30 +29,37 @@
             
             <!-- Menu Items -->
             <nav>
-                <a href="{{ url('admin/dashboard') }}" class="flex items-center py-3 px-4 rounded-lg hover:bg-blue-600 transition">
-                    <i class="fas fa-th-large mr-3"></i> Dashboard
+                <a href="{{ url('admin/dashboard') }}" class="block py-3 px-4 rounded-lg hover:bg-stone-400 transition flex items-center space-x-3">
+                    <i class="fas fa-home"></i><span>Dashboard</span>
                 </a>
-                <a href="{{ url('admin/data') }}" class="flex items-center py-3 px-4 rounded-lg hover:bg-blue-600 transition">
-                    <i class="fas fa-database mr-3"></i> Data
+                <a href="{{ url('admin/data') }}" class="block py-3 px-4 rounded-lg hover:bg-stone-400 transition flex items-center space-x-3">
+                    <i class="fas fa-database"></i><span>Data</span>
                 </a>
-                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-blue-600 transition">
-                    <i class="fas fa-chart-line mr-3"></i> Reports
+                <a href="#" class="block py-3 px-4 rounded-lg hover:bg-stone-400 transition flex items-center space-x-3">
+                    <i class="fas fa-chart-bar"></i><span>Reports</span>
                 </a>
             </nav>
         </div>
         
-        <!-- Settings -->
+        <!-- Logout -->
         <div>
-            <a href="#" class="flex items-center py-3 px-4 bg-blue-600 rounded-lg hover:bg-blue-500 transition">
-                <i class="fas fa-cog mr-3"></i> Settings
+            <a href="#" class="block py-3 px-4 bg-stone-300 rounded-lg hover:bg-stone-400 transition flex items-center space-x-3">
+                <i class="fas fa-sign-out-alt"></i><span>Logout</span>
             </a>
         </div>
     </aside>
     
     <!-- Main Content -->
-    <main class="flex-1 p-6">
+    <main class="flex-1 p-4 md:p-6">
         <!-- Header -->
-        
+        <header class="flex justify-between items-center bg-white p-4 shadow rounded-lg">
+            <h2 class="text-xl font-semibold text-gray-700">@yield('title')</h2>
+            <div class="flex items-center space-x-4">
+                <i class="fas fa-bell text-gray-600 hover:text-blue-500 cursor-pointer"></i>
+                <i class="fas fa-bars text-gray-600 hover:text-blue-500 cursor-pointer"></i>
+                <div class="bg-blue-500 w-10 h-10 rounded-full"></div>
+            </div>
+        </header>
         
         <!-- Content Section -->
         <section class="bg-white p-6 rounded-lg shadow mt-4">
