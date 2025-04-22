@@ -7,7 +7,8 @@ use App\Http\Controllers\{
     MakananController,
     KesehatandankebersihanController,
     DashboardController,
-    TransaksiKasirController
+    TransaksiKasirController,
+    ReportController,
 };
 
 // Public Routes
@@ -18,7 +19,10 @@ Route::middleware('auth')->group(function () {
     // Dashboard Routes
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    
 
+    Route::get('/admin/report', [ReportController::class, 'index'])->name('admin.report');
+    
     
     // Profile Routes
     Route::controller(ProfileController::class)->group(function () {
