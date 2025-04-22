@@ -7,6 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    
     <title>{{ config('app.name', 'Kasir Am') }}</title>
 
     <!-- Fonts -->
@@ -253,7 +254,7 @@
             <div class="container">
                 <a class="navbar-brand">
                     <i class="fas fa-cash-register"></i>
-                    {{ config('', 'Kasir Am') }}
+                    {{ config('app.name', 'Kasir Am') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
