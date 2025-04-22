@@ -1,77 +1,142 @@
 @extends('layouts.admin')
 
-@section('title', 'Grafik Penjualan') 
-@section('header', 'Dashboard')
-
 @section('content')
-<link rel="stylesheet" href="{{ asset('asset/css/dashboard.css') }}">
+<div class="container py-4">
+    <div class="row">
+        <!-- Card: Total Transaksi -->
+        <div class="col-md-3 mb-4">
+            <div class="dash-card p-4 shadow rounded-4 bg-white">
+                <div class="dash-card-icon text-primary mb-2">
+                    <i class="fas fa-shopping-cart fa-2x"></i>
+                </div>
+                <h5 class="dash-card-title">Total Transaksi</h5>
+                <div class="dash-card-value fs-4 fw-bold">152</div>
+                <div class="text-success mt-2">
+                    <i class="fas fa-arrow-up"></i> 12% dari minggu lalu
+                </div>
+            </div>
+        </div>
 
-<p class="mb-6 text-gray-700 text-lg">
-    Ini adalah halaman utama dashboard tempat Anda dapat memantau statistik dan informasi penting.
-</p>
+        <!-- Card: Pendapatan -->
+        <div class="col-md-3 mb-4">
+            <div class="dash-card p-4 shadow rounded-4 bg-white">
+                <div class="dash-card-icon text-success mb-2">
+                    <i class="fas fa-dollar-sign fa-2x"></i>
+                </div>
+                <h5 class="dash-card-title">Pendapatan</h5>
+                <div class="dash-card-value fs-4 fw-bold">Rp 5.4 Jt</div>
+                <div class="text-success mt-2">
+                    <i class="fas fa-arrow-up"></i> 8% dari minggu lalu
+                </div>
+            </div>
+        </div>
 
-@if(session('error'))
-    <div class="alert alert-warning bg-yellow-300 text-yellow-900 p-4 rounded-lg mb-4">
-        {{ session('error') }}
+        <!-- Card: Total Produk -->
+        <div class="col-md-3 mb-4">
+            <div class="dash-card p-4 shadow rounded-4 bg-white">
+                <div class="dash-card-icon text-warning mb-2">
+                    <i class="fas fa-cubes fa-2x"></i>
+                </div>
+                <h5 class="dash-card-title">Total Produk</h5>
+                <div class="dash-card-value fs-4 fw-bold">87</div>
+                <div class="text-secondary mt-2">
+                    <i class="fas fa-minus"></i> Sama dengan minggu lalu
+                </div>
+            </div>
+        </div>
+
+        <!-- Card: Pelanggan -->
+        <div class="col-md-3 mb-4">
+            <div class="dash-card p-4 shadow rounded-4 bg-white">
+                <div class="dash-card-icon text-info mb-2">
+                    <i class="fas fa-users fa-2x"></i>
+                </div>
+                <h5 class="dash-card-title">Pelanggan</h5>
+                <div class="dash-card-value fs-4 fw-bold">42</div>
+                <div class="text-success mt-2">
+                    <i class="fas fa-arrow-up"></i> 5% dari minggu lalu
+                </div>
+            </div>
+        </div>
     </div>
-@endif
 
-<!-- Chart Section -->
-<div class="bg-[#F5EFE6] p-10 rounded-lg shadow-lg mb-6 border border-gray-300">
-    <h3 class="text-3xl font-semibold text-gray-900 mb-6">Sales Overview</h3>
+    <!-- Transaksi Terbaru dan Produk Terlaris -->
+    <div class="row">
+        <!-- Transaksi Terbaru -->
+        <div class="col-md-8 mb-4">
+            <div class="dash-card p-4 shadow rounded-4 bg-white">
+                <h5 class="mb-4">Transaksi Terbaru</h5>
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Pelanggan</th>
+                            <th>Tanggal</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#TRX-2541</td>
+                            <td>Budi Santoso</td>
+                            <td>15 Apr 2025</td>
+                            <td>Rp 120.000</td>
+                            <td><span class="badge bg-success">Selesai</span></td>
+                        </tr>
+                        <tr>
+                            <td>#TRX-2540</td>
+                            <td>Siti Rahayu</td>
+                            <td>15 Apr 2025</td>
+                            <td>Rp 85.000</td>
+                            <td><span class="badge bg-success">Selesai</span></td>
+                        </tr>
+                        <tr>
+                            <td>#TRX-2539</td>
+                            <td>Ahmad Yusuf</td>
+                            <td>14 Apr 2025</td>
+                            <td>Rp 245.000</td>
+                            <td><span class="badge bg-warning text-dark">Proses</span></td>
+                        </tr>
+                        <tr>
+                            <td>#TRX-2538</td>
+                            <td>Dewi Lestari</td>
+                            <td>14 Apr 2025</td>
+                            <td>Rp 78.500</td>
+                            <td><span class="badge bg-success">Selesai</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    <!-- Container untuk grafik batang -->
-    <div class="relative w-full h-72 border-b border-gray-400 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 bg-[#F3E8D6]" id="barChart"></div>
+        <!-- Produk Terlaris -->
+        <div class="col-md-4 mb-4">
+            <div class="dash-card p-4 shadow rounded-4 bg-white">
+                <h5 class="mb-4">Produk Terlaris</h5>
 
-    <!-- Label bulan -->
-    <div class="flex flex-wrap justify-between mt-2 px-2 text-gray-800 text-sm" id="chartLabels"></div>
+                @php
+                    $products = [
+                        ['name' => 'Mie Instan', 'unit' => 142, 'percent' => 85],
+                        ['name' => 'Minuman Soda', 'unit' => 98, 'percent' => 70],
+                        ['name' => 'Sabun Mandi', 'unit' => 76, 'percent' => 55],
+                        ['name' => 'Susu Bubuk', 'unit' => 68, 'percent' => 45],
+                    ];
+                @endphp
+
+                @foreach($products as $index => $product)
+                    <div class="mb-3 {{ $index < count($products)-1 ? 'pb-3 border-bottom' : '' }}">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>{{ $product['name'] }}</span>
+                            <span class="text-primary fw-bold">{{ $product['unit'] }} unit</span>
+                        </div>
+                        <div class="progress" style="height: 8px">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $product['percent'] }}%" aria-valuenow="{{ $product['percent'] }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
-
-@push('scripts')
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let bulan = @json($bulan);
-        let totalPenjualan = @json($totalPenjualan);
-
-        console.log("Bulan:", bulan);
-        console.log("Total Penjualan:", totalPenjualan);
-
-        let chartContainer = document.getElementById("barChart");
-        let labelsContainer = document.getElementById("chartLabels");
-
-        if (!bulan.length || !totalPenjualan.length) {
-            console.warn("Data transaksi kosong! Cek database.");
-            return;
-        }
-
-        let maxValue = Math.max(...totalPenjualan) || 1;
-
-        bulan.forEach((bulan, index) => {
-            let barContainer = document.createElement("div");
-            barContainer.classList.add("bar-container");
-
-            let bar = document.createElement("div");
-            bar.classList.add("bar");
-            let heightPercentage = (totalPenjualan[index] / maxValue) * 100;
-            bar.style.height = heightPercentage + "%";
-            bar.style.backgroundColor = "#E8D9C4";
-
-            let barValue = document.createElement("div");
-            barValue.classList.add("bar-value");
-            barValue.innerText = totalPenjualan[index];
-            barValue.style.color = "#5A4A3E";
-
-            barContainer.appendChild(barValue);
-            barContainer.appendChild(bar);
-            chartContainer.appendChild(barContainer);
-
-            let label = document.createElement("div");
-            label.classList.add("bar-label");
-            label.innerText = bulan;
-            label.style.color = "#7A6652";
-            labelsContainer.appendChild(label);
-        });
-    });
-</script>
-@endpush
