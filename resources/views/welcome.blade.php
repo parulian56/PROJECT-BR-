@@ -53,7 +53,7 @@
   <div class="welcome-container">
     <h1>Welcome!</h1>
     <p>Selamat datang di website kami. Klik tombol di bawah untuk masuk ke halaman login.</p>
-    <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
+    <button class="login-btn" onclick="window.location.href='{{ route('login') }}'">Login</button>
   </div>
 </body>
 </html>
