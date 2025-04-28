@@ -23,7 +23,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout'); // H
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
     // Dashboard Routes
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::view('admin/dashboard', 'dashboard')->name('dashboard');
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     
