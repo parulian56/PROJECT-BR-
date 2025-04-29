@@ -19,7 +19,6 @@
                 <tr class="border-b border-gray-200">
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Id</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Nama Barang</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Kategori</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Deskripsi</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Jumlah</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Harga Pokok</th>
@@ -33,15 +32,14 @@
                     <tr class="border-b border-gray-100 hover:bg-gray-50">
                         <td class="py-3 px-4 text-sm">{{ $item->id }}</td>
                         <td class="py-3 px-4 text-sm">{{ $item->nama_barang }}</td>
-                        <td class="py-3 px-4 text-sm">{{ $item->kategori }}</td>
                         <td class="py-3 px-4 text-sm">{{ $item->deskripsi }}</td>
                         <td class="py-3 px-4 text-sm">{{ $item->jumlah }}</td>
                         <td class="py-3 px-4 text-sm">Rp{{ number_format($item->harga_pokok, 0, ',', '.') }}</td>
                         <td class="py-3 px-4 text-sm">Rp{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
                         <td class="py-3 px-4 text-sm">{{ $item->lokasi_penyimpanan }}</td>
                         <td class="py-3 px-4 text-sm">
-                            <a href="{{ route('admin.data.edit', $item->id) }}" class="text-blue-600 hover:underline mr-2">Edit</a>
-                            <form action="{{ route('admin.data.destroy', $item->id) }}" method="POST" class="inline">
+                            <a href="{{ route('admin.data.kategori.makanan.edit', $item->id) }}" class="text-blue-600 hover:underline mr-2">Edit</a>
+                            <form action="{{ route('admin.data.kategori.makanan.destroy', $item->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-red-600 hover:underline" onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</button>

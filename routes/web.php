@@ -26,10 +26,7 @@ Route::middleware('auth')->group(function () {
     // Dashboard Routes
     Route::view('admin/dashboard', 'dashboard')->name('dashboard');
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    
 
-    Route::get('/admin/report', [ReportController::class, 'index'])->name('admin.report');
-    
     
     // Profile Routes
     Route::controller(ProfileController::class)->group(function () {
@@ -37,7 +34,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('/profile', 'update')->name('profile.update');
         Route::delete('/profile', 'destroy')->name('profile.destroy');
     });
-    
+
     // User Transaction Routes
     Route::controller(TransaksiKasirController::class)->prefix('user/transaksi')->group(function () {
         Route::get('/', 'index')->name('transaksi.index');
@@ -49,7 +46,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{transaksi}', 'destroy')->name('transaksi.destroy');
         Route::delete('/', 'hapusSemua')->name('transaksi.hapusSemua');
     });
-    
+
     // Admin Data Routes
     Route::controller(DataController::class)->prefix('admin/data')->group(function () {
         Route::get('/', 'index')->name('data.index');
@@ -59,7 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{data}/edit', 'edit')->name('data.edit');
         Route::put('/{data}', 'update')->name('data.update');
         Route::delete('/{data}', 'destroy')->name('data.destroy');
-        
+
         // Category Routes
         Route::prefix('kategori')->group(function () {
             // Food Routes
@@ -71,13 +68,13 @@ Route::middleware('auth')->group(function () {
                 Route::put('{id}', 'update')->name('admin.data.kategori.makanan.update');
                 Route::delete('{id}', 'destroy')->name('admin.data.kategori.makanan.destroy');
             });
-            
+
             // Other Categories
             Route::get('minuman', 'minuman')->name('admin.data.kategori.minuman');
             Route::get('alat_tulis', 'alat_tulis')->name('admin.data.kategori.alat_tulis');
             Route::get('seragam', 'seragam')->name('admin.data.kategori.seragam');
             Route::get('lainya', 'lainya')->name('admin.data.kategori.lainya');
-            
+
             // Health & Hygiene
             Route::controller(KesehatandankebersihanController::class)
                  ->prefix('kesehatandankebersihan')
