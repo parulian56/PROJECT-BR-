@@ -44,7 +44,7 @@ class MakananController extends Controller
             'harga_pokok' => 'required|numeric',
             'harga_jual' => 'required|numeric',
             'lokasi_penyimpanan' => 'required|string',
-        ]);   
+        ]);
 
         // Simpan data penyimpanan baru
         Makanan::create([
