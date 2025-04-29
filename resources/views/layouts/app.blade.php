@@ -316,15 +316,16 @@
                                     </a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        <i class="fas fa-sign-out-alt me-2"></i>
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                                    onclick="event.preventDefault();
+                                              document.getElementById('logout-form').submit();">
+                                     <i class="fas fa-sign-out-alt me-2"></i>
+                                     {{ __('Logout') }}
+                                 </a>
+                                 
+                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                     @csrf
+                                 </form>
+                                 
                                 </div>
                             </li>
                         @endguest

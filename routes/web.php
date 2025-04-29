@@ -10,22 +10,27 @@ use App\Http\Controllers\{
     DashboardController,
     TransaksiKasirController,
     ReportController,
+   
 };
 
 // Public Routes
-Route::view('/', 'dashboard');
+Route::view('/', 'login');
 
 // LOGIN ROUTE
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']); // Handle submit login
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout'); // Handle logout
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+
+Route::get('/', fn () => redirect('/login'));
+
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
 
 
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
     // Dashboard Routes
-    Route::view('admin/dashboard', 'dashboard')->name('dashboard');
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     
     // Profile Routes

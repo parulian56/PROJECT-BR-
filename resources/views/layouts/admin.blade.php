@@ -95,14 +95,13 @@
                         </a>
                     </nav>
                     
-                    <!-- Logout -->
-                    <div class="pt-4 border-t border-amber-700">
-                        <a href="{{ url('logout') }}" 
-                           class="flex items-center justify-center w-full py-2 px-4 text-sm bg-amber-700 text-amber-200 rounded-lg hover:bg-gradient-to-r hover:from-amber-800 hover:to-amber-600 transition-all duration-300">
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="flex items-center justify-center w-full py-2 px-4 text-sm bg-amber-700 text-amber-200 rounded-lg hover:bg-gradient-to-r hover:from-amber-800 hover:to-amber-600 transition-all duration-300">
                             <i class="fas fa-sign-out-alt"></i>
                             <span class="ml-2">Logout</span>
-                        </a>
-                    </div>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
