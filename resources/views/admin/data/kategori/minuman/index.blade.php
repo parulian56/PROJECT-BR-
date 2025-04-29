@@ -4,8 +4,8 @@
 <div class="flex justify-between items-center mb-6">
     <h2 class="text-3xl font-semibold text-gray-800">Daftar Data Penyimpanan</h2>
     <div class="flex gap-2"> <!-- Menambahkan flex container untuk tombol -->
-        <a href="{{ route('data.create') }}" class="btn btn-primary px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition">Tambah Data</a>
-        <a href="{{ url()->previous() }}" class="btn btn-secondary px-6 py-2 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 transition">Kembali</a>
+        <a href="{{ route('admin.data.kategori.makanan.create') }}" class="btn btn-primary px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition">Tambah Data</a>
+        <a href="{{ url()->previous('admin.data.index') }}" class="btn btn-secondary px-6 py-2 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 transition">Kembali</a>
     </div>
 </div>
 
