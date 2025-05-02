@@ -10,11 +10,11 @@ use App\Http\Controllers\{
     DashboardController,
     TransaksiKasirController,
     ReportController,
-   
+
 };
 
 // Public Routes
-Route::view('/', 'login');
+Route::view('/', 'dashboard');
 
 // LOGIN ROUTE
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
     // Dashboard Routes
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    
+
     // Profile Routes
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'edit')->name('profile.edit');
