@@ -49,7 +49,7 @@
         <div class="relative overflow-hidden">
             <a href="{{ url('admin/data/kategori/lainya/index') }}"
                 class="ripple-button flex items-center justify-center h-24 bg-orange-500 hover:bg-orange-600 text-white text-lg font-semibold rounded-none shadow hover:shadow-lg transition duration-300 active:bg-orange-700 relative overflow-hidden">
-                <span class="text-center relative z-10">Lainnya</span>
+                <span class="text-center relative z-10">Lainya</span>
             </a>
         </div>
     </div>

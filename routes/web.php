@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     DashboardController,
     TransaksiKasirController,
     ReportController,
+    LainyaController,
 
 };
 
@@ -66,12 +67,12 @@ Route::middleware('auth')->group(function () {
         Route::prefix('kategori')->group(function () {
             // Food Routes
             Route::controller(MakananController::class)->prefix('makanan')->group(function () {
-                Route::get('index', 'index')->name('admin.data.kategori.makanan.index');
-                Route::get('create', 'create')->name('admin.data.kategori.makanan.create');
-                Route::post('/', 'store')->name('admin.data.kategori.makanan.store');
-                Route::get('{id}/edit', 'edit')->name('admin.data.kategori.makanan.edit');
-                Route::put('{id}', 'update')->name('admin.data.kategori.makanan.update');
-                Route::delete('{id}', 'destroy')->name('admin.data.kategori.makanan.destroy');
+                Route::get('/', 'index')->name('admin.data.kategori.makanan.index');
+                Route::get('/create', 'create')->name('admin.data.kategori.makanan.create');
+                Route::post('/', 'store')->name('admin.data.kategori.makanan.store');   
+                Route::get('{makanan}/edit', 'edit')->name('admin.data.kategori.makanan.edit');
+                Route::put('{makanan}', 'update')->name('admin.data.kategori.makanan.update');
+                Route::delete('{makanan}', 'destroy')->name('admin.data.kategori.makanan.destroy');
             });
 
             // Other Categories
@@ -81,11 +82,14 @@ Route::middleware('auth')->group(function () {
             Route::get('lainya', 'lainya')->name('admin.data.kategori.lainya');
 
             // Health & Hygiene
-            Route::controller(KesehatandankebersihanController::class)
-                 ->prefix('kesehatandankebersihan')
-                 ->group(function () {
-                Route::get('/', 'kesehatandankebersihan')->name('admin.data.kategori.kesehatandankebersihan.index');
-                Route::get('create', 'create')->name('admin.data.kategori.kesehatandankebersihan.create');
+            Route::prefix('lainya')->name('lainya.')->group(function() {
+                Route::get('/index', [LainyaController::class, 'index'])->name('index');
+                Route::get('/create', [LainyaController::class, 'create'])->name('create');
+                Route::post('/store', [LainyaController::class, 'store'])->name('store');
+                Route::get('/{id}/show', [LainyaController::class, 'show'])->name('show');
+                Route::get('/{id}/edit', [LainyaController::class, 'edit'])->name('edit');
+                Route::put('/{id}/update', [LainyaController::class, 'update'])->name('update');
+                Route::delete('/{id}/destroy', [LainyaController::class, 'destroy'])->name('destroy');
             });
         });
     });
