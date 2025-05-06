@@ -6,7 +6,6 @@ use App\Http\Controllers\{
     ProfileController,
     DataController,
     MakananController,
-    KesehatandankebersihanController,
     DashboardController,
     TransaksiKasirController,
     ReportController,
@@ -56,12 +55,6 @@ Route::middleware('auth')->group(function () {
     // Admin Data Routes
     Route::controller(DataController::class)->prefix('admin/data')->group(function () {
         Route::get('/', 'index')->name('data.index');
-        Route::get('/create', 'create')->name('data.create');
-        Route::post('/', 'store')->name('data.store');
-        Route::get('/{data}', 'show')->name('data.show');
-        Route::get('/{data}/edit', 'edit')->name('data.edit');
-        Route::put('/{data}', 'update')->name('data.update');
-        Route::delete('/{data}', 'destroy')->name('data.destroy');
 
         // Category Routes
         Route::prefix('kategori')->group(function () {
@@ -69,7 +62,7 @@ Route::middleware('auth')->group(function () {
             Route::controller(MakananController::class)->prefix('makanan')->group(function () {
                 Route::get('/', 'index')->name('admin.data.kategori.makanan.index');
                 Route::get('/create', 'create')->name('admin.data.kategori.makanan.create');
-                Route::post('/', 'store')->name('admin.data.kategori.makanan.store');   
+                Route::post('/', 'store')->name('admin.data.kategori.makanan.store');
                 Route::get('{makanan}/edit', 'edit')->name('admin.data.kategori.makanan.edit');
                 Route::put('{makanan}', 'update')->name('admin.data.kategori.makanan.update');
                 Route::delete('{makanan}', 'destroy')->name('admin.data.kategori.makanan.destroy');

@@ -17,9 +17,9 @@
         </div>
     @endif
 
-    <form action="{{ route('data.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow-md">
+    <form action="{{ route('admin.data.kategori.makanan.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow-md">
         @csrf
-
+"
         <!-- Input Transaction ID -->
         <div class="mb-4">
             <label for="transaction_id" class="block text-sm font-medium text-gray-700">Transaction ID</label>
