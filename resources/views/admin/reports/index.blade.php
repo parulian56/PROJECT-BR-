@@ -1,31 +1,31 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <h2 class="text-2xl font-bold mb-6 text-center" style="color: #63452c;">Ringkasan Report Kasir</h2>
+    <div class="container mx-auto px-4 py-6">
+        <h1 class="text-2xl font-bold mb-4">Laporan Transaksi Kasir ({{ ucfirst($filter) }})</h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-
-        <!-- Hari Ini -->
-        <div class="bg-white shadow-md rounded-lg p-4">
-            <h3 class="text-lg font-semibold mb-2 text-amber-800">Hari Ini</h3>
-            <p>Total Pendapatan: <strong class="text-green-600">Rp {{ number_format($totalHariIni, 0, ',', '.') }}</strong></p>
-            <p>Jumlah Transaksi: <strong class="text-blue-600">{{ $jumlahTransaksiHariIni }}</strong></p>
-            <p>Barang Terjual: <strong class="text-indigo-600">{{ $totalQtyHariIni }}</strong></p>
+        <!-- Filter Options -->
+        <div class="mb-4 flex gap-2">
+            <a href="{{ route('admin.report', ['filter' => 'harian']) }}" 
+               class="bg-blue-600 text-white px-4 py-2 rounded {{ $filter === 'harian' ? 'bg-blue-800' : '' }}">
+                Harian
+            </a>
+            <a href="{{ route('admin.report', ['filter' => 'mingguan']) }}" 
+               class="bg-blue-600 text-white px-4 py-2 rounded {{ $filter === 'mingguan' ? 'bg-blue-800' : '' }}">
+                Mingguan
+            </a>
+            <a href="{{ route('admin.report', ['filter' => 'bulanan']) }}" 
+               class="bg-blue-600 text-white px-4 py-2 rounded {{ $filter === 'bulanan' ? 'bg-blue-800' : '' }}">
+                Bulanan
+            </a>
+            <a href="{{ route('admin.report', ['filter' => 'tahunan']) }}" 
+               class="bg-blue-600 text-white px-4 py-2 rounded {{ $filter === 'tahunan' ? 'bg-blue-800' : '' }}">
+                Tahunan
+            </a>
         </div>
 
-        <!-- Minggu Ini -->
-        <div class="bg-white shadow-md rounded-lg p-4">
-            <h3 class="text-lg font-semibold mb-2 text-amber-800">Minggu Ini</h3>
-            <p>Total Pendapatan: <strong class="text-green-600">Rp {{ number_format($totalMingguIni, 0, ',', '.') }}</strong></p>
-        </div>
-
-        <!-- Bulan Ini -->
-        <div class="bg-white shadow-md rounded-lg p-4">
-            <h3 class="text-lg font-semibold mb-2 text-amber-800">Bulan Ini</h3>
-            <p>Total Pendapatan: <strong class="text-green-600">Rp {{ number_format($totalBulanIni, 0, ',', '.') }}</strong></p>
-        </div>
-
+        <!-- Table -->
+        @include('admin.partials.report-table')  <!-- Menyertakan tabel laporan transaksi -->
+        
     </div>
-</div>
 @endsection

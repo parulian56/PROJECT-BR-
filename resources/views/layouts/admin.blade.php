@@ -93,6 +93,14 @@
                             <i class="fas fa-box text-lg"></i>
                             <span class="ml-3">Data Barang</span>
                         </a>
+
+                        <a href="{{ route('admin.reports') }}" 
+   @click="activeTab = 'data'; showSidebar = false"
+   class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/reports*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
+    <i class="fas fa-box text-lg"></i>
+    <span class="ml-3">Reports</span>
+</a>
+
                     </nav>
                     
                     <!-- Logout -->

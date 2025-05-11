@@ -15,6 +15,11 @@ use App\Http\Controllers\{
 // Public Routes
 Route::view('/', 'dashboard');
 
+
+
+Route::get('/admin/reports', [ReportController::class, 'index'])->name('admin.reports');
+
+
 // LOGIN ROUTE
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']); // Handle submit login
@@ -83,6 +88,27 @@ Route::middleware('auth')->group(function () {
                 Route::get('create', 'create')->name('admin.data.kategori.kesehatandankebersihan.create');
             });
         });
+        //admin report
+
+        // Di bawah group utama admin, setelah definisi route admin/data
+Route::prefix('admin')->middleware(['auth', 'role:admin'])->name('admin.')->group(function () {
+    // Laporan
+    Route::get('reports', [ReportController::class, 'index'])->name('reports');
+    Route::get('reports/daily', [ReportController::class, 'daily'])->name('reports.daily');
+    Route::get('reports/weekly', [ReportController::class, 'weekly'])->name('reports.weekly');
+    Route::get('reports/monthly', [ReportController::class, 'monthly'])->name('reports.monthly');
+    Route::get('reports/yearly', [ReportController::class, 'yearly'])->name('reports.yearly');
+});
+
+        
+        Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
+            // Route untuk menampilkan laporan transaksi
+            Route::get('reports/{filter?}', [ReportController::class, 'index'])->name('admin.report');
+            Route::get('admin/reports/daily', [LaporanController::class, 'daily'])->name('admin.reports.daily');
+
+        });
+        
+
     });
 });
 

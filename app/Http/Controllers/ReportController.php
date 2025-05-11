@@ -2,35 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TransaksiKasir;
 use Illuminate\Http\Request;
-use App\Models\Transaksi;
-use Carbon\Carbon;
 
 class ReportController extends Controller
 {
-    public function index()
+    
+    public function index(Request $request, $filter = 'harian')
     {
-        $today = Carbon::today();
-        $startOfWeek = Carbon::now()->startOfWeek();
-        $startOfMonth = Carbon::now()->startOfMonth();
+        // Menentukan tanggal awal dan akhir berdasarkan filter yang dipilih
+        $dateFrom = now()->startOfDay();
+        $dateTo = now()->endOfDay();
 
-        // Data hari ini
-        $hariIni = Transaksi::whereDate('created_at', $today)->get();
-        $totalHariIni = $hariIni->sum('total');
-        $jumlahTransaksiHariIni = $hariIni->count();
-        $totalQtyHariIni = $hariIni->sum('qty');
+        if ($filter == 'mingguan') {
+            $dateFrom = now()->startOfWeek();
+            $dateTo = now()->endOfWeek();
+        } elseif ($filter == 'bulanan') {
+            $dateFrom = now()->startOfMonth();
+            $dateTo = now()->endOfMonth();
+        } elseif ($filter == 'tahunan') {
+            $dateFrom = now()->startOfYear();
+            $dateTo = now()->endOfYear();
+        }
 
-        // Data minggu ini
-        $mingguIni = Transaksi::whereBetween('created_at', [$startOfWeek, now()])->get();
-        $totalMingguIni = $mingguIni->sum('total');
+        // Ambil data transaksi berdasarkan filter
+        $transaksis = TransaksiKasir::whereBetween('created_at', [$dateFrom, $dateTo])->get();
 
-        // Data bulan ini
-        $bulanIni = Transaksi::whereBetween('created_at', [$startOfMonth, now()])->get();
-        $totalBulanIni = $bulanIni->sum('total');
+        // Kirim data ke view
+        return view('admin.reports.reports', [
+            'transaksis' => $transaksis,
+            'filter' => $filter
 
-        return view('report.index', compact(
-            'totalHariIni', 'jumlahTransaksiHariIni', 'totalQtyHariIni',
-            'totalMingguIni', 'totalBulanIni'
-        ));
+        ]);
     }
 }
