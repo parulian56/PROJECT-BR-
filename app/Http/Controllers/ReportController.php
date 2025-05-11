@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TransaksiKasir;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
@@ -35,4 +36,10 @@ class ReportController extends Controller
 
         ]);
     }
+    public function daily()
+{
+    $tanggalHariIni = Carbon::today();
+    $transaksis = TransaksiKasir::whereDate('created_at', Carbon::today())->get();
+    return view('admin.reports.daily', compact('transaksis'));
+}
 }

@@ -101,14 +101,12 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->name('admin.')->grou
 });
 
         
-        Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
+        Route::prefix('admin')->middleware(['auth'])->group(function () {
             // Route untuk menampilkan laporan transaksi
             Route::get('reports/{filter?}', [ReportController::class, 'index'])->name('admin.report');
-            Route::get('admin/reports/daily', [LaporanController::class, 'daily'])->name('admin.reports.daily');
+            Route::get('/reports/daily', [ReportController::class, 'daily'])->name('admin.reports.daily');
 
         });
-        
-
     });
 });
 

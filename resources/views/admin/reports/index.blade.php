@@ -6,10 +6,15 @@
 
         <!-- Filter Options -->
         <div class="mb-4 flex gap-2">
-            <a href="{{ route('admin.report', ['filter' => 'harian']) }}" 
-               class="bg-blue-600 text-white px-4 py-2 rounded {{ $filter === 'harian' ? 'bg-blue-800' : '' }}">
-                Harian
-            </a>
+            <a href="{{ route('admin.reports.daily') }}"
+   class="bg-amber-500 hover:bg-amber-600 text-white rounded-xl shadow p-6 flex justify-between items-center">
+    <div>
+        <h3 class="text-lg font-semibold">Laporan Harian</h3>
+        <p class="text-sm">Transaksi hari ini</p>
+    </div>
+    <i class="fas fa-calendar-day text-3xl"></i>
+</a>
+
             <a href="{{ route('admin.report', ['filter' => 'mingguan']) }}" 
                class="bg-blue-600 text-white px-4 py-2 rounded {{ $filter === 'mingguan' ? 'bg-blue-800' : '' }}">
                 Mingguan
