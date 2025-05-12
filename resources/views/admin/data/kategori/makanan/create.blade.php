@@ -17,9 +17,9 @@
         </div>
     @endif
 
-    <form action="{{ route('data.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow-md">
+    <form action="{{ route('admin.data.kategori.makanan.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow-md">
         @csrf
-
+"
         <!-- Input Transaction ID -->
         <div class="mb-4">
             <label for="transaction_id" class="block text-sm font-medium text-gray-700">Transaction ID</label>
@@ -30,6 +30,11 @@
         <div class="mb-4">
             <label for="nama_barang" class="block text-sm font-medium text-gray-700">Nama Barang</label>
             <input type="text" name="nama_barang" id="nama_barang" value="{{ old('nama_barang') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+        </div>
+
+        <div class="mb-4">
+            <label for="kategori" class="block text-sm font-medium text-gray-700">kategori </label>
+            <input type="text" name="kategori" id="kategori" value="{{ old('kategori') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
         </div>
 
         <!-- Input Deskripsi -->

@@ -117,8 +117,9 @@ class="bg-gradient-to-b from-stone-700 via-amber-800 to-stone-800 border-r borde
 
     <!-- Logout Button -->
     <div class="p-4 border-t border-amber-700">
-        <a href="{{ url('logout') }}" 
-            class="flex items-center justify-center w-full py-2 mt-2 text-sm bg-amber-700 text-amber-200 rounded-lg hover:bg-gradient-to-r hover:from-amber-800 hover:to-amber-600 transition-all duration-300 transform hover:scale-105">
+        <a href="#" 
+            class="flex items-center justify-center w-full py-2 mt-2 text-sm bg-amber-700 text-amber-200 rounded-lg hover:bg-gradient-to-r hover:from-amber-800 hover:to-amber-600 transition-all duration-300 transform hover:scale-105"
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="fas fa-sign-out-alt"></i>
             <span x-show="sidebarOpen" 
                 x-transition:enter="transition ease-out duration-300"
@@ -126,7 +127,11 @@ class="bg-gradient-to-b from-stone-700 via-amber-800 to-stone-800 border-r borde
                 x-transition:enter-end="opacity-100"
                 class="ml-2">Logout</span>
         </a>
-    </div>
+    
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    </div>    
 </div>
 </aside>
 
