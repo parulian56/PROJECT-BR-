@@ -95,16 +95,17 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->name('admin.')->grou
     // Laporan
     Route::get('reports', [ReportController::class, 'index'])->name('reports');
     Route::get('reports/daily', [ReportController::class, 'daily'])->name('reports.daily');
-    Route::get('reports/weekly', [ReportController::class, 'weekly'])->name('reports.weekly');
-    Route::get('reports/monthly', [ReportController::class, 'monthly'])->name('reports.monthly');
+Route::get('/reports/weekly', [ReportController::class, 'weekly'])->name('admin.reports.weekly');    Route::get('reports/monthly', [ReportController::class, 'monthly'])->name('reports.monthly');
     Route::get('reports/yearly', [ReportController::class, 'yearly'])->name('reports.yearly');
 });
 
         
         Route::prefix('admin')->middleware(['auth'])->group(function () {
             // Route untuk menampilkan laporan transaksi
-            Route::get('reports/{filter?}', [ReportController::class, 'index'])->name('admin.report');
+        Route::get('/admin/reports', [ReportController::class, 'index'])->name('admin.reports.index')->middleware('auth');
             Route::get('/reports/daily', [ReportController::class, 'daily'])->name('admin.reports.daily');
+            Route::get('admin/reports/weekly', [ReportController::class, 'weekly'])->name('admin.reports.weekly');
+
 
         });
     });
