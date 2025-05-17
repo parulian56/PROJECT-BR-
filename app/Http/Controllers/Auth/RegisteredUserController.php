@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
 
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
+     * Show the registration form.
+     *
+     * @return \Illuminate\View\View
      */
-    public function create(): View
+    public function create()
     {
         return view('auth.register');
     }
@@ -25,26 +25,36 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+    public function store(Request $request)
+{
+    // Validasi data input
+    $validated = $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    // Tentukan apakah pengguna pertama kali
+    $isFirstUser = User::count() == 0;
 
-        event(new Registered($user));
+    // Membuat pengguna baru
+    $user = User::create([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'password' => Hash::make($validated['password']),
+        'role' => $isFirstUser ? 'admin' : 'user', // Menetapkan role admin untuk pengguna pertama
+    ]);
 
-        Auth::login($user);
+    // Menyimpan event registrasi
+    event(new Registered($user));
 
-        return redirect(route('dashboard', absolute: false));
-    }
+    // Melakukan login otomatis
+    Auth::login($user);
+
+    // Redirect ke halaman sesuai role atau dashboard
+    return redirect()->route('user.transaksi'); // Atau route lainnya sesuai kebutuhan
+}
 }

@@ -48,7 +48,7 @@
         <!-- Sidebar for Mobile -->
         <div x-show="showSidebar" 
              @click.away="showSidebar = false"
-             class="fixed inset-0 z-20 bg-black bg-opacity-50 transition-opacity duration-300"
+             class="fixed inset-0 z-20 bg-black bg-opacity-70 transition-opacity duration-300"
              x-transition:enter="ease-out duration-300"
              x-transition:enter-start="opacity-0"
              x-transition:enter-end="opacity-100"
@@ -95,13 +95,20 @@
                         </a>
                     </nav>
                     
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="flex items-center justify-center w-full py-2 px-4 text-sm bg-amber-700 text-amber-200 rounded-lg hover:bg-gradient-to-r hover:from-amber-800 hover:to-amber-600 transition-all duration-300">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span class="ml-2">Logout</span>
-                        </button>
-                    </form>
+                    <!-- Logout -->
+                    <div class="pt-4 border-t border-amber-700">
+    <a href="#" 
+       onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+       class="flex items-center justify-center w-full py-2 px-4 text-sm bg-amber-700 text-amber-200 rounded-lg hover:bg-gradient-to-r hover:from-amber-800 hover:to-amber-600 transition-all duration-300">
+        <i class="fas fa-sign-out-alt"></i>
+        <span class="ml-2">Logout</span>
+    </a>
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+</div>
+
                 </div>
             </div>
         </div>

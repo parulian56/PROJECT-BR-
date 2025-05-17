@@ -1,151 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMK AMALIAH - Login</title>    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        cream: {
-                            light: '#F6F1E9',
-                            base: '#F2E3C9', 
-                            dark: '#E8D8C4'
-                        },
-                        coffee: {
-                            light: '#F4A261',
-                            medium: '#E76F51',
-                            dark: '#5F7161',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @media (max-width: 640px) {
-            .responsive-container {
-                margin: 0 16px;
-            }
-        }
-    </style>
-</head>
-<body class="bg-cream-light min-h-screen flex flex-col justify-center items-center py-8 px-4">
-    <!-- Main Container -->
-    <div class="w-full max-w-md bg-white rounded-2xl overflow-hidden shadow-xl responsive-container">
-        <!-- Header with Logo -->
-        <div class="bg-cream-base px-6 py-6 sm:py-8 flex flex-col items-center">
-            <div class="w-14 h-14 sm:w-16 sm:h-16 bg-coffee-medium rounded-full flex items-center justify-center mb-3 sm:mb-4">
-                <i class="fas fa-mug-hot text-white text-xl sm:text-2xl"></i>
+<x-guest-layout>
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')" />
+
+    <div class="max-w-md w-full mx-auto bg-white dark:bg-stone-600 rounded-xl shadow-lg overflow-hidden p-8 space-y-6">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold text-gray-800 dark:text-white">Welcome Back</h1>
+            <p class="mt-2 text-gray-600 dark:text-gray-300">Sign in to your account</p>
+        </div>
+
+        <form method="POST" action="{{ route('login') }}" class="space-y-6">
+            @csrf
+
+            <!-- Email Address -->
+            <div class="space-y-2">
+                <x-input-label for="email" :value="__('Email')" class="text-gray-700 dark:text-gray-300" />
+                <x-text-input 
+                    id="email" 
+                    class="block w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white transition duration-200" 
+                    type="email" 
+                    name="email" 
+                    :value="old('email')" 
+                    required 
+                    autofocus 
+                    autocomplete="username"
+                    placeholder="Enter your email"
+                />
+                <x-input-error :messages="$errors->get('email')" class="mt-1 text-sm text-red-600" />
             </div>
-            <h1 class="text-xl sm:text-2xl font-bold text-coffee-dark tracking-wide">SMK<span class="text-coffee-medium">AMALIAH</span></h1>
-            <p class="text-xs sm:text-sm text-gray-600 mt-1">nananananana</p>
-        </div>
-        
-        <!-- Form Section -->
-        <div class="bg-white px-6 sm:px-8 py-6 sm:py-8">
-            <h2 class="text-lg sm:text-xl font-medium text-coffee-dark mb-5 sm:mb-6 text-center">Welcome Back</h2>
-            
-            <form method="POST" action="{{ route('login') }}" class="space-y-4 sm:space-y-5">
-                @csrf
-                
-                <!-- Email Field -->
-                <div>
-                    <div class="relative">
-                        <input 
-                            id="email" 
-                            type="email" 
-                            name="email" 
-                            class="w-full bg-cream-light border-0 rounded-xl p-3 sm:p-4 pl-10 sm:pl-12 text-coffee-dark placeholder-gray-400 focus:ring-2 focus:ring-coffee-light outline-none text-sm sm:text-base" 
-                            placeholder="Email Address"
-                            required
-                            autocomplete="email"
-                        >
-                        <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
-                            <i class="fas fa-envelope text-coffee-medium opacity-70 text-sm sm:text-base"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Password Field -->
-                <div>
-                    <div class="relative">
-                        <input 
-                            id="password" 
-                            type="password" 
-                            name="password" 
-                            class="w-full bg-cream-light border-0 rounded-xl p-3 sm:p-4 pl-10 sm:pl-12 text-coffee-dark placeholder-gray-400 focus:ring-2 focus:ring-coffee-light outline-none text-sm sm:text-base" 
-                            placeholder="Password"
-                            required
-                            autocomplete="current-password"
-                        >
-                        <div class="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
-                            <i class="fas fa-lock text-coffee-medium opacity-70 text-sm sm:text-base"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Remember Me & Forgot Password -->
+
+            <!-- Password -->
+            <div class="space-y-2">
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input 
-                            id="remember" 
-                            name="remember" 
-                            type="checkbox" 
-                            class="w-4 h-4 text-coffee-medium rounded border-gray-300 focus:ring-coffee-light"
-                        >
-                        <label for="remember" class="ml-2 text-xs sm:text-sm text-gray-600">Remember Me</label>
-                    </div>
-                    
-                    <a href="{{ route('password.request') }}" class="text-xs sm:text-sm text-coffee-medium hover:text-coffee-dark">
-                        Forgot Password?
-                    </a>
+                    <x-input-label for="password" :value="__('Password')" class="text-gray-700 dark:text-gray-300" />
+                    @if (Route::has('password.request'))
+                        <a class="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition duration-200" href="{{ route('password.request') }}">
+                            {{ __('Forgot password?') }}
+                        </a>
+                    @endif
                 </div>
-                
-                <!-- Sign In Button -->
-                <button 
-                    type="submit" 
-                    class="w-full bg-coffee-medium hover:bg-coffee-light text-white font-medium py-3 sm:py-4 rounded-xl transition-colors duration-300 shadow-md text-sm sm:text-base mt-2"
-                >
-                    Sign In
-                </button>
-                
-                <!-- Divider -->
-                <div class="relative flex items-center py-2">
-                    <div class="flex-grow border-t border-gray-200"></div>
-                    <span class="flex-shrink mx-3 sm:mx-4 text-xs text-gray-400">or continue with</span>
-                    <div class="flex-grow border-t border-gray-200"></div>
-                </div>
-                
-                <!-- Social Login Buttons -->
-                <div class="grid grid-cols-3 gap-2 sm:gap-3">
-                    <button type="button" class="flex justify-center items-center bg-cream-light p-3 rounded-xl hover:bg-cream-dark transition-colors duration-300">
-                        <i class="fab fa-google text-gray-600"></i>
-                    </button>
-                    <button type="button" class="flex justify-center items-center bg-cream-light p-3 rounded-xl hover:bg-cream-dark transition-colors duration-300">
-                        <i class="fab fa-facebook-f text-gray-600"></i>
-                    </button>
-                    <button type="button" class="flex justify-center items-center bg-cream-light p-3 rounded-xl hover:bg-cream-dark transition-colors duration-300">
-                        <i class="fab fa-apple text-gray-600"></i>
-                    </button>
-                </div>
-            </form>
-            
-            <!-- Register Link -->
-            <p class="text-center text-gray-500 mt-5 sm:mt-6 text-xs sm:text-sm">
-                Don't have an account? 
-                <a href="#" class="text-coffee-medium font-medium hover:underline">Sign up</a>
-            </p>
+                <x-text-input 
+                    id="password" 
+                    class="block w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white transition duration-200"
+                    type="password"
+                    name="password"
+                    required 
+                    autocomplete="current-password"
+                    placeholder="Enter your password"
+                />
+                <x-input-error :messages="$errors->get('password')" class="mt-1 text-sm text-red-600" />
+            </div>
+
+            <!-- Remember Me -->
+            <div class="flex items-center">
+                <input 
+                    id="remember_me" 
+                    type="checkbox" 
+                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700 transition duration-200"
+                    name="remember"
+                > 
+                <label for="remember_me" class="ms-2 text-sm text-gray-600 dark:text-gray-300">
+                    {{ __('Remember me') }}
+                </label>
+            </div>
+
+            <div>
+                <x-primary-button class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 transition duration-200">
+                    {{ __('Log in') }}
+                </x-primary-button>
+            </div>
+        </form>
+
+        <div class="text-center text-sm text-gray-600 dark:text-gray-400">
+            Don't have an account? 
+            @if (Route::has('register'))
+                <a href="{{ route('register') }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 font-medium transition duration-200">
+                    Sign up
+                </a>
+            @endif
         </div>
     </div>
-    
-    <!-- Bottom Brand Text -->
-    <div class="mt-4 sm:mt-6 text-center">
-        <span class="text-xs text-gray-500">© 2025 SMK AMALIAH 1&2.</span>
-    </div>
-</body>
-</html>
+</x-guest-layout>

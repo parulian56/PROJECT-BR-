@@ -8,9 +8,9 @@
             <h1 class="text-2xl font-bold text-stone-800">Kasir Amaliah</h1>
             <p class="text-stone-500">Ringkasan transaksi dan penjualan hari ini</p>
         </div>
-        <div class="date-display py-2 px-4 rounded-xl bg-stone-100 text-stone-700 shadow-sm">
-            <i class="far fa-calendar-alt mr-2"></i> 
-            <span class="font-medium">{{ now()->format('d M Y') }}</span>
+        <div class="date-display flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100 text-stone-700 shadow-md border border-amber-200">
+            <i class="far fa-calendar-alt text-amber-600"></i> 
+            <span class="font-medium tracking-wide">{{ now()->format('d M Y') }}</span>
         </div>
     </div>
 
@@ -300,6 +300,10 @@
         background-color: #e7e5e4;
     }
     
+    .bg-amber-50 {
+        background-color: #fffbeb;
+    }
+    
     .bg-amber-100 {
         background-color: #fef3c7;
     }
@@ -318,6 +322,10 @@
     
     .border-stone-100 {
         border-color: #f5f5f4;
+    }
+    
+    .border-amber-200 {
+        border-color: #fde68a;
     }
     
     .divide-stone-100 {
