@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     ProfileController,
@@ -8,30 +7,30 @@ use App\Http\Controllers\{
     MakananController,
     DashboardController,
     TransaksiKasirController,
-    ReportController,
-    LainyaController,
-
+    LainyaController
 };
 
-// Public Routes
-Route::view('/', 'dashboard');
-
-// LOGIN ROUTE
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
+// ======================
+// PUBLIC ROUTES
+// ======================
 Route::get('/', fn () => redirect('/login'));
 
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('login');
-Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+// Authentication Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+});
+
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-
-
-// Authenticated Routes
+// ======================
+// AUTHENTICATED ROUTES
+// ======================
 Route::middleware('auth')->group(function () {
-    // Dashboard Routes
+    // Dashboard Route
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
 
     // Profile Routes
     Route::controller(ProfileController::class)->group(function () {
@@ -40,50 +39,66 @@ Route::middleware('auth')->group(function () {
         Route::delete('/profile', 'destroy')->name('profile.destroy');
     });
 
-    // User Transaction Routes
-    Route::controller(TransaksiKasirController::class)->prefix('user/transaksi')->group(function () {
-        Route::get('/', 'index')->name('transaksi.index');
-        Route::get('/create', 'create')->name('transaksi.create');
-        Route::post('/', 'store')->name('transaksi.store');
-        Route::get('/{transaksi}', 'show')->name('transaksi.show');
-        Route::get('/{transaksi}/edit', 'edit')->name('transaksi.edit');
-        Route::put('/{transaksi}', 'update')->name('transaksi.update');
-        Route::delete('/{transaksi}', 'destroy')->name('transaksi.destroy');
-        Route::delete('/', 'hapusSemua')->name('transaksi.hapusSemua');
+    // ======================
+    // TRANSACTION ROUTES
+    // ======================
+    Route::prefix('transaksi')->name('transaksi.')->controller(TransaksiKasirController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{transaksi}', 'show')->name('show');
+        Route::get('/{transaksi}/edit', 'edit')->name('edit');
+        Route::put('/{transaksi}', 'update')->name('update');
+        Route::delete('/{transaksi}', 'destroy')->name('destroy');
+        Route::delete('/', 'hapusSemua')->name('hapusSemua');
     });
 
-    // Admin Data Routes
-    Route::controller(DataController::class)->prefix('admin/data')->group(function () {
-        Route::get('/', 'index')->name('data.index');
+    // ======================
+    // ADMIN DATA ROUTES
+    // ======================
+    Route::prefix('admin/data')->name('admin.data.')->group(function () {
 
-        // Category Routes
-        Route::prefix('kategori')->group(function () {
-            // Food Routes
-            Route::controller(MakananController::class)->prefix('makanan')->group(function () {
-                Route::get('/', 'index')->name('admin.data.kategori.makanan.index');
-                Route::get('/create', 'create')->name('admin.data.kategori.makanan.create');
-                Route::post('/', 'store')->name('admin.data.kategori.makanan.store');
-                Route::get('{makanan}/edit', 'edit')->name('admin.data.kategori.makanan.edit');
-                Route::put('{makanan}', 'update')->name('admin.data.kategori.makanan.update');
-                Route::delete('{makanan}', 'destroy')->name('admin.data.kategori.makanan.destroy');
-            });
+        // Admin Data Index
+        Route::get('/', [DataController::class, 'index'])->name('index');
 
-            // Other Categories
-            Route::get('minuman', 'minuman')->name('admin.data.kategori.minuman');
-            Route::get('alat_tulis', 'alat_tulis')->name('admin.data.kategori.alat_tulis');
-            Route::get('seragam', 'seragam')->name('admin.data.kategori.seragam');
-            Route::get('lainya', 'lainya')->name('admin.data.kategori.lainya');
+        // ----------------------
+        // KATEGORI SECTION
+        // ----------------------
+        Route::prefix('kategori')->name('kategori.')->group(function () {
 
-            // Health & Hygiene
-            Route::prefix('lainya')->name('lainya.')->group(function() {
-                Route::get('/index', [LainyaController::class, 'index'])->name('index');
-                Route::get('/create', [LainyaController::class, 'create'])->name('create');
-                Route::post('/store', [LainyaController::class, 'store'])->name('store');
-                Route::get('/{id}/show', [LainyaController::class, 'show'])->name('show');
-                Route::get('/{id}/edit', [LainyaController::class, 'edit'])->name('edit');
-                Route::put('/{id}/update', [LainyaController::class, 'update'])->name('update');
-                Route::delete('/{id}/destroy', [LainyaController::class, 'destroy'])->name('destroy');
-            });
+            // Makanan Resource
+            Route::resource('makanan', MakananController::class)->names([
+                'index' => 'makanan.index',
+                'create' => 'makanan.create',
+                'store' => 'makanan.store',
+                'show' => 'makanan.show',
+                'edit' => 'makanan.edit',
+                'update' => 'makanan.update',
+                'destroy' => 'makanan.destroy'
+            ]);
+
+            // Kategori Lain (masih pakai DataController)
+            Route::get('minuman', [DataController::class, 'minuman'])->name('minuman');
+            Route::get('alat_tulis', [DataController::class, 'alat_tulis'])->name('alat_tulis');
+            Route::get('seragam', [DataController::class, 'seragam'])->name('seragam');
+
+            // Lainya (pakai controller terpisah)
+            Route::resource('lainya', LainyaController::class)->names([
+                'index' => 'lainya.index',
+                'create' => 'lainya.create',
+                'store' => 'lainya.store',
+                'edit' => 'lainya.edit',
+                'update' => 'lainya.update',
+                'destroy' => 'lainya.destroy'
+            ]);
+        });
+
+        // ----------------------
+        // INVENTORY SECTION
+        // ----------------------
+        Route::prefix('inventory')->name('inventory.')->group(function () {
+            Route::get('/report', [DataController::class, 'inventoryReport'])->name('report');
+            Route::get('/export', [DataController::class, 'exportInventory'])->name('export');
         });
     });
 });

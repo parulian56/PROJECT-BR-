@@ -9,7 +9,7 @@
             <p class="text-stone-500">Ringkasan transaksi dan penjualan hari ini</p>
         </div>
         <div class="date-display py-2 px-4 rounded-xl bg-stone-100 text-stone-700 shadow-sm">
-            <i class="far fa-calendar-alt mr-2"></i> 
+            <i class="far fa-calendar-alt mr-2"></i>
             <span class="font-medium">{{ now()->format('d M Y') }}</span>
         </div>
     </div>
@@ -255,93 +255,93 @@
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         background-color: #f8f5f2;
     }
-    
+
     .shadow-inner {
         box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
     }
-    
+
     .transition-colors {
         transition: background-color 0.2s ease, color 0.2s ease;
     }
-    
+
     .hover\:shadow-md:hover {
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
-    
+
     .border-l-4 {
         border-left-width: 4px;
     }
-    
+
     .text-stone-800 {
         color: #292524;
     }
-    
+
     .text-stone-700 {
         color: #44403c;
     }
-    
+
     .text-stone-600 {
         color: #57534e;
     }
-    
+
     .text-stone-500 {
         color: #78716c;
     }
-    
+
     .text-stone-400 {
         color: #a8a29e;
     }
-    
+
     .bg-stone-100 {
         background-color: #f5f5f4;
     }
-    
+
     .bg-stone-200 {
         background-color: #e7e5e4;
     }
-    
+
     .bg-amber-100 {
         background-color: #fef3c7;
     }
-    
+
     .bg-amber-200 {
         background-color: #fde68a;
     }
-    
+
     .bg-amber-600 {
         background-color: #d97706;
     }
-    
+
     .bg-amber-700 {
         background-color: #b45309;
     }
-    
+
     .border-stone-100 {
         border-color: #f5f5f4;
     }
-    
+
     .divide-stone-100 {
         border-color: #f5f5f4;
     }
-    
+
     .text-amber-600 {
         color: #d97706;
     }
-    
+
     .text-amber-700 {
         color: #b45309;
     }
-    
+
     table {
         border-collapse: separate;
         border-spacing: 0;
     }
-    
+
     th {
         font-weight: 600;
         letter-spacing: 0.5px;
     }
-    
+
     tr:last-child td {
         border-bottom: none;
     }

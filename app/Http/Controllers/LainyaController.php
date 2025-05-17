@@ -4,101 +4,82 @@ namespace App\Http\Controllers;
 
 use App\Models\Lainya;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class LainyaController extends Controller
 {
-    // Menampilkan semua data penyimpanan
+
+    
     public function index()
     {
-        // Ambil semua data penyimpanan
-        $lainya = Lainya::where('kategori', 'Lainya')->get();
+        $lainya = Lainya::where('kategori', 'lainya')->paginate(10);
         return view('admin.data.kategori.lainya.index', compact('lainya'));
     }
 
-    // Menampilkan form untuk menambah data penyimpanan
     public function create()
     {
-        // Tampilkan form tambah data penyimpanan
         return view('admin.data.kategori.lainya.create');
     }
 
-    // Menampilkan form edit data penyimpanan
+  public function store(Request $request)
+{
+    $validated = $request->validate([
+        'nama_barang' => 'required|string|max:255',
+        'kategori' => 'required|string|in:lainya',
+        'deskripsi' => 'nullable|string',
+        'jumlah' => 'required|integer|min:1',
+        'harga_pokok' => 'required|numeric|min:0',
+        'harga_jual' => 'required|numeric|min:0|gt:harga_pokok',
+        'lokasi_penyimpanan' => 'required|string|max:100',
+    ]);
+
+    try {
+        Lainya::create($validated);
+        return redirect()->route('admin.data.kategori.lainya.index')->with('success', 'Data berhasil ditambahkan!');
+    } catch (\Exception $e) {
+        Log::error('Error storing lainya: '.$e->getMessage());
+        return back()->with('error', 'Gagal menyimpan data')->withInput();
+    }
+}
+
+
     public function edit($id)
     {
-        // Ambil data penyimpanan berdasarkan ID
         $lainya = Lainya::findOrFail($id);
-
-        // Mengirimkan data penyimpanan ke view
         return view('admin.data.kategori.lainya.edit', compact('lainya'));
     }
 
-    // Menyimpan data penyimpanan baru
-    public function store(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'nama_barang' => 'required|string',
-            'deskripsi' => 'nullable|string',
-            'jumlah' => 'required|integer|min:1|max:9999',
-            'harga_pokok' => 'required|numeric',
-            'harga_jual' => 'required|numeric',
-            'lokasi_penyimpanan' => 'required|string',
-        ]);
-
-        // Simpan data penyimpanan baru
-        lainya::create([
-            'nama_barang' => $request->nama_barang,
-            'deskripsi' => $request->deskripsi,
-            'jumlah' => $request->jumlah,
-            'harga_pokok' => $request->harga_pokok,
-            'harga_jual' => $request->harga_jual,
-            'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
-        ]);
-
-        // Redirect ke daftar data penyimpanan dengan pesan sukses
-        return redirect()->route('lainya.index')->with('success', 'Data berhasil disimpan');
-    }
-
-    // Menyimpan perubahan data penyimpanan
     public function update(Request $request, $id)
     {
-        // Validasi input
-        $request->validate([
-            'nama_barang' => 'required|string',
+        $validated = $request->validate([
+            'nama_barang' => 'required|string|max:255',
+            'kategori' => 'required|string|in:lainya',
             'deskripsi' => 'nullable|string',
-            'jumlah' => 'required|integer',
-            'harga_pokok' => 'required|numeric',
-            'harga_jual' => 'required|numeric',
-            'lokasi_penyimpanan' => 'required|string',
+            'jumlah' => 'required|integer|min:1',
+            'harga_pokok' => 'required|numeric|min:0',
+            'harga_jual' => 'required|numeric|min:0|gt:harga_pokok',
+            'lokasi_penyimpanan' => 'required|string|max:100',
         ]);
 
-        // Ambil data penyimpanan berdasarkan ID
-        $lainya = Lainya::findOrFail($id);
-
-        // Update data penyimpanan
-        $lainya->update([
-            'nama_barang' => $request->nama_barang,
-            'deskripsi' => $request->deskripsi,
-            'jumlah' => $request->jumlah,
-            'harga_pokok' => $request->harga_pokok,
-            'harga_jual' => $request->harga_jual,
-            'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
-        ]);
-
-        // Redirect ke daftar data penyimpanan dengan pesan sukses
-        return redirect()->route('lainya.index')->with('success', 'Data penyimpanan berhasil diperbarui');
+        try {
+            $lainya = Lainya::findOrFail($id);
+            $lainya->update($validated);
+            return redirect()->route('admin.data.kategori.lainya.index')->with('success', 'Data berhasil diperbarui!');
+        } catch (\Exception $e) {
+            Log::error('Error updating lainya: '.$e->getMessage());
+            return back()->with('error', 'Gagal memperbarui data')->withInput();
+        }
     }
 
-    // Menghapus data penyimpanan
     public function destroy($id)
     {
-        // Ambil data penyimpanan berdasarkan ID
-        $lainya = Lainya::findOrFail($id);
-
-        // Hapus data penyimpanan
-        $lainya->delete();
-
-        // Redirect ke daftar data penyimpanan dengan pesan sukses
-        return redirect()->route('lainya.index')->with('success', 'Data penyimpanan berhasil dihapus');
+        try {
+            $lainya = Lainya::findOrFail($id);
+            $lainya->delete();
+            return redirect()->route('admin.data.kategori.lainya.index')->with('success', 'Data berhasil dihapus!');
+        } catch (\Exception $e) {
+            Log::error('Error deleting lainya: '.$e->getMessage());
+            return back()->with('error', 'Gagal menghapus data');
+        }
     }
 }
