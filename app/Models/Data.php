@@ -13,13 +13,7 @@ class Data extends Model
 
     protected $fillable = [
         'nama_barang',
-        'kategori',
-        'deskripsi',
-        'nama_produk',
-        'jumlah',
-        'harga_pokok',
-        'harga_jual',
-        'lokasi_penyimpanan',
+        
         
     ];
 }

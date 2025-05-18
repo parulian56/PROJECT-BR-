@@ -48,7 +48,7 @@
         <!-- Sidebar for Mobile -->
         <div x-show="showSidebar"
              @click.away="showSidebar = false"
-             class="fixed inset-0 z-20 bg-black bg-opacity-50 transition-opacity duration-300"
+             class="fixed inset-0 z-20 bg-black bg-opacity-70 transition-opacity duration-300"
              x-transition:enter="ease-out duration-300"
              x-transition:enter-start="opacity-0"
              x-transition:enter-end="opacity-100"
@@ -93,8 +93,16 @@
                             <i class="fas fa-box text-lg"></i>
                             <span class="ml-3">Data Barang</span>
                         </a>
-                    </nav>
 
+                        <a href="{{ route('admin.reports') }}" 
+   @click="activeTab = 'data'; showSidebar = false"
+   class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/reports*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
+    <i class="fas fa-box text-lg"></i>
+    <span class="ml-3">Reports</span>
+</a>
+
+                    </nav>
+                    
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="flex items-center justify-center w-full py-2 px-4 text-sm bg-amber-700 text-amber-200 rounded-lg hover:bg-gradient-to-r hover:from-amber-800 hover:to-amber-600 transition-all duration-300">

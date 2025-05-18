@@ -2,35 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TransaksiKasir;
 use Illuminate\Http\Request;
-use App\Models\Transaksi;
 use Carbon\Carbon;
 
 class ReportController extends Controller
 {
-    public function index()
-    {
-        $today = Carbon::today();
-        $startOfWeek = Carbon::now()->startOfWeek();
-        $startOfMonth = Carbon::now()->startOfMonth();
+    
+    public function index(Request $request)
+{
+    $filter = $request->input('filter', 'harian'); // default: harian
 
-        // Data hari ini
-        $hariIni = Transaksi::whereDate('created_at', $today)->get();
-        $totalHariIni = $hariIni->sum('total');
-        $jumlahTransaksiHariIni = $hariIni->count();
-        $totalQtyHariIni = $hariIni->sum('qty');
+    // Menentukan tanggal awal dan akhir berdasarkan filter
+    $dateFrom = now()->startOfDay();
+    $dateTo = now()->endOfDay();
 
-        // Data minggu ini
-        $mingguIni = Transaksi::whereBetween('created_at', [$startOfWeek, now()])->get();
-        $totalMingguIni = $mingguIni->sum('total');
-
-        // Data bulan ini
-        $bulanIni = Transaksi::whereBetween('created_at', [$startOfMonth, now()])->get();
-        $totalBulanIni = $bulanIni->sum('total');
-
-        return view('report.index', compact(
-            'totalHariIni', 'jumlahTransaksiHariIni', 'totalQtyHariIni',
-            'totalMingguIni', 'totalBulanIni'
-        ));
+    if ($filter == 'mingguan') {
+        $dateFrom = now()->startOfWeek();
+        $dateTo = now()->endOfWeek();
+    } elseif ($filter == 'bulanan') {
+        $dateFrom = now()->startOfMonth();
+        $dateTo = now()->endOfMonth();
+    } elseif ($filter == 'tahunan') {
+        $dateFrom = now()->startOfYear();
+        $dateTo = now()->endOfYear();
     }
+
+    // Ambil data transaksi berdasarkan tanggal
+    $transaksis = TransaksiKasir::whereBetween('created_at', [$dateFrom, $dateTo])->get();
+
+    // Kirim ke view
+    return view('admin.reports.index', compact('transaksis', 'filter'));
+}
+
+
+    public function daily()
+{
+    $tanggalHariIni = Carbon::today();
+    $transaksis = TransaksiKasir::whereDate('created_at', Carbon::today())->get();
+    return view('admin.reports.daily', compact('transaksis'));
+}
+public function weekly()
+{
+    $startOfWeek = Carbon::now()->startOfWeek();
+    $endOfWeek = Carbon::now()->endOfWeek();
+
+    $transaksis = TransaksiKasir::whereBetween('created_at', [$startOfWeek, $endOfWeek])->orderBy('created_at', 'desc')->get();
+
+    return view('admin.reports.weekly', compact('transaksis'));
+}
+
 }

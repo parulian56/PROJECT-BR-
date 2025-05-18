@@ -9,20 +9,23 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up()
+{
+    if (!Schema::hasTable('data')) {
         Schema::create('data', function (Blueprint $table) {
-            $table->id(); // ID transaksi (auto-increment)
-            $table->string('nama_barang'); // Nama produk (tipe data string)
-            $table->string('kategori'); // kategori produk yang dijual
-            $table->text('deskripsi')->nullable(); // Deskripsi produk (bisa kosong)
-            $table->decimal('jumlah', 15, 2); // Jumlah produk (tipe data decimal)
-            $table->decimal('harga_pokok', 16, 2); //Harga pokok produk
-            $table->decimal('harga_jual', 15, 2); // Harga satuan produk (tipe data decimal)
-            $table->string('lokasi_penyimpanan'); // Lokasi penyimpanan (tipe data string)
-            $table->timestamps(); // Kolom created_at dan updated_at
+            $table->id();
+            $table->string('nama_barang');
+            $table->string('kategori');
+            $table->text('deskripsi')->nullable();
+            $table->decimal('jumlah', 15, 2);
+            $table->decimal('harga_pokok', 16, 2);
+            $table->decimal('harga_jual', 15, 2);
+            $table->string('lokasi_penyimpanan');
+            $table->timestamps();
         });
     }
+}
+
 
     /**
      * Reverse the migrations.

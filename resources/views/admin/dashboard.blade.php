@@ -8,9 +8,15 @@
             <h1 class="text-2xl font-bold text-stone-800">Kasir Amaliah</h1>
             <p class="text-stone-500">Ringkasan transaksi dan penjualan hari ini</p>
         </div>
+<<<<<<< HEAD
         <div class="date-display py-2 px-4 rounded-xl bg-stone-100 text-stone-700 shadow-sm">
             <i class="far fa-calendar-alt mr-2"></i>
             <span class="font-medium">{{ now()->format('d M Y') }}</span>
+=======
+        <div class="date-display flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100 text-stone-700 shadow-md border border-amber-200">
+            <i class="far fa-calendar-alt text-amber-600"></i>
+            <span class="font-medium tracking-wide">{{ now()->format('d M Y') }}</span>
+>>>>>>> c44af7731b98814ef702d5d66c550aa27039acc6
         </div>
     </div>
 
@@ -299,7 +305,15 @@
     .bg-stone-200 {
         background-color: #e7e5e4;
     }
+<<<<<<< HEAD
 
+=======
+
+    .bg-amber-50 {
+        background-color: #fffbeb;
+    }
+
+>>>>>>> c44af7731b98814ef702d5d66c550aa27039acc6
     .bg-amber-100 {
         background-color: #fef3c7;
     }
@@ -319,7 +333,15 @@
     .border-stone-100 {
         border-color: #f5f5f4;
     }
+<<<<<<< HEAD
 
+=======
+
+    .border-amber-200 {
+        border-color: #fde68a;
+    }
+
+>>>>>>> c44af7731b98814ef702d5d66c550aa27039acc6
     .divide-stone-100 {
         border-color: #f5f5f4;
     }
