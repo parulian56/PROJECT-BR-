@@ -8,22 +8,31 @@ use App\Http\Controllers\{
     DashboardController,
     TransaksiKasirController,
     ReportController,
-   
+    UserController,
 };
+use Illuminate\Support\Facades\Route;
 
-// Public Routes
-Route::view('/', 'login');
+// Redirect user berdasarkan role saat akses root '/'
+Route::get('/', function () {
+    if (!auth()->check()) {
+        return redirect()->route('login');
+    }
 
-// LOGIN ROUTE
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+    return redirect()->intended(
+        auth()->user()->role === 'admin'
+            ? route('admin.dashboard')
+            : route('transaksi.index')
+    );
+});
 
-Route::get('/', fn () => redirect('/login'));
-
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('login');
-Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-
-
+// Auth Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register']);
+    
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+});
 
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
@@ -32,12 +41,10 @@ Route::middleware('auth')->group(function () {
     // USER - Dashboard & Profile
     Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
 
-    
-    // Profile Routes
-    Route::controller(ProfileController::class)->group(function () {
-        Route::get('/profile', 'edit')->name('profile.edit');
-        Route::patch('/profile', 'update')->name('profile.update');
-        Route::delete('/profile', 'destroy')->name('profile.destroy');
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
     });
 
     // USER - Transaksi Kasir
@@ -52,61 +59,49 @@ Route::middleware('auth')->group(function () {
         Route::delete('/', [TransaksiKasirController::class, 'hapusSemua'])->name('hapusSemua');
     });
 
-    // Admin Data Routes
-    Route::controller(DataController::class)->prefix('admin/data')->group(function () {
-        Route::get('/', 'index')->name('data.index');
-        Route::get('/create', 'create')->name('data.create');
-        Route::post('/', 'store')->name('data.store');
-        Route::get('/{data}', 'show')->name('data.show');
-        Route::get('/{data}/edit', 'edit')->name('data.edit');
-        Route::put('/{data}', 'update')->name('data.update');
-        Route::delete('/{data}', 'destroy')->name('data.destroy');
+    // ADMIN - Hanya untuk role admin
+    Route::prefix('admin')->middleware(['role:admin'])->name('admin.')->group(function () {
+        Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
+        Route::get('/users', [UserController::class, 'index'])->name('users');
 
-        // Category Routes
-        Route::prefix('kategori')->group(function () {
-            // Food Routes
-            Route::controller(MakananController::class)->prefix('makanan')->group(function () {
-                Route::get('index', 'index')->name('admin.data.kategori.makanan.index');
-                Route::get('create', 'create')->name('admin.data.kategori.makanan.create');
-                Route::post('/', 'store')->name('admin.data.kategori.makanan.store');
-                Route::get('{id}/edit', 'edit')->name('admin.data.kategori.makanan.edit');
-                Route::put('{id}', 'update')->name('admin.data.kategori.makanan.update');
-                Route::delete('{id}', 'destroy')->name('admin.data.kategori.makanan.destroy');
+        // DATA MASTER
+        Route::prefix('data')->name('data.')->group(function () {
+            Route::controller(DataController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{data}', 'show')->name('show');
+                Route::get('/{data}/edit', 'edit')->name('edit');
+                Route::put('/{data}', 'update')->name('update');
+                Route::delete('/{data}', 'destroy')->name('destroy');
             });
 
-            // Other Categories
-            Route::get('minuman', 'minuman')->name('admin.data.kategori.minuman');
-            Route::get('alat_tulis', 'alat_tulis')->name('admin.data.kategori.alat_tulis');
-            Route::get('seragam', 'seragam')->name('admin.data.kategori.seragam');
-            Route::get('lainya', 'lainya')->name('admin.data.kategori.lainya');
-
-            // Health & Hygiene
-            Route::controller(KesehatandankebersihanController::class)
-                 ->prefix('kesehatandankebersihan')
-                 ->group(function () {
-                Route::get('/', 'kesehatandankebersihan')->name('admin.data.kategori.kesehatandankebersihan.index');
-                Route::get('create', 'create')->name('admin.data.kategori.kesehatandankebersihan.create');
+            // KATEGORI MAKANAN
+            Route::prefix('kategori/makanan')->name('kategori.makanan.')->group(function () {
+                Route::get('index', [MakananController::class, 'index'])->name('index');
+                Route::get('create', [MakananController::class, 'create'])->name('create');
+                Route::post('/', [MakananController::class, 'store'])->name('store');
+                Route::get('{id}/edit', [MakananController::class, 'edit'])->name('edit');
+                Route::put('{id}', [MakananController::class, 'update'])->name('update');
+                Route::delete('{id}', [MakananController::class, 'destroy'])->name('destroy');
             });
-        });
-        //admin report
 
-        // Di bawah group utama admin, setelah definisi route admin/data
-Route::prefix('admin')->middleware(['auth', 'role:admin'])->name('admin.')->group(function () {
-    // Laporan
-    Route::get('reports', [ReportController::class, 'index'])->name('reports');
-    Route::get('reports/daily', [ReportController::class, 'daily'])->name('reports.daily');
-Route::get('/reports/weekly', [ReportController::class, 'weekly'])->name('admin.reports.weekly');    Route::get('reports/monthly', [ReportController::class, 'monthly'])->name('reports.monthly');
-    Route::get('reports/yearly', [ReportController::class, 'yearly'])->name('reports.yearly');
-});
+            // KATEGORI LAINNYA
+            Route::prefix('kategori')->group(function () {
+                Route::get('minuman', [MakananController::class, 'minuman'])->name('data.kategori.minuman');
+                Route::get('alat_tulis', [MakananController::class, 'alat_tulis'])->name('data.kategori.alat_tulis');
+                Route::get('seragam', [MakananController::class, 'seragam'])->name('data.kategori.seragam');
+                Route::get('lainya', [MakananController::class, 'lainya'])->name('data.kategori.lainya');
+            });
 
-        
-        Route::prefix('admin')->middleware(['auth'])->group(function () {
-            // Route untuk menampilkan laporan transaksi
-        Route::get('/admin/reports', [ReportController::class, 'index'])->name('admin.reports.index')->middleware('auth');
-            Route::get('/reports/daily', [ReportController::class, 'daily'])->name('admin.reports.daily');
-            Route::get('admin/reports/weekly', [ReportController::class, 'weekly'])->name('admin.reports.weekly');
-
-
+            // KESEHATAN & KEBERSIHAN
+            Route::prefix('kategori/kesehatandankebersihan')
+                ->name('kategori.kesehatandankebersihan.')
+                ->controller(KesehatandankebersihanController::class)
+                ->group(function () {
+                    Route::get('/', 'kesehatandankebersihan')->name('index');
+                    Route::get('create', 'create')->name('create');
+                });
         });
     });
 });
