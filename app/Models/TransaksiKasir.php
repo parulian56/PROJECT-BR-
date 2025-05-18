@@ -19,4 +19,5 @@ class TransaksiKasir extends Model
     ];
 
     protected $table = 'transaksi_kasir';
+
 }
