@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->middleware(['role:admin'])->name('admin.')->group(function () {
         Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
         Route::get('/users', [UserController::class, 'index'])->name('users');
+          Route::get('/reports', [ReportController::class, 'index'])->name('reports');
 
         // DATA MASTER
         Route::prefix('data')->name('data.')->group(function () {

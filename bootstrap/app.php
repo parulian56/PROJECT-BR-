@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
-use App\Http\Middleware\RoleMiddleware;
+use Spatie\Permission\Middlewares\RoleMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -10,14 +10,20 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function () {
+    ->withMiddleware(function ($middleware) {
+        
         return [
             'web' => [],
             'api' => [],
-            'middleware' => [], // global middleware, kosongkan jika tidak ada
-            'route' => [        // ini kuncinya: route middleware seperti 'auth', 'role'
-                'role' => RoleMiddleware::class,
+            'middleware' => [], // global middleware
+            'route' => [
+                // Middleware bawaan Laravel seperti 'auth' biasanya otomatis
+                // Kita tambahkan 'role' dari Spatie
+                 $middleware->alias([
+                'role' =>  \App\Http\Middleware\RoleMiddleware::class,
+                ]),
             ],
+         
         ];
     })
     ->withExceptions()
