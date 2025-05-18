@@ -12,7 +12,7 @@
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
                 </span>
             </h2>
-            <p class="text-stone-600 mt-2">Kelola inventaris Barang dengan mudah dan efisien</p>
+            <p class="text-stone-600 mt-2">Kelola inventaris Barangn mudah dan efisien</p>
         </div>
 
         <!-- Search & Add Button with responsive design -->
@@ -23,7 +23,7 @@
                         type="text"
                         name="search"
                         class="w-full py-3 px-4 text-stone-800 bg-white border-0 focus:ring-0 focus:outline-none"
-                        placeholder="🔍 Cari makanan..."
+                        placeholder="🔍 Cari barang..."
                         value="{{ request('search') }}"
                     >
                     <button
@@ -62,10 +62,10 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-stone-200">
-                        @forelse ($makanan as $item)
+                        @forelse ($lainya as $item)
                             <tr class="hover:bg-amber-50 transition-colors duration-150">
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-600">
-                                    {{ $loop->iteration + ($makanan->perPage() * ($makanan->currentPage() - 1)) }}
+                                    {{ $loop->iteration + ($lainya->perPage() * ($lainya->currentPage() - 1)) }}
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-stone-800">
                                     {{ $item->nama_barang }}
@@ -119,8 +119,8 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                         </svg>
-                                        <span class="font-medium">Tidak ada data makanan</span>
-                                        <p class="text-stone-400 text-sm">Tambahkan data untuk menampilkan inventaris makanan</p>
+                                        <span class="font-medium">Tidak ada data barang</span>
+                                        <p class="text-stone-400 text-sm">Tambahkan data untuk menampilkan inventaris barang</p>
                                     </div>
                                 </td>
                             </tr>
@@ -133,7 +133,7 @@
         <!-- Pagination with custom design -->
         <div class="mt-6">
             <div class="bg-white p-3 rounded-lg shadow-sm">
-                {{ $makanan->links() }}
+                {{ $lainya->links() }}
             </div>
         </div>
 

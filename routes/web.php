@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     ProfileController,
     DataController,
+    KesehatandankebersihanController,
     MakananController,
     DashboardController,
     TransaksiKasirController,
@@ -77,20 +78,31 @@ Route::middleware('auth')->group(function () {
                 'destroy' => 'makanan.destroy'
             ]);
 
+
+            Route::resource('kesehatandankebersihan', KesehatandankebersihanController::class)->names([
+                'index'   => 'kesehatandankebersihan.index',
+                'create'  => 'kesehatandankebersihan.create',
+                'store'   => 'kesehatandankebersihan.store',
+                'show'    => 'kesehatandankebersihan.show',
+                'edit'    => 'kesehatandankebersihan.edit',
+                'update'  => 'kesehatandankebersihan.update',
+                'destroy' => 'kesehatandankebersihan.destroy',
+            ]);
+
             // Kategori Lain (masih pakai DataController)
             Route::get('minuman', [DataController::class, 'minuman'])->name('minuman');
             Route::get('alat_tulis', [DataController::class, 'alat_tulis'])->name('alat_tulis');
             Route::get('seragam', [DataController::class, 'seragam'])->name('seragam');
 
             // Lainya (pakai controller terpisah)
-            Route::resource('lainya', LainyaController::class)->names([
-                'index' => 'lainya.index',
-                'create' => 'lainya.create',
-                'store' => 'lainya.store',
-                'edit' => 'lainya.edit',
-                'update' => 'lainya.update',
-                'destroy' => 'lainya.destroy'
-            ]);
+                Route::resource('lainya', LainyaController::class)->names([
+                    'index' => 'lainya.index',
+                    'create' => 'lainya.create',
+                    'store' => 'lainya.store',
+                    'edit' => 'lainya.edit',
+                    'update' => 'lainya.update',
+                    'destroy' => 'lainya.destroy'
+                ]);
         });
 
         // ----------------------

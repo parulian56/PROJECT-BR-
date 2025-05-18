@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         // database/migrations/xxxx_create_makanans_table.php
-Schema::create('data_makanan', function (Blueprint $table) {
+Schema::create('kesehatandankebersihan', function (Blueprint $table) {
     $table->id();
     $table->string('nama_barang');
     $table->string('kategori');
@@ -30,6 +30,6 @@ Schema::create('data_makanan', function (Blueprint $table) {
      */
     public function down(): void
     {
-        Schema::dropIfExists('data_makanan');
+        Schema::dropIfExists('kesehatandankebersihan');
     }
 };
