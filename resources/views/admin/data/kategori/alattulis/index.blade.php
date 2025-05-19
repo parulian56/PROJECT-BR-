@@ -12,12 +12,12 @@
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
                 </span>
             </h2>
-            <p class="text-stone-600 mt-2">Kelola inventaris kesehatan dan kebersihan dengan mudah dan efisien</p>
+            <p class="text-stone-600 mt-2">Kelola inventaris Barang mudah dan efisien</p>
         </div>
 
         <!-- Search & Add Button with responsive design -->
         <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
-            <form action="{{ route('admin.data.kategori.kesehatandankebersihan.index') }}" method="GET" class="w-full md:w-1/2">
+            <form action="{{ route('admin.data.kategori.alattulis.index') }}" method="GET" class="w-full md:w-1/2">
                 <div class="relative flex w-full overflow-hidden rounded-lg shadow-md transition-all duration-300 focus-within:shadow-lg">
                     <input
                         type="text"
@@ -36,7 +36,7 @@
             </form>
 
             <a
-                href="{{ route('admin.data.kategori.kesehatandankebersihan.create') }}"
+                href="{{ route('admin.data.kategori.alattulis.create') }}"
                 class="bg-stone-800 hover:bg-stone-900 text-white font-medium rounded-lg py-3 px-6 flex items-center justify-center gap-2 shadow-md transition-all duration-300 hover:shadow-lg"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -62,10 +62,10 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-stone-200">
-                        @forelse ($kesehatandankebersihan as $item)
+                        @forelse ($alattulis as $item)
                             <tr class="hover:bg-amber-50 transition-colors duration-150">
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-600">
-                                    {{ $loop->iteration + ($kesehatandankebersihan->perPage() * ($kesehatandankebersihan->currentPage() - 1)) }}
+                                    {{ $loop->iteration + ($alattulis->perPage() * ($alattulis->currentPage() - 1)) }}
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-stone-800">
                                     {{ $item->nama_barang }}
@@ -88,14 +88,14 @@
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-center">
                                     <div class="flex justify-center space-x-2">
-                                        <a href="{{ route('admin.data.kategori.kesehatandankebersihan.edit', $item->id) }}"
+                                        <a href="{{ route('admin.data.kategori.alattulis.edit', $item->id) }}"
                                            class="bg-stone-300 hover:bg-stone-400 text-stone-800 p-2 rounded-md transition-colors duration-200"
                                            title="Edit">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                             </svg>
                                         </a>
-                                        <form action="{{ route('admin.data.kategori.kesehatandankebersihan.destroy', $item->id) }}"
+                                        <form action="{{ route('admin.data.kategori.alattulis.destroy', $item->id) }}"
                                               method="POST"
                                               class="inline-block"
                                               onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
@@ -119,8 +119,8 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                         </svg>
-                                        <span class="font-medium">Tidak ada data makanan</span>
-                                        <p class="text-stone-400 text-sm">Tambahkan data untuk menampilkan inventaris makanan</p>
+                                        <span class="font-medium">Tidak ada data barang</span>
+                                        <p class="text-stone-400 text-sm">Tambahkan data untuk menampilkan inventaris barang</p>
                                     </div>
                                 </td>
                             </tr>
@@ -128,12 +128,12 @@
                     </tbody>
                 </table>
             </div>
-        </div>  
+        </div>
 
         <!-- Pagination with custom design -->
         <div class="mt-6">
             <div class="bg-white p-3 rounded-lg shadow-sm">
-                {{ $kesehatandankebersihan->links() }}
+                {{ $alattulis->links() }}
             </div>
         </div>
 

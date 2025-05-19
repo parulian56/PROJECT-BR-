@@ -10,13 +10,18 @@ class KesehatandankebersihanController extends Controller
 {
     public function index()
     {
-        $Kesehatandankebersihan = Kesehatandankebersihan::where('kategori', 'kesehatandankebersihan')->paginate(10);
+        $kesehatandankebersihan = Kesehatandankebersihan::where('kategori', 'kesehatandankebersihan')->paginate(10);
         return view('admin.data.kategori.kesehatandankebersihan.index', compact('kesehatandankebersihan'));
     }
 
     public function create()
     {
         return view('admin.data.kategori.kesehatandankebersihan.create');
+    }
+
+    public function show()
+    {
+        //kontol
     }
 
   public function store(Request $request)

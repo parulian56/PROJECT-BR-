@@ -71,21 +71,6 @@
                         </div>
                     </div>
 
-                    <!-- Kategori -->
-                    <div class="col-span-1">
-                        <label for="kategori" class="block text-sm font-medium text-gray-700 mb-1">
-                            Kategori <span class="text-red-500">*</span>
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-tag text-gray-400"></i>
-                            </div>
-                            <input type="text" name="kategori" id="kategori"
-                                class="block w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm transition duration-150 ease-in-out"
-                                placeholder="Masukkan kategori" value="{{ old('kategori', $kesehatandankebersihan->kategori) }}" required>
-                        </div>
-                    </div>
-
                     <!-- Deskripsi -->
                     <div class="col-span-full">
                         <label for="deskripsi" class="block text-sm font-medium text-gray-700 mb-1">
