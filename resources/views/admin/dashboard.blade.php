@@ -222,7 +222,7 @@
                         <div class="w-10 h-10 bg-amber-600 text-white rounded-full flex items-center justify-center mb-2">
                             <i class="fas fa-plus"></i>
                         </div>
-                        <span class="text-sm font-medium text-stone-700">Transaksi Baru</span>
+                        <span class="text-sm font-medium text-stone-700">Transaksi Baru</span>x
                     </button>
                     <button class="p-3 bg-stone-100 hover:bg-stone-200 rounded-lg transition-colors flex flex-col items-center">
                         <div class="w-10 h-10 bg-stone-600 text-white rounded-full flex items-center justify-center mb-2">

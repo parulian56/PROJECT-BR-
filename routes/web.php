@@ -10,6 +10,8 @@ use App\Http\Controllers\{
     DashboardController,
     TransaksiKasirController,
     LainyaController,
+    MinumanController,
+    AlattulisController,
     ReportController // <- Tambahkan controller Report
 };
 
@@ -94,16 +96,32 @@ Route::middleware('auth')->group(function () {
             ]);
 
             // Kategori lain (pakai DataController)
-            Route::get('minuman', [DataController::class, 'minuman'])->name('minuman');
-            Route::get('alat_tulis', [DataController::class, 'alat_tulis'])->name('alat_tulis');
+            Route::resource('minuman', MinumanController::class)->names([
+                'index'   => 'minuman.index',
+                'create'  => 'minuman.create',
+                'store'   => 'minuman.store',
+                'show'    => 'minuman.show',
+                'edit'    => 'minuman.edit',
+                'update'  => 'minuman.update',
+                'destroy' => 'minuman.destroy',
+            ]);
+
+              Route::resource('alattulis', AlattulisController::class)->names([
+                'index' => 'alattulis.index',
+                'create' => 'alattulis.create',
+                'show' => 'alattulis.show',
+                'store' => 'alattulis.store',
+                'edit' => 'alattulis.edit',
+                'update' => 'alattulis.update',
+                'destroy' => 'alattulis.destroy'
+                ]);
             Route::get('seragam', [DataController::class, 'seragam'])->name('seragam');
 
             // Kategori lainya (pakai controller sendiri)
-            Route::resource('lainya', LainyaController::class)
-                ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
-                ->names([
+            Route::resource('lainya', LainyaController::class)->names([
                     'index' => 'lainya.index',
                     'create' => 'lainya.create',
+                    'show' => 'lainya.show',
                     'store' => 'lainya.store',
                     'edit' => 'lainya.edit',
                     'update' => 'lainya.update',

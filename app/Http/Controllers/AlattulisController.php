@@ -2,32 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lainya;
+use App\Models\Alattulis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class LainyaController extends Controller
+class AlattulisController extends Controller
 {
     public function index()
     {
-        $lainya = Lainya::where('kategori', 'lainya')->paginate(10);
-        return view('admin.data.kategori.lainya.index', compact('lainya'));
+        $alattulis = Alattulis::where('kategori', 'alattulis')->paginate(10);
+        return view('admin.data.kategori.alattulis.index', compact('alattulis'));
     }
 
     public function create()
     {
-        return view('admin.data.kategori.lainya.create');
+        return view('admin.data.kategori.alattulis.create');
     }
-
-    public function show(Request $request) {
-        //pala bapak engkau
+    public function show(Request $request)
+    {
+        //anjayy
     }
 
   public function store(Request $request)
 {
     $validated = $request->validate([
         'nama_barang' => 'required|string|max:255',
-        'kategori' => 'required|string|in:lainya',
+        'kategori' => 'required|string|in:alattulis',
         'deskripsi' => 'nullable|string',
         'jumlah' => 'required|integer|min:1',
         'harga_pokok' => 'required|numeric|min:0',
@@ -36,10 +36,10 @@ class LainyaController extends Controller
     ]);
 
     try {
-        Lainya::create($validated);
-        return redirect()->route('admin.data.kategori.lainya.index')->with('success', 'Data berhasil ditambahkan!');
+        Alattulis::create($validated);
+        return redirect()->route('admin.data.kategori.alattulis.index')->with('success', 'Data berhasil ditambahkan!');
     } catch (\Exception $e) {
-        Log::error('Error storing Barang: '.$e->getMessage());
+        Log::error('Error storing barang: '.$e->getMessage());
         return back()->with('error', 'Gagal menyimpan data')->withInput();
     }
 }
@@ -47,15 +47,15 @@ class LainyaController extends Controller
 
     public function edit($id)
     {
-        $lainya = Lainya::findOrFail($id);
-        return view('admin.data.kategori.lainya.edit', compact('lainya'));
+        $alattulis = Alattulis::findOrFail($id);
+        return view('admin.data.kategori.alattulis.edit', compact('alattulis'));
     }
 
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
             'nama_barang' => 'required|string|max:255',
-            'kategori' => 'required|string|in:lainya',
+            'kategori' => 'required|string|in:alattulis',
             'deskripsi' => 'nullable|string',
             'jumlah' => 'required|integer|min:1',
             'harga_pokok' => 'required|numeric|min:0',
@@ -64,11 +64,11 @@ class LainyaController extends Controller
         ]);
 
         try {
-            $lainya = Lainya::findOrFail($id);
-            $lainya->update($validated);
-            return redirect()->route('admin.data.kategori.lainya.index')->with('success', 'Data berhasil diperbarui!');
+            $alattulis = Alattulis::findOrFail($id);
+            $alattulis->update($validated);
+            return redirect()->route('admin.data.kategori.alattulis.index')->with('success', 'Data berhasil diperbarui!');
         } catch (\Exception $e) {
-            Log::error('Error updating Barang: '.$e->getMessage());
+            Log::error('Error updating barang: '.$e->getMessage());
             return back()->with('error', 'Gagal memperbarui data')->withInput();
         }
     }
@@ -76,11 +76,11 @@ class LainyaController extends Controller
     public function destroy($id)
     {
         try {
-            $lainya = Lainya::findOrFail($id);
-            $lainya->delete();
-            return redirect()->route('admin.data.kategori.lainya.index')->with('success', 'Data berhasil dihapus!');
+            $alattulis = Alattulis::findOrFail($id);
+            $alattulis->delete();
+            return redirect()->route('admin.data.kategori.alattulis.index')->with('success', 'Data berhasil dihapus!');
         } catch (\Exception $e) {
-            Log::error('Error deleting barang: '.$e->getMessage());
+            Log::error('Error deleting Barang: '.$e->getMessage());
             return back()->with('error', 'Gagal menghapus data');
         }
     }

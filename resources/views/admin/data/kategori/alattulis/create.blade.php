@@ -16,11 +16,11 @@
                     </svg>
                     Tambah Data Barang
                 </h2>
-                <p class="text-amber-100 mt-1 relative z-10">Lengkapi form berikut untuk menambahkan data barang baru</p>
+                <p class="text-amber-100 mt-1 relative z-10">Lengkapi form berikut untuk menambahkan data makanan baru</p>
             </div>
 
             <!-- Form -->
-            <form action="{{ route('admin.data.kategori.minuman.store') }}" method="POST" class="p-6">
+            <form action="{{ route('admin.data.kategori.alattulis.store') }}" method="POST" class="p-6">
                 @csrf
                 <div class="space-y-6">
                     <!-- Nama Barang Field -->
@@ -40,7 +40,7 @@
                                     id="nama_barang"
                                     name="nama_barang"
                                     class="focus:ring-amber-500 focus:border-amber-500 block w-full pl-10 pr-4 py-3 sm:text-sm border-stone-300 rounded-lg"
-                                    placeholder="Masukkan nama barang"
+                                    placeholder="Masukkan nama makanan"
                                     required
                                 >
                             </div>
@@ -64,7 +64,7 @@
                                     type="text"
                                     id="kategori"
                                     name="kategori"
-                                    value="minuman"
+                                    value="alat_tulis"
                                     readonly
                                     class="bg-stone-50 text-stone-500 focus:ring-amber-500 focus:border-amber-500 block w-full pl-10 pr-4 py-3 sm:text-sm border-stone-300 rounded-lg cursor-not-allowed"
                                 >
@@ -181,7 +181,7 @@
                             Simpan Data
                         </button>
                         <a
-                            href="{{ route('admin.data.kategori.minuman.index') }}"
+                            href="{{ route('admin.data.kategori.alattulis.index') }}"
                             class="w-full sm:w-auto flex justify-center items-center px-6 py-3 border border-stone-300 text-base font-medium rounded-lg shadow-sm text-stone-700 bg-white hover:bg-stone-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-500 transition-colors duration-300"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">

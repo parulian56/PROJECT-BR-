@@ -128,12 +128,12 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div>  
 
         <!-- Pagination with custom design -->
         <div class="mt-6">
             <div class="bg-white p-3 rounded-lg shadow-sm">
-                {{ $makanan->links() }}
+                {{ $kesehatandankebersihan->links() }}
             </div>
         </div>
 

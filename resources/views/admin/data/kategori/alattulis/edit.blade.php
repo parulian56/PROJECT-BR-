@@ -12,7 +12,7 @@
                 <p class="text-gray-600 text-sm md:text-base">Perbarui informasi item dalam inventaris</p>
             </div>
 
-            <a href="{{ route('admin.data.kategori.minuman.index') }}"
+            <a href="{{ route('admin.data.kategori.kesehatandankebersihan.index') }}"
                class="group flex items-center mt-4 md:mt-0 text-orange-600 hover:text-orange-800 font-medium transition-all duration-300 ease-in-out">
                 <span class="flex items-center justify-center w-8 h-8 mr-2 bg-orange-100 rounded-full group-hover:bg-orange-200 transition-all duration-300">
                     <i class="fas fa-arrow-left text-sm"></i>
@@ -51,7 +51,7 @@
             </div>
 
             <!-- Form Section -->
-            <form action="{{ route('admin.data.kategori.minuman.update', $minuman->id) }}" method="POST" class="p-6">
+            <form action="{{ route('admin.data.kategori.kesehatandankebersihan.update', $kesehatandankebersihan->id) }}" method="POST" class="p-6">
                 @csrf
                 @method('PUT')
 
@@ -67,7 +67,7 @@
                             </div>
                             <input type="text" name="nama_barang" id="nama_barang"
                                 class="block w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm transition duration-150 ease-in-out"
-                                placeholder="Masukkan nama barang" value="{{ old('nama_barang', $minuman->nama_barang) }}" required>
+                                placeholder="Masukkan nama barang" value="{{ old('nama_barang', $kesehatandankebersihan->nama_barang) }}" required>
                         </div>
                     </div>
 
@@ -82,7 +82,7 @@
                             </div>
                             <input type="text" name="kategori" id="kategori"
                                 class="block w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm transition duration-150 ease-in-out"
-                                placeholder="Masukkan kategori" value="{{ old('kategori', $minuman->kategori) }}" required>
+                                placeholder="Masukkan kategori" value="{{ old('kategori', $kesehatandankebersihan->kategori) }}" required>
                         </div>
                     </div>
 
@@ -97,7 +97,7 @@
                             </div>
                             <textarea name="deskripsi" id="deskripsi" rows="3"
                                 class="block w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm transition duration-150 ease-in-out"
-                                placeholder="Masukkan deskripsi detail produk">{{ old('deskripsi', $minuman->deskripsi) }}</textarea>
+                                placeholder="Masukkan deskripsi detail produk">{{ old('deskripsi', $kesehatandankebersihan->deskripsi) }}</textarea>
                         </div>
                     </div>
 
@@ -112,7 +112,7 @@
                             </div>
                             <input type="number" name="jumlah" id="jumlah" min="0"
                                 class="block w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm transition duration-150 ease-in-out"
-                                placeholder="Masukkan jumlah barang" value="{{ old('jumlah', $minuman->jumlah) }}" required>
+                                placeholder="Masukkan jumlah barang" value="{{ old('jumlah', $kesehatandankebersihan->jumlah) }}" required>
                         </div>
                     </div>
 
@@ -127,7 +127,7 @@
                             </div>
                             <input type="text" name="lokasi_penyimpanan" id="lokasi_penyimpanan"
                                 class="block w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm transition duration-150 ease-in-out"
-                                placeholder="Masukkan lokasi penyimpanan" value="{{ old('lokasi_penyimpanan', $minuman->lokasi_penyimpanan) }}" required>
+                                placeholder="Masukkan lokasi penyimpanan" value="{{ old('lokasi_penyimpanan', $kesehatandankebersihan->lokasi_penyimpanan) }}" required>
                         </div>
                     </div>
 
@@ -152,7 +152,7 @@
                             </div>
                             <input type="number" step="0.01" name="harga_pokok" id="harga_pokok" min="0"
                                 class="block w-full pl-16 pr-3 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm transition duration-150 ease-in-out"
-                                placeholder="0.00" value="{{ old('harga_pokok', $minuman->harga_pokok) }}" required>
+                                placeholder="0.00" value="{{ old('harga_pokok', $makkesehatandankebersihananan->harga_pokok) }}" required>
                         </div>
                     </div>
 
@@ -170,7 +170,7 @@
                             </div>
                             <input type="number" step="0.01" name="harga_jual" id="harga_jual" min="0"
                                 class="block w-full pl-16 pr-3 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm transition duration-150 ease-in-out"
-                                placeholder="0.00" value="{{ old('harga_satuan', $minuman->harga_jual) }}" required>
+                                placeholder="0.00" value="{{ old('harga_satuan', $kesehatandankebersihan->harga_jual) }}" required>
                         </div>
                         <div class="mt-1">
                             <span id="profit_margin" class="text-sm text-gray-500">
@@ -182,7 +182,7 @@
 
                 <!-- Buttons Section -->
                 <div class="mt-8 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3">
-                    <a href="{{ route('admin.data.kategori.minuman.index') }}"
+                    <a href="{{ route('admin.data.kategori.kesehatandankebersihan.index') }}"
                         class="inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out">
                         <i class="fas fa-times mr-2"></i>
                         Batal
@@ -198,7 +198,7 @@
 
         <!-- Updated Timestamp -->
         <div class="mt-4 text-right text-sm text-gray-500">
-            <p>Terakhir diperbarui: {{ $lainya->updated_at->format('d M Y, H:i') }}</p>
+            <p>Terakhir diperbarui: {{ $makanan->updated_at->format('d M Y, H:i') }}</p>
         </div>
     </div>
 </div>
