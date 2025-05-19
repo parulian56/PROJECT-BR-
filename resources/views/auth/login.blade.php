@@ -2,21 +2,21 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <div class="max-w-md w-full mx-auto bg-white dark:bg-stone-600 rounded-xl shadow-lg overflow-hidden p-8 space-y-6">
-        <div class="text-center">
-            <h1 class="text-3xl font-bold text-gray-800 dark:text-white">Welcome Back</h1>
-            <p class="mt-2 text-gray-600 dark:text-gray-300">Sign in to your account</p>
+    <div class="w-full bg-white rounded-lg p-6">
+        <div class="text-center mb-6">
+            <h2 class="text-2xl font-bold text-amber-500">Welcome Back</h2>
+            <div class="w-12 h-1 bg-amber-500 mx-auto my-2 rounded-full"></div>
         </div>
 
-        <form method="POST" action="{{ route('login') }}" class="space-y-6">
+        <form method="POST" action="{{ route('login') }}" class="space-y-5">
             @csrf
 
-            <!-- Email Address -->
+           <!-- Email Address -->
             <div class="space-y-2">
-                <x-input-label for="email" :value="__('Email')" class="text-gray-700 dark:text-gray-300" />
+                <x-input-label for="email" :value="__('Email')" class="text-gray-900 dark:text-gray-800" />
                 <x-text-input 
                     id="email" 
-                    class="block w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white transition duration-200" 
+                    class="block w-full px-4 py-3 rounded-lg border border-amber-500 bg-amber-100 text-amber-900 focus:ring-3 focus:ring-amber-500 focus:border-amber-500 dark:border-orange-500 dark:bg-amber-100 dark:text-white transition duration-200"
                     type="email" 
                     name="email" 
                     :value="old('email')" 
@@ -27,11 +27,10 @@
                 />
                 <x-input-error :messages="$errors->get('email')" class="mt-1 text-sm text-red-600" />
             </div>
-
             <!-- Password -->
             <div class="space-y-2">
                 <div class="flex items-center justify-between">
-                    <x-input-label for="password" :value="__('Password')" class="text-gray-700 dark:text-gray-300" />
+                    <x-input-label for="password" :value="__('Password')" class="text-gray-900 dark:text-gray-500" />
                     @if (Route::has('password.request'))
                         <a class="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition duration-200" href="{{ route('password.request') }}">
                             {{ __('Forgot password?') }}
@@ -40,7 +39,7 @@
                 </div>
                 <x-text-input 
                     id="password" 
-                    class="block w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white transition duration-200"
+                    class="block w-full px-4 py-3 rounded-lg border border-amber-800 dark:border-amber-600 focus:ring-3 focus:ring-orange-500 focus:border-orange-500 dark:bg-amber-100 dark:text-white transition duration-200"
                     type="password"
                     name="password"
                     required 
@@ -48,35 +47,47 @@
                     placeholder="Enter your password"
                 />
                 <x-input-error :messages="$errors->get('password')" class="mt-1 text-sm text-red-600" />
+                </div>
+
+            <!-- Remember Me and Forgot Password -->
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input 
+                        id="remember_me" 
+                        type="checkbox" 
+                        class="h-4 w-4 text-amber-500 focus:ring-amber-500 border-gray-300 rounded"
+                        name="remember"
+                    > 
+                    <label for="remember_me" class="ml-2 text-sm text-gray-600">
+                        {{ __('Keep me logged in') }}
+                    </label>
+                </div>
+
+                @if (Route::has('password.request'))
+                    <a class="text-sm text-amber-600 hover:text-amber-500" href="{{ route('password.request') }}">
+                        {{ __('Forgot Password?') }}
+                    </a>
+                @endif
             </div>
 
-            <!-- Remember Me -->
-            <div class="flex items-center">
-                <input 
-                    id="remember_me" 
-                    type="checkbox" 
-                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700 transition duration-200"
-                    name="remember"
-                > 
-                <label for="remember_me" class="ms-2 text-sm text-gray-600 dark:text-gray-300">
-                    {{ __('Remember me') }}
-                </label>
-            </div>
-
+            <!-- Login Button -->
             <div>
-                <x-primary-button class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 transition duration-200">
+                <x-primary-button class="w-full flex justify-center py-3 px-4 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition duration-200">
                     {{ __('Log in') }}
                 </x-primary-button>
             </div>
         </form>
 
-        <div class="text-center text-sm text-gray-600 dark:text-gray-400">
-            Don't have an account? 
-            @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 font-medium transition duration-200">
-                    Sign up
-                </a>
-            @endif
+        <!-- Sign Up Link -->
+        <div class="text-center mt-6">
+            <p class="text-sm text-gray-600">
+                Haven't joined?
+                @if (Route::has('register'))
+                    <a href="{{ route('register') }}" class="text-amber-600 hover:text-amber-500 font-medium">
+                        Register
+                    </a>
+                @endif
+            </p>
         </div>
     </div>
 </x-guest-layout>

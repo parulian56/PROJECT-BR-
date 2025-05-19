@@ -351,7 +351,8 @@
                         <h5 class="mb-3">Kasir Am</h5>
                         <p class="mb-0">Solusi kasir modern untuk bisnis Anda. Mudah digunakan, cepat, dan andal.</p>
                     </div>
-                </header>
+                </div>
+                
             @endisset
 
             <!-- Page Content -->
