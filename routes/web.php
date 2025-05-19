@@ -65,10 +65,19 @@ Route::middleware('auth')->group(function () {
     });
 
     // ADMIN - Hanya untuk role admin
-    Route::prefix('admin')->middleware(['role:admin'])->name('admin.')->group(function () {
+Route::prefix('admin')
+    ->middleware(['role:admin'])
+    ->name('admin.')
+    ->group(function () {
+
         Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
+
         Route::get('/users', [UserController::class, 'index'])->name('users');
-          Route::get('/reports', [ReportController::class, 'index'])->name('reports');
+
+        Route::get('/reports', [ReportController::class, 'index'])->name('reports');
+
+    });
+
 
     Route::prefix('admin/data')->name('admin.data.')->group(function () {
 
@@ -146,4 +155,4 @@ Route::middleware('auth')->group(function () {
         });
         });
     });
-});
+
