@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users');
           Route::get('/reports', [ReportController::class, 'index'])->name('reports');
 
-Route::prefix('admin/data')->name('admin.data.')->group(function () {
+    Route::prefix('admin/data')->name('admin.data.')->group(function () {
 
         Route::get('/', [DataController::class, 'index'])->name('index');
 
@@ -117,7 +117,15 @@ Route::prefix('admin/data')->name('admin.data.')->group(function () {
                 'update' => 'alattulis.update',
                 'destroy' => 'alattulis.destroy'
                 ]);
-            Route::get('seragam', [DataController::class, 'seragam'])->name('seragam');
+              Route::resource('seragam', SeragamController::class)->names([
+                'index' => 'seragam.index',
+                'create' => 'seragam.create',
+                'show' => 'seragam.show',
+                'store' => 'seragam.store',
+                'edit' => 'alattulis.edit',
+                'update' => 'alattulis.update',
+                'destroy' => 'alattulis.destroy'
+                ]);
 
             // Kategori lainya (pakai controller sendiri)
             Route::resource('lainya', LainyaController::class)->names([
