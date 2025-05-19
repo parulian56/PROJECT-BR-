@@ -93,12 +93,7 @@
                         <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="mb-2">
-                    <input type="number" name="" class="w-full border rounded p-2 focus:ring focus:ring-amber-200" style="border-color: #D2B48C;">
-                    @error('')
-                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
+               
                 <button type="submit" class="bg-blue-500 text-white w-full py-2 rounded mt-2 hover:bg-blue-600 transition">Tambah</button>
             </form>
         </div>

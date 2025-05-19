@@ -103,9 +103,6 @@
                     <button class="px-3 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-sm transition-colors">
                         <i class="fas fa-filter mr-1"></i> Filter
                     </button>
-                    <button class="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-sm transition-colors">
-                        <i class="fas fa-plus mr-1"></i> Transaksi Baru
-                    </button>
                 </div>
             </div>
             <div class="overflow-x-auto">
@@ -116,7 +113,6 @@
                             <th class="py-3 px-4 text-left font-semibold">Waktu</th>
                             <th class="py-3 px-4 text-left font-semibold">Total</th>
                             <th class="py-3 px-4 text-left font-semibold">Status</th>
-                            <th class="py-3 px-4 text-left font-semibold">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-stone-100">
@@ -125,12 +121,7 @@
                             <td class="py-4 px-4 text-sm text-stone-600">10:24 WIB</td>
                             <td class="py-4 px-4 font-medium text-stone-800">Rp125.000</td>
                             <td class="py-4 px-4">
-                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Selesai</span>
-                            </td>
-                            <td class="py-4 px-4">
-                                <button class="text-stone-500 hover:text-amber-600 transition-colors">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
+                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Berhasil</span>
                             </td>
                         </tr>
                         <tr class="hover:bg-stone-50 transition-colors">
@@ -138,12 +129,7 @@
                             <td class="py-4 px-4 text-sm text-stone-600">11:45 WIB</td>
                             <td class="py-4 px-4 font-medium text-stone-800">Rp89.500</td>
                             <td class="py-4 px-4">
-                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Selesai</span>
-                            </td>
-                            <td class="py-4 px-4">
-                                <button class="text-stone-500 hover:text-amber-600 transition-colors">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
+                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Berhasil</span>
                             </td>
                         </tr>
                         <tr class="hover:bg-stone-50 transition-colors">
@@ -151,12 +137,7 @@
                             <td class="py-4 px-4 text-sm text-stone-600">12:30 WIB</td>
                             <td class="py-4 px-4 font-medium text-stone-800">Rp156.750</td>
                             <td class="py-4 px-4">
-                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Proses</span>
-                            </td>
-                            <td class="py-4 px-4">
-                                <button class="text-stone-500 hover:text-amber-600 transition-colors">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
+                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">Gagal</span>
                             </td>
                         </tr>
                         <tr class="hover:bg-stone-50 transition-colors">
@@ -164,12 +145,7 @@
                             <td class="py-4 px-4 text-sm text-stone-600">13:15 WIB</td>
                             <td class="py-4 px-4 font-medium text-stone-800">Rp210.000</td>
                             <td class="py-4 px-4">
-                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Selesai</span>
-                            </td>
-                            <td class="py-4 px-4">
-                                <button class="text-stone-500 hover:text-amber-600 transition-colors">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
+                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Berhasil</span>
                             </td>
                         </tr>
                     </tbody>
@@ -209,39 +185,6 @@
                         <span class="font-medium text-stone-700">{{ $product['revenue'] }}</span>
                     </div>
                     @endforeach
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                <div class="border-b border-stone-100 p-5">
-                    <h3 class="font-bold text-stone-800">Aksi Cepat</h3>
-                </div>
-                <div class="p-5 grid grid-cols-2 gap-3">
-                    <button class="p-3 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors flex flex-col items-center">
-                        <div class="w-10 h-10 bg-amber-600 text-white rounded-full flex items-center justify-center mb-2">
-                            <i class="fas fa-plus"></i>
-                        </div>
-                        <span class="text-sm font-medium text-stone-700">Transaksi Baru</span>x
-                    </button>
-                    <button class="p-3 bg-stone-100 hover:bg-stone-200 rounded-lg transition-colors flex flex-col items-center">
-                        <div class="w-10 h-10 bg-stone-600 text-white rounded-full flex items-center justify-center mb-2">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <span class="text-sm font-medium text-stone-700">Cari Produk</span>
-                    </button>
-                    <button class="p-3 bg-stone-100 hover:bg-stone-200 rounded-lg transition-colors flex flex-col items-center">
-                        <div class="w-10 h-10 bg-stone-600 text-white rounded-full flex items-center justify-center mb-2">
-                            <i class="fas fa-print"></i>
-                        </div>
-                        <span class="text-sm font-medium text-stone-700">Cetak Laporan</span>
-                    </button>
-                    <button class="p-3 bg-stone-100 hover:bg-stone-200 rounded-lg transition-colors flex flex-col items-center">
-                        <div class="w-10 h-10 bg-stone-600 text-white rounded-full flex items-center justify-center mb-2">
-                            <i class="fas fa-cog"></i>
-                        </div>
-                        <span class="text-sm font-medium text-stone-700">Pengaturan</span>
-                    </button>
                 </div>
             </div>
         </div>
