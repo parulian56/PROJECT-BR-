@@ -15,25 +15,25 @@
     .bg-brown-700 { background-color: #5D4037; }
     .bg-brown-800 { background-color: #4E342E; }
     .bg-brown-900 { background-color: #3E2723; }
-    
+
     .text-brown-500 { color: #8D6E63; }
     .text-brown-600 { color: #6D4C41; }
     .text-brown-700 { color: #5D4037; }
     .text-brown-800 { color: #4E342E; }
     .text-brown-900 { color: #3E2723; }
-    
+
     .border-brown-100 { border-color: #F5EDE4; }
     .border-brown-200 { border-color: #E8D8C9; }
     .border-brown-300 { border-color: #D2B9A5; }
     .border-brown-500 { border-color: #8D6E63; }
-    
+
     .hover\:bg-brown-700:hover { background-color: #5D4037; }
     .hover\:bg-brown-800:hover { background-color: #4E342E; }
     .hover\:text-brown-800:hover { color: #4E342E; }
-    
+
     .focus\:ring-brown-500:focus { --tw-ring-color: #8D6E63; }
     .focus\:border-brown-500:focus { border-color: #8D6E63; }
-    
+
     .hover\:bg-brown-50:hover { background-color: #FBF7F3; }
 </style>
 @endsection
@@ -53,7 +53,7 @@
         <h1 class="text-2xl font-bold text-brown-900 mb-4 md:mb-0">
             <i class="fas fa-file-invoice text-brown-600 mr-2"></i>Laporan Transaksi
         </h1>
-        
+
         <div class="flex flex-wrap gap-2">
             <button class="bg-brown-700 hover:bg-brown-800 text-white px-4 py-2 rounded-md text-sm flex items-center transition-colors">
                 <i class="fas fa-file-excel mr-2"></i> Export Excel
@@ -69,7 +69,7 @@
 
     <!-- Filter Section -->
     <div class="bg-white p-4 rounded-lg mb-6 border border-brown-200 shadow-sm">
-        <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form method="GET" action="{{ route('admin.report.index') }}" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="flex flex-col">
                 <label class="text-sm font-medium text-brown-800 mb-1">Periode Laporan</label>
                 <select name="filter" onchange="this.form.submit()" class="border border-brown-300 px-3 py-2 rounded-md focus:ring-2 focus:ring-brown-500 focus:border-brown-500 transition-all bg-brown-50 text-brown-800">
@@ -79,7 +79,7 @@
                     <option value="tahunan" {{ $filter == 'tahunan' ? 'selected' : '' }}>Tahunan</option>
                 </select>
             </div>
-            
+
             <div class="flex items-end justify-end">
                 <button type="submit" class="bg-brown-600 hover:bg-brown-700 text-white px-6 py-2 rounded-md font-medium flex justify-center items-center transition-colors">
                     <i class="fas fa-search mr-2"></i> Tampilkan
@@ -101,7 +101,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="bg-white border border-brown-200 p-4 rounded-lg shadow-sm">
             <div class="flex justify-between">
                 <div>
@@ -113,7 +113,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="bg-white border border-brown-200 p-4 rounded-lg shadow-sm">
             <div class="flex justify-between">
                 <div>
