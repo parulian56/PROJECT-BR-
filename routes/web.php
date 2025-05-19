@@ -7,7 +7,12 @@ use App\Http\Controllers\{
     MakananController,
     DashboardController,
     TransaksiKasirController,
+    KesehatandankebersihanController,
+    MinumanController,
+    AlattulisController,
     ReportController,
+    LainyaController,
+    SeragamController,
     UserController,
 };
 use Illuminate\Support\Facades\Route;
@@ -29,7 +34,7 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'register']);
-    
+
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 });
@@ -65,7 +70,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users');
           Route::get('/reports', [ReportController::class, 'index'])->name('reports');
 
-        Route::prefix('admin/data')->name('admin.data.')->group(function () {
+Route::prefix('admin/data')->name('admin.data.')->group(function () {
 
         Route::get('/', [DataController::class, 'index'])->name('index');
 
