@@ -86,21 +86,6 @@
                         </div>
                     </div>
 
-                    <!-- Deskripsi -->
-                    <div class="col-span-full">
-                        <label for="deskripsi" class="block text-sm font-medium text-gray-700 mb-1">
-                            Deskripsi
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-align-left text-gray-400"></i>
-                            </div>
-                            <textarea name="deskripsi" id="deskripsi" rows="3"
-                                class="block w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm transition duration-150 ease-in-out"
-                                placeholder="Masukkan deskripsi detail produk">{{ old('deskripsi', $minuman->deskripsi) }}</textarea>
-                        </div>
-                    </div>
-
                     <!-- Jumlah -->
                     <div class="col-span-1">
                         <label for="jumlah" class="block text-sm font-medium text-gray-700 mb-1">
@@ -198,7 +183,7 @@
 
         <!-- Updated Timestamp -->
         <div class="mt-4 text-right text-sm text-gray-500">
-            <p>Terakhir diperbarui: {{ $lainya->updated_at->format('d M Y, H:i') }}</p>
+            <p>Terakhir diperbarui: {{ $minuman->updated_at->format('d M Y, H:i') }}</p>
         </div>
     </div>
 </div>

@@ -45,7 +45,7 @@
 
                 <!-- Alat Tulis -->
                 <div class="category-card group transform transition-all duration-300 hover:scale-[1.02]">
-                    <a href="{{ url('admin/data/kategori/alat_tulis') }}"
+                    <a href="{{ url('admin/data/kategori/alattulis') }}"
                        class="category-button flex flex-col items-center justify-center h-36 rounded-lg bg-gradient-to-br from-orange-400 to-orange-500 text-white overflow-hidden relative">
                         <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-2 transform group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">

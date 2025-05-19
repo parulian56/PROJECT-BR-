@@ -12,7 +12,9 @@ use App\Http\Controllers\{
     LainyaController,
     MinumanController,
     AlattulisController,
-    ReportController // <- Tambahkan controller Report
+    SeragamController,
+    ReportController // <- Tambahkan controller Report, // <- Tambahkan controller Report
+
 };
 
 // ======================
@@ -115,7 +117,15 @@ Route::middleware('auth')->group(function () {
                 'update' => 'alattulis.update',
                 'destroy' => 'alattulis.destroy'
                 ]);
-            Route::get('seragam', [DataController::class, 'seragam'])->name('seragam');
+            Route::resource('seragam', SeragamController::class)->names([
+                    'index' => 'seragam.index',
+                    'create' => 'seragam.create',
+                    'show' => 'seragam.show',
+                    'store' => 'seragam.store',
+                    'edit' => 'seragam.edit',
+                    'update' => 'seragam.update',
+                    'destroy' => 'seragam.destroy'
+                ]);
 
             // Kategori lainya (pakai controller sendiri)
             Route::resource('lainya', LainyaController::class)->names([
