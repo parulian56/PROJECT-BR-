@@ -54,9 +54,7 @@
                 </div>
 
 
-                <div class="flex justify-end mt-2">
-                    <button type="submit" class="bg-blue-500 text-white w-full py-2 rounded mt-2">{{ isset($transaksi) ? 'Update' : 'Tambah' }}</button>
-                </div>
+                
             </form>
         </div>
     </div>

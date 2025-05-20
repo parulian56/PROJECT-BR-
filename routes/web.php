@@ -65,7 +65,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // ADMIN - Hanya untuk role admin
-Route::prefix('admin')
+    Route::prefix('admin')
     ->middleware(['role:admin'])
     ->name('admin.')
     ->group(function () {
@@ -74,7 +74,7 @@ Route::prefix('admin')
 
         Route::get('/users', [UserController::class, 'index'])->name('users');
 
-        Route::get('/reports', [ReportController::class, 'index'])->name('reports');
+        Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
     });
 
@@ -85,9 +85,8 @@ Route::prefix('admin')
 
         // Admin Data Routes
         Route::controller(DataController::class)->prefix('admin/data')->group(function () {
-        Route::get('/', 'index')->name('data.index');
-    });
-
+            Route::get('/', 'index')->name('data.index');
+        });
 
         // --- KATEGORI ---
         Route::prefix('kategori')->name('kategori.')->group(function () {
@@ -123,7 +122,7 @@ Route::prefix('admin')
                 'destroy' => 'minuman.destroy',
             ]);
 
-              Route::resource('alattulis', AlattulisController::class)->names([
+            Route::resource('alattulis', AlattulisController::class)->names([
                 'index' => 'alattulis.index',
                 'create' => 'alattulis.create',
                 'show' => 'alattulis.show',
@@ -131,28 +130,28 @@ Route::prefix('admin')
                 'edit' => 'alattulis.edit',
                 'update' => 'alattulis.update',
                 'destroy' => 'alattulis.destroy'
-                ]);
-              Route::resource('seragam', SeragamController::class)->names([
+            ]);
+
+            Route::resource('seragam', SeragamController::class)->names([
                 'index' => 'seragam.index',
                 'create' => 'seragam.create',
                 'show' => 'seragam.show',
                 'store' => 'seragam.store',
-                'edit' => 'alattulis.edit',
-                'update' => 'alattulis.update',
-                'destroy' => 'alattulis.destroy'
-                ]);
+                'edit' => 'seragam.edit',
+                'update' => 'seragam.update',
+                'destroy' => 'seragam.destroy'
+            ]);
 
             // Kategori lainya (pakai controller sendiri)
             Route::resource('lainya', LainyaController::class)->names([
-                    'index' => 'lainya.index',
-                    'create' => 'lainya.create',
-                    'show' => 'lainya.show',
-                    'store' => 'lainya.store',
-                    'edit' => 'lainya.edit',
-                    'update' => 'lainya.update',
-                    'destroy' => 'lainya.destroy'
-                ]);
-        });
+                'index' => 'lainya.index',
+                'create' => 'lainya.create',
+                'show' => 'lainya.show',
+                'store' => 'lainya.store',
+                'edit' => 'lainya.edit',
+                'update' => 'lainya.update',
+                'destroy' => 'lainya.destroy'
+            ]);
         });
     });
-
+});

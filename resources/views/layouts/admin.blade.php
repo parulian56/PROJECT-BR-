@@ -23,7 +23,7 @@
     <!-- Mobile-first layout with bottom navigation -->
     <div x-data="{
         showSidebar: false,
-        activeTab: 'transaksi',
+        activeTab: 'dashboard',
         cartCount: 0
     }" class="flex flex-col min-h-screen">
 
@@ -37,7 +37,10 @@
                     <h1 class="text-xl font-bold">Amaliah Kasir</h1>
                 </div>
                 <div class="flex items-center space-x-3">
-
+                    <button class="p-2 relative">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
                 </div>
             </div>
         </header>
@@ -79,14 +82,14 @@
 
                         <a href="{{ url('user/transaksi') }}"
                            @click="activeTab = 'dashboard'; showSidebar = false"
-                           class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('user/transaksi*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
-                            <i class="fas fa-cash-register text-lg"></i>
-                            <span class="ml-3">Transaksi</span>
+                           class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/dashboard*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
+                            <i class="fas fa-home text-lg"></i>
+                            <span class="ml-3">Dashboard</span>
                         </a>
 
                         <a href="{{ url('admin/data') }}"
                            @click="activeTab = 'data'; showSidebar = false"
-                           class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('user/barang*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
+                           class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/data*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
                             <i class="fas fa-box text-lg"></i>
                             <span class="ml-3">Data Barang</span>
                         </a>
@@ -114,13 +117,8 @@
         <!-- Main Content -->
         <main class="flex-1 container mx-auto px-4 py-4">
             <!-- Dynamic Page Title -->
-            <div class="mb-4 flex justify-between items-center">
-                <h2 class="text-xl font-semibold text-amber-900">@yield('header', 'Transaksi')</h2>
-                <div x-show="activeTab === 'transaksi'" class="relative">
-                    <button class="p-2 bg-amber-600 text-white rounded-full shadow-md">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+            <div class="mb-4">
+                <h2 class="text-xl font-semibold text-amber-900">@yield('header', 'Dashboard')</h2>
             </div>
 
             <!-- Content Area -->
@@ -135,23 +133,26 @@
                 <a href="{{ url('admin/dashboard') }}"
                    @click="activeTab = 'dashboard'"
                    class="flex flex-col items-center justify-center p-3 text-center w-full transition-colors duration-300"
-                   :class="activeTab === 'transaksi' ? 'text-amber-600' : 'text-stone-500 hover:text-amber-600'">
-                    <i class="fas fa-cash-register text-xl mb-1"></i>
-                    <span class="text-xs">Home</span>
+                   :class="activeTab === 'dashboard' ? 'text-amber-600' : 'text-stone-500 hover:text-amber-600'">
+                    <i class="fas fa-home text-xl mb-1"></i>
+                    <span class="text-xs">Dashboard</span>
                 </a>
 
                 <a href="{{ url('admin/data') }}"
                    @click="activeTab = 'data'"
                    class="flex flex-col items-center justify-center p-3 text-center w-full transition-colors duration-300"
-                   :class="activeTab === 'barang' ? 'text-amber-600' : 'text-stone-500 hover:text-amber-600'">
+                   :class="activeTab === 'data' ? 'text-amber-600' : 'text-stone-500 hover:text-amber-600'">
                     <i class="fas fa-box text-xl mb-1"></i>
                     <span class="text-xs">Data Barang</span>
                 </a>
 
-                <button class="flex flex-col items-center justify-center p-3 text-center w-full text-stone-500 hover:text-amber-600 transition-colors duration-300">
-                    <i class="fas fa-cog text-xl mb-1"></i>
-                    <span class="text-xs">Pengaturan</span>
-                </button>
+                <a href="{{ route('admin.reports.index') }}"
+                   @click="activeTab = 'reports'"
+                   class="flex flex-col items-center justify-center p-3 text-center w-full transition-colors duration-300"
+                   :class="activeTab === 'reports' ? 'text-amber-600' : 'text-stone-500 hover:text-amber-600'">
+                    <i class="fas fa-file-alt text-xl mb-1"></i>
+                    <span class="text-xs">Laporan</span>
+                </a>
             </div>
         </nav>
     </div>
