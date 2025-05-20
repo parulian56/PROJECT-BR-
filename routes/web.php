@@ -83,76 +83,61 @@ Route::middleware('auth')->group(function () {
                     // Route ke DataController@index untuk /admin/data
                     Route::get('/', [DataController::class, 'index'])->name('index');
 
-                    // Subkategori kategori
-                    Route::prefix('kategori')->name('kategori.')->group(function () {
-                        Route::resource('makanan', MakananController::class)->names([
-                            'index' => 'makanan.index',
-                            'create' => 'makanan.create',
-                            'store' => 'makanan.store',
-                            'show' => 'makanan.show',
-                            'edit' => 'makanan.edit',
-                            'update' => 'makanan.update',
-                            'destroy' => 'makanan.destroy',
-                        ]);
-                        Route::resource('minuman', MinumanController::class)->names([
-                            'index' => 'minuman.index',
-                            'create' => 'minuman.create',
-                            'store' => 'minuman.store',
-                            'show' => 'minuman.show',
-                            'edit' => 'minuman.edit',
-                            'update' => 'minuman.update',
-                            'destroy' => 'minuman.destroy',
-                        ]);
-                        Route::resource('alattulis', AlattulisController::class)->names([
-                            'index' => 'alattulis.index',
-                            'create' => 'alattulis.create',
-                            'store' => 'alattulis.store',
-                            'show' => 'alattulis.show',
-                            'edit' => 'alattulis.edit',
-                            'update' => 'alattulis.update',
-                            'destroy' => 'alattulis.destroy',
-                        ]);
-                        Route::resource('seragam', SeragamController::class)->names([
-                            'index' => 'seragam.index',
-                            'create' => 'seragam.create',
-                            'store' => 'seragam.store',
-                            'show' => 'seragam.show',
-                            'edit' => 'seragam.edit',
-                            'update' => 'seragam.update',
-                            'destroy' => 'seragam.destroy',
-                        ]);
-                        Route::resource('kesehatandankebersihan', KesehatandankebersihanController::class)->names([
-                            'index' => 'kesehatandankebersihan.index',
-                            'create' => 'kesehatandankebersihan.create',
-                            'store' => 'kesehatandankebersihan.store',
-                            'show' => 'kesehatandankebersihan.show',
-                            'edit' => 'kesehatandankebersihan.edit',
-                            'update' => 'kesehatandankebersihan.update',
-                            'destroy' => 'kesehatandankebersihan.destroy',
-                        ]);
-                        Route::resource('lainya', LainyaController::class)->names([
-                            'index' => 'lainya.index',
-                            'create' => 'lainya.create',
-                            'store' => 'lainya.store',
-                            'show' => 'lainya.show',
-                            'edit' => 'lainya.edit',
-                            'update' => 'lainya.update',
-                            'destroy' => 'lainya.destroy',
-                        ]);
-                    });
-                });
-
-            // User Management
-            Route::get('/users', [UserController::class, 'index'])->name('users.index');
-
-            // Reports
-            Route::prefix('reports')->name('reports.')->group(function () {
-                Route::get('/', [ReportController::class, 'index'])->name('index');
-                Route::get('/daily', [ReportController::class, 'daily'])->name('daily');
-                Route::get('/weekly', [ReportController::class, 'weekly'])->name('weekly');
-                Route::get('/monthly', [ReportController::class, 'monthly'])->name('monthly');
-                Route::get('/yearly', [ReportController::class, 'yearly'])->name('yearly');
-                Route::get('/custom', [ReportController::class, 'custom'])->name('custom');
-            });
-        });
+        
+        // Admin Data Routes
+       Route::controller(DataController::class)->prefix('admin/data')->group(function () {
+       Route::get('/', 'index')->name('data.index');
 });
+
+        
+    });
+
+
+        // --- KATEGORI ---
+        Route::prefix('kategori')->name('kategori.')->group(function () {
+
+            Route::resource('makanan', MakananController::class)->names([
+                'index' => 'makanan.index',
+                'create' => 'makanan.create',
+                'store' => 'makanan.store',
+                'show' => 'makanan.show',
+                'edit' => 'makanan.edit',
+                'update' => 'makanan.update',
+                'destroy' => 'makanan.destroy'
+            ]);
+
+                    Route::resource('minuman', MinumanController::class)->names([
+                        'index' => 'minuman.index',
+                        'create' => 'minuman.create',
+                        'store' => 'minuman.store',
+                        'show' => 'minuman.show',
+                        'edit' => 'minuman.edit',
+                        'update' => 'minuman.update',
+                        'destroy' => 'minuman.destroy'
+                    ]);
+
+              Route::resource('alattulis', AlattulisController::class)->names([
+                'index' => 'alattulis.index',
+                'create' => 'alattulis.create',
+                'show' => 'alattulis.show',
+                'store' => 'alattulis.store',
+                'edit' => 'alattulis.edit',
+                'update' => 'alattulis.update',
+                'destroy' => 'alattulis.destroy'
+                ]);
+            Route::get('seragam', [DataController::class, 'seragam'])->name('seragam');
+
+            // Kategori lainya (pakai controller sendiri)
+            Route::resource('lainya', LainyaController::class)->names([
+                    'index' => 'lainya.index',
+                    'create' => 'lainya.create',
+                    'show' => 'lainya.show',
+                    'store' => 'lainya.store',
+                    'edit' => 'lainya.edit',
+                    'update' => 'lainya.update',
+                    'destroy' => 'lainya.destroy'
+                ]);
+        });
+        });
+    });
+
