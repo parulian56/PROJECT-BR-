@@ -20,7 +20,7 @@ class MinumanController extends Controller
     }
     public function show(Request $request)
     {
-        //anjayy
+        //adsiuh
     }
 
   public function store(Request $request)

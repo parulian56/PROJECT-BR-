@@ -42,17 +42,17 @@
 
     /* Elegant transitions */
     .transition-smooth { transition: all 0.3s ease-in-out; }
-    
+
     /* Card shadows */
     .shadow-elegant { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02); }
     .hover\:shadow-elegant:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03); }
-    
+
     /* Table styling */
     .table-row-hover:hover { background-color: #f8fafc; }
-    
+
     /* Custom rounded corners */
     .rounded-xl { border-radius: 12px; }
-    
+
     /* Icon styling */
     .icon-container {
         width: 40px;
@@ -101,7 +101,7 @@
 
     <!-- Filter Section -->
     <div class="bg-white p-5 rounded-xl mb-8 border border-secondary-200 shadow-elegant hover:shadow-elegant transition-smooth">
-        <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <form method="GET" action="{{ route('admin.data') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
                 <label class="block text-sm font-medium text-secondary-700 mb-2">Periode Laporan</label>
                 <select name="filter" class="w-full px-4 py-2 border border-secondary-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white transition-smooth">
