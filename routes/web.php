@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\{
     Auth\AuthenticatedSessionController,
@@ -7,7 +8,7 @@ use App\Http\Controllers\{
     MakananController,
     DashboardController,
     TransaksiKasirController,
-    KesehatandankebersihanController,
+    KesehatandankebebersihanController,
     MinumanController,
     AlattulisController,
     ReportController,
@@ -43,115 +44,119 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-    // USER - Dashboard & Profile
-    Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
-
+    // Profile Routes (untuk semua user)
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('edit');
         Route::patch('/', [ProfileController::class, 'update'])->name('update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
     });
 
-    // USER - Transaksi Kasir
-    Route::prefix('user/transaksi')->name('transaksi.')->group(function () {
-        Route::get('/', [TransaksiKasirController::class, 'index'])->name('index');
-        Route::get('/create', [TransaksiKasirController::class, 'create'])->name('create');
-        Route::post('/', [TransaksiKasirController::class, 'store'])->name('store');
-        Route::get('/{transaksi}', [TransaksiKasirController::class, 'show'])->name('show');
-        Route::get('/{transaksi}/edit', [TransaksiKasirController::class, 'edit'])->name('edit');
-        Route::put('/{transaksi}', [TransaksiKasirController::class, 'update'])->name('update');
-        Route::delete('/{transaksi}', [TransaksiKasirController::class, 'destroy'])->name('destroy');
-        Route::delete('/', [TransaksiKasirController::class, 'hapusSemua'])->name('hapusSemua');
+    // USER Routes
+    Route::middleware(['role:user'])->group(function () {
+        // Dashboard User
+        Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
+
+        // Transaksi Kasir
+        Route::prefix('transaksi')->name('transaksi.')->group(function () {
+            Route::get('/', [TransaksiKasirController::class, 'index'])->name('index');
+            Route::get('/create', [TransaksiKasirController::class, 'create'])->name('create');
+            Route::post('/', [TransaksiKasirController::class, 'store'])->name('store');
+            Route::get('/{transaksi}', [TransaksiKasirController::class, 'show'])->name('show');
+            Route::get('/{transaksi}/edit', [TransaksiKasirController::class, 'edit'])->name('edit');
+            Route::put('/{transaksi}', [TransaksiKasirController::class, 'update'])->name('update');
+            Route::delete('/{transaksi}', [TransaksiKasirController::class, 'destroy'])->name('destroy');
+            Route::delete('/transaksi/clear', [TransaksiKasirController::class, 'clearAll'])->name('transaksi.clearAll');
+            Route::post('/checkout', [TransaksiKasirController::class, 'checkout'])->name('checkout');
+        });
     });
 
-    // ADMIN - Hanya untuk role admin
+    // ADMIN Routes
     Route::prefix('admin')
-    ->middleware(['role:admin'])
-    ->name('admin.')
-    ->group(function () {
+        ->middleware(['role:admin'])
+        ->name('admin.')
+        ->group(function () {
+            // Dashboard Admin
+            Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
 
-        Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
+            // Manajemen User
+            Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-        Route::get('/users', [UserController::class, 'index'])->name('users');
+            // Laporan
+            Route::prefix('reports')->name('reports.')->group(function () {
+                Route::get('/', [ReportController::class, 'index'])->name('index');
+                Route::get('/daily', [ReportController::class, 'daily'])->name('daily');
+                Route::get('/weekly', [ReportController::class, 'weekly'])->name('weekly');
+                Route::get('/monthly', [ReportController::class, 'monthly'])->name('monthly');
+                Route::get('/yearly', [ReportController::class, 'yearly'])->name('yearly');
+                Route::get('/custom', [ReportController::class, 'custom'])->name('custom');
+            });
 
-        Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+            // Manajemen Data
+            Route::prefix('data')->name('data.')->group(function () {
+                Route::get('/', [DataController::class, 'index'])->name('index');
 
-    });
+                // Kategori Produk
+                Route::prefix('kategori')->name('kategori.')->group(function () {
+                    Route::resource('makanan', MakananController::class)->names([
+                        'index' => 'makanan.index',
+                        'create' => 'makanan.create',
+                        'store' => 'makanan.store',
+                        'show' => 'makanan.show',
+                        'edit' => 'makanan.edit',
+                        'update' => 'makanan.update',
+                        'destroy' => 'makanan.destroy'
+                    ]);
 
+                    Route::resource('minuman', MinumanController::class)->names([
+                        'index' => 'minuman.index',
+                        'create' => 'minuman.create',
+                        'store' => 'minuman.store',
+                        'show' => 'minuman.show',
+                        'edit' => 'minuman.edit',
+                        'update' => 'minuman.update',
+                        'destroy' => 'minuman.destroy'
+                    ]);
 
-    Route::prefix('admin/data')->name('admin.data.')->group(function () {
+                    Route::resource('alattulis', AlattulisController::class)->names([
+                        'index' => 'alattulis.index',
+                        'create' => 'alattulis.create',
+                        'store' => 'alattulis.store',
+                        'show' => 'alattulis.show',
+                        'edit' => 'alattulis.edit',
+                        'update' => 'alattulis.update',
+                        'destroy' => 'alattulis.destroy'
+                    ]);
 
-        Route::get('/', [DataController::class, 'index'])->name('index');
+                    Route::resource('seragam', SeragamController::class)->names([
+                        'index' => 'seragam.index',
+                        'create' => 'seragam.create',
+                        'store' => 'seragam.store',
+                        'show' => 'seragam.show',
+                        'edit' => 'seragam.edit',
+                        'update' => 'seragam.update',
+                        'destroy' => 'seragam.destroy'
+                    ]);
 
-        // Admin Data Routes
-        Route::controller(DataController::class)->prefix('admin/data')->group(function () {
-            Route::get('/', 'index')->name('data.index');
+                    Route::resource('kesehatandankebersihan', KesehatandankebersihanController::class)->names([
+                        'index' => 'kesehatandankebersihan.index',
+                        'create' => 'kesehatandankebersihan.create',
+                        'store' => 'kesehatandankebersihan.store',
+                        'show' => 'kesehatandankebersihan.show',
+                        'edit' => 'kesehatandankebersihan.edit',
+                        'update' => 'kesehatandankebersihan.update',
+                        'destroy' => 'kesehatandankebersihan.destroy'
+                    ]);
+
+                    Route::resource('lainya', LainyaController::class)->names([
+                        'index' => 'lainya.index',
+                        'create' => 'lainya.create',
+                        'store' => 'lainya.store',
+                        'show' => 'lainya.show',
+                        'edit' => 'lainya.edit',
+                        'update' => 'lainya.update',
+                        'destroy' => 'lainya.destroy'
+                    ]);
+                });
+            });
         });
-
-        // --- KATEGORI ---
-        Route::prefix('kategori')->name('kategori.')->group(function () {
-
-            Route::resource('makanan', MakananController::class)->names([
-                'index' => 'makanan.index',
-                'create' => 'makanan.create',
-                'store' => 'makanan.store',
-                'show' => 'makanan.show',
-                'edit' => 'makanan.edit',
-                'update' => 'makanan.update',
-                'destroy' => 'makanan.destroy'
-            ]);
-
-            Route::resource('kesehatandankebersihan', KesehatandankebersihanController::class)->names([
-                'index'   => 'kesehatandankebersihan.index',
-                'create'  => 'kesehatandankebersihan.create',
-                'store'   => 'kesehatandankebersihan.store',
-                'show'    => 'kesehatandankebersihan.show',
-                'edit'    => 'kesehatandankebersihan.edit',
-                'update'  => 'kesehatandankebersihan.update',
-                'destroy' => 'kesehatandankebersihan.destroy',
-            ]);
-
-            // Kategori lain (pakai DataController)
-            Route::resource('minuman', MinumanController::class)->names([
-                'index'   => 'minuman.index',
-                'create'  => 'minuman.create',
-                'store'   => 'minuman.store',
-                'show'    => 'minuman.show',
-                'edit'    => 'minuman.edit',
-                'update'  => 'minuman.update',
-                'destroy' => 'minuman.destroy',
-            ]);
-
-            Route::resource('alattulis', AlattulisController::class)->names([
-                'index' => 'alattulis.index',
-                'create' => 'alattulis.create',
-                'show' => 'alattulis.show',
-                'store' => 'alattulis.store',
-                'edit' => 'alattulis.edit',
-                'update' => 'alattulis.update',
-                'destroy' => 'alattulis.destroy'
-            ]);
-
-            Route::resource('seragam', SeragamController::class)->names([
-                'index' => 'seragam.index',
-                'create' => 'seragam.create',
-                'show' => 'seragam.show',
-                'store' => 'seragam.store',
-                'edit' => 'seragam.edit',
-                'update' => 'seragam.update',
-                'destroy' => 'seragam.destroy'
-            ]);
-
-            // Kategori lainya (pakai controller sendiri)
-            Route::resource('lainya', LainyaController::class)->names([
-                'index' => 'lainya.index',
-                'create' => 'lainya.create',
-                'show' => 'lainya.show',
-                'store' => 'lainya.store',
-                'edit' => 'lainya.edit',
-                'update' => 'lainya.update',
-                'destroy' => 'lainya.destroy'
-            ]);
-        });
-    });
 });
