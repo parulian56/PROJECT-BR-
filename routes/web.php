@@ -8,7 +8,7 @@ use App\Http\Controllers\{
     MakananController,
     DashboardController,
     TransaksiKasirController,
-    KesehatandankebebersihanController,
+    KesehatandankebersihanController,
     MinumanController,
     AlattulisController,
     ReportController,
