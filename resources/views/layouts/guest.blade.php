@@ -54,9 +54,11 @@
             <div class="login-container w-full max-w-5xl flex flex-col md:flex-row rounded-2xl shadow-2xl overflow-hidden">
                 <!-- Left side with illustration -->
                 <div class="md:w-1/2 bg-white p-8 flex flex-col justify-center items-start">
-                    <div class="text-2xl font-bold text-amber-500 mb-6">Pento</div>
+                    <div class="text-2xl font-bold text-amber-500 mb-6">BISNIS RITEL</div>
                     <div class="w-full h-64 flex justify-center items-center mb-6">
-                       <p>"Setiap langkah kecil menuju kebaikan, dicatat besar di sisi Allah."</p>
+                       <p class="font-bold">"Bisnis Ritel adalah jurusan yang fokus pada penjualan langsung ke konsumen, seperti di toko, minimarket, atau online."</p>
+                       
+                            
                     </div>
                     <div class="flex items-center space-x-3">
                         <div class="h-1 w-12 bg-amber-500 rounded-full"></div>

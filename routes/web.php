@@ -65,47 +65,42 @@ Route::middleware('auth')->group(function () {
             Route::get('/{transaksi}/edit', [TransaksiKasirController::class, 'edit'])->name('edit');
             Route::put('/{transaksi}', [TransaksiKasirController::class, 'update'])->name('update');
             Route::delete('/{transaksi}', [TransaksiKasirController::class, 'destroy'])->name('destroy');
-            Route::delete('/transaksi/clear', [TransaksiKasirController::class, 'clearAll'])->name('transaksi.clearAll');
             Route::post('/checkout', [TransaksiKasirController::class, 'checkout'])->name('checkout');
         });
     });
 
-    // ADMIN Routes
-    Route::prefix('admin')
-        ->middleware(['role:admin'])
-        ->name('admin.')
-        ->group(function () {
-            // Dashboard Admin
-            Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
+    // ADMIN - Hanya untuk role admin
+    Route::prefix('admin')->middleware(['role:admin'])->name('admin.')->group(function () {
+        Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
+        Route::get('/users', [UserController::class, 'index'])->name('users');
+          Route::get('/reports', [ReportController::class, 'index'])->name('reports');
 
-            // Manajemen User
-            Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::prefix('admin/data')->name('admin.data.')->group(function () {
 
-            // Laporan
-            Route::prefix('reports')->name('reports.')->group(function () {
-                Route::get('/', [ReportController::class, 'index'])->name('index');
-                Route::get('/daily', [ReportController::class, 'daily'])->name('daily');
-                Route::get('/weekly', [ReportController::class, 'weekly'])->name('weekly');
-                Route::get('/monthly', [ReportController::class, 'monthly'])->name('monthly');
-                Route::get('/yearly', [ReportController::class, 'yearly'])->name('yearly');
-                Route::get('/custom', [ReportController::class, 'custom'])->name('custom');
-            });
+        Route::get('/', [DataController::class, 'index'])->name('index');
 
-            // Manajemen Data
-            Route::prefix('data')->name('data.')->group(function () {
-                Route::get('/', [DataController::class, 'index'])->name('index');
 
-                // Kategori Produk
-                Route::prefix('kategori')->name('kategori.')->group(function () {
-                    Route::resource('makanan', MakananController::class)->names([
-                        'index' => 'makanan.index',
-                        'create' => 'makanan.create',
-                        'store' => 'makanan.store',
-                        'show' => 'makanan.show',
-                        'edit' => 'makanan.edit',
-                        'update' => 'makanan.update',
-                        'destroy' => 'makanan.destroy'
-                    ]);
+        // Admin Data Routes
+       Route::controller(DataController::class)->prefix('admin/data')->group(function () {
+       Route::get('/', 'index')->name('data.index');
+});
+
+
+    });
+
+
+        // --- KATEGORI ---
+        Route::prefix('kategori')->name('kategori.')->group(function () {
+
+            Route::resource('makanan', MakananController::class)->names([
+                'index' => 'makanan.index',
+                'create' => 'makanan.create',
+                'store' => 'makanan.store',
+                'show' => 'makanan.show',
+                'edit' => 'makanan.edit',
+                'update' => 'makanan.update',
+                'destroy' => 'makanan.destroy'
+            ]);
 
                     Route::resource('minuman', MinumanController::class)->names([
                         'index' => 'minuman.index',

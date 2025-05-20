@@ -101,16 +101,16 @@ class DataController extends Controller
 
     // Menghapus data penyimpanan
     public function destroy($id)
-    {
-        // Ambil data penyimpanan berdasarkan ID
-        $data = Data::findOrFail($id);
+{
+    // Ambil data penyimpanan berdasarkan ID
+    $data = Data::findOrFail($id);
 
-        // Hapus data penyimpanan
-        $data->delete();
+    // Hapus data penyimpanan
+    $data->delete();
 
-        // Redirect ke daftar data penyimpanan dengan pesan sukses
-        return redirect()->route('admin.data')->with('success', 'Data penyimpanan berhasil dihapus');
-    }
+    // Redirect ke daftar data penyimpanan dengan pesan sukses
+    return redirect()->route('admin.data.index')->with('success', 'Data penyimpanan berhasil dihapus');
+}
 
 
 }

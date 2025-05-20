@@ -8,20 +8,11 @@
         <div class="bg-white rounded-xl shadow-md overflow-hidden">
             <div class="bg-amber-600 px-6 py-4 flex justify-between items-center">
                 <h2 class="text-white font-bold text-lg">Daftar Transaksi</h2>
-                <div class="flex space-x-2">
-                    <button onclick="printReceipt()" class="px-3 py-1 bg-white text-amber-600 rounded text-sm font-medium">
-                        <i class="fas fa-print mr-1"></i> Cetak
-                    </button>
-                  <form action="{{ route('transaksi.clearAll') }}" method="POST" onsubmit="return confirm('Hapus semua transaksi?')">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded text-sm font-medium">
-        <i class="fas fa-trash-alt mr-1"></i> Hapus Semua
+                <div>
+    <button onclick="printReceipt()" class="px-3 py-1 bg-white text-amber-600 rounded text-sm font-medium">
+        <i class="fas fa-print mr-1"></i> Cetak
     </button>
-</form>
-
-
-                </div>
+</div>
             </div>
 
             @if(session('success'))
