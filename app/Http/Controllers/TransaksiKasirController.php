@@ -108,24 +108,7 @@ class TransaksiKasirController extends Controller
                          ->with('success', 'Item berhasil dihapus dari transaksi!');
     }
 
-    public function clearAll(Request $request)
-{
-    // Validasi akses hanya untuk user yang berwenang
-    if (!auth()->check()) {
-        return redirect()->route('login');
-    }
-
-    // Konfirmasi via AJAX atau form submit
-    if ($request->ajax()) {
-        TransaksiKasir::truncate();
-        return response()->json(['success' => true, 'message' => 'Semua transaksi berhasil dihapus!']);
-    }
-
-    // Untuk request biasa
-    TransaksiKasir::truncate();
-    return redirect()->route('transaksi.index')
-                     ->with('success', 'Semua transaksi berhasil dihapus!');
-}
+   
 
     public function checkout(Request $request)
     {
