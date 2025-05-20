@@ -2,22 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class TransaksiKasir extends Model
 {
-    use HasFactory;
+    protected $table = 'transaksi_kasir';
 
     protected $fillable = [
         'plu',
         'deskripsi',
+        'kategori',
         'qty',
         'harga',
         'diskon',
-        'total',
+        'total'
     ];
 
-    protected $table = 'transaksi_kasir';
-
+    // Jika nanti mau sambungkan ke transaksi utama (opsional)
+    // public function transaksi()
+    // {
+    //     return $this->belongsTo(Transaksi::class);
+    // }
 }
