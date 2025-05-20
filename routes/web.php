@@ -69,9 +69,13 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/', [DataController::class, 'index'])->name('index');
 
+        
         // Admin Data Routes
-        Route::controller(DataController::class)->prefix('admin/data')->group(function () {
-        Route::get('/', 'index')->name('data.index');
+       Route::controller(DataController::class)->prefix('admin/data')->group(function () {
+       Route::get('/', 'index')->name('data.index');
+});
+
+        
     });
 
 
@@ -133,4 +137,4 @@ Route::middleware('auth')->group(function () {
         });
         });
     });
-});
+

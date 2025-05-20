@@ -13,10 +13,10 @@
 
            <!-- Email Address -->
             <div class="space-y-2">
-                <x-input-label for="email" :value="__('Email')" class="text-gray-900 dark:text-gray-800" />
+                <x-input-label for="email" :value="__('Email')" class="text-gray-900" />
                 <x-text-input 
                     id="email" 
-                    class="block w-full px-4 py-3 rounded-lg border border-amber-500 bg-amber-100 text-amber-900 focus:ring-3 focus:ring-amber-500 focus:border-amber-500 dark:border-orange-500 dark:bg-amber-100 dark:text-white transition duration-200"
+                    class="block w-full px-4 py-3 rounded-lg border border-amber-300 bg-amber-50 text-amber-900 focus:ring-3 focus:ring-amber-500 focus:border-amber-500 transition duration-200"
                     type="email" 
                     name="email" 
                     :value="old('email')" 
@@ -30,16 +30,11 @@
             <!-- Password -->
             <div class="space-y-2">
                 <div class="flex items-center justify-between">
-                    <x-input-label for="password" :value="__('Password')" class="text-gray-900 dark:text-gray-500" />
-                    @if (Route::has('password.request'))
-                        <a class="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition duration-200" href="{{ route('password.request') }}">
-                            {{ __('Forgot password?') }}
-                        </a>
-                    @endif
+                    <x-input-label for="password" :value="__('Password')" class="text-gray-900" />
                 </div>
                 <x-text-input 
                     id="password" 
-                    class="block w-full px-4 py-3 rounded-lg border border-amber-800 dark:border-amber-600 focus:ring-3 focus:ring-orange-500 focus:border-orange-500 dark:bg-amber-100 dark:text-white transition duration-200"
+                    class="block w-full px-4 py-3 rounded-lg border border-amber-300 bg-amber-500 text-amber-900 focus:ring-3 focus:ring-amber-500 focus:border-amber-500 transition duration-200"
                     type="password"
                     name="password"
                     required 
@@ -55,7 +50,7 @@
                     <input 
                         id="remember_me" 
                         type="checkbox" 
-                        class="h-4 w-4 text-amber-500 focus:ring-amber-500 border-gray-300 rounded"
+                        class="h-4 w-4 text-amber-500 border-amber-300 focus:ring-amber-500 rounded"
                         name="remember"
                     > 
                     <label for="remember_me" class="ml-2 text-sm text-gray-600">
@@ -84,7 +79,7 @@
                 Haven't joined?
                 @if (Route::has('register'))
                     <a href="{{ route('register') }}" class="text-amber-600 hover:text-amber-500 font-medium">
-                        Register
+                        Sign up
                     </a>
                 @endif
             </p>
