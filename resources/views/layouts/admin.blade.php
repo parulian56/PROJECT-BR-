@@ -37,10 +37,7 @@
                     <h1 class="text-xl font-bold">Amaliah Kasir</h1>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <button class="p-2 relative">
-                        <i class="fas fa-bell text-xl"></i>
-                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-                    </button>
+
                 </div>
             </div>
         </header>
@@ -80,7 +77,7 @@
                     <nav class="flex-1">
                         <div class="mb-2 text-xs font-semibold text-amber-400 uppercase tracking-wider pl-4">Menu</div>
 
-                        <a href="{{ url('admin/dashboard') }}"
+                        <a href="{{ url('user/transaksi') }}"
                            @click="activeTab = 'dashboard'; showSidebar = false"
                            class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('user/transaksi*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
                             <i class="fas fa-cash-register text-lg"></i>
@@ -94,7 +91,7 @@
                             <span class="ml-3">Data Barang</span>
                         </a>
 
-                        <a href="{{ route('admin.reports') }}" 
+                        <a href="{{ route('admin.reports') }}"
    @click="activeTab = 'data'; showSidebar = false"
    class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/reports*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
     <i class="fas fa-box text-lg"></i>
@@ -102,7 +99,7 @@
 </a>
 
                     </nav>
-                    
+
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="flex items-center justify-center w-full py-2 px-4 text-sm bg-amber-700 text-amber-200 rounded-lg hover:bg-gradient-to-r hover:from-amber-800 hover:to-amber-600 transition-all duration-300">
