@@ -8,11 +8,11 @@
             <h2 class="text-3xl md:text-4xl font-bold text-amber-700 inline-flex items-center group">
                 <span class="mr-3 transform transition-transform duration-300 group-hover:rotate-12">📋</span>
                 <span class="relative">
-                    Daftar Makanan
+                    Daftar Barang
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
                 </span>
             </h2>
-            <p class="text-stone-600 mt-2">Kelola inventaris makanan dengan mudah dan efisien</p>
+            <p class="text-stone-600 mt-2">Kelola inventaris barang dengan mudah dan efisien</p>
         </div>
 
         <!-- Navigation and search bar -->

@@ -1,139 +1,242 @@
+<!-- resources/views/user/transaksi/index.blade.php -->
 @extends('layouts.user')
 
 @section('content')
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Daftar Transaksi -->
+    <div class="lg:col-span-2">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-amber-600 px-6 py-4 flex justify-between items-center">
+                <h2 class="text-white font-bold text-lg">Daftar Transaksi</h2>
+                <div class="flex space-x-2">
+                    <button onclick="printReceipt()" class="px-3 py-1 bg-white text-amber-600 rounded text-sm font-medium">
+                        <i class="fas fa-print mr-1"></i> Cetak
+                    </button>
+                  <form action="{{ route('transaksi.clearAll') }}" method="POST" onsubmit="return confirm('Hapus semua transaksi?')">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded text-sm font-medium">
+        <i class="fas fa-trash-alt mr-1"></i> Hapus Semua
+    </button>
+</form>
 
-<div class="container mx-auto flex flex-col lg:flex-row gap-6">
-    <!-- TRANSACTION TABLE -->
-    <div class="lg:w-3/4 w-full">
-        <h2 class="text-2xl font-semibold mb-4 text-center" style="color: #63452c;">Daftar Transaksi</h2>
-        
-        @if (session('success'))
-            <div class="bg-green-500 text-white p-3 rounded mb-3 text-center">{{ session('success') }}</div>
-        @endif
-        
-        <div class="overflow-x-auto shadow-md rounded-lg">
-            <table class="w-full border border-gray-300 text-center bg-white">
-                <thead style="background-color: #8B5A2B; color: white;">
-                    <tr>
-                        <th class="border px-3 py-2">PLU</th>
-                        <th class="border px-3 py-2">Nama Barang</th>
-                        <th class="border px-3 py-2">Jumlah</th>
-                        <th class="border px-3 py-2">Harga</th>
-                        <th class="border px-3 py-2">Diskon</th>
-                        <th class="border px-3 py-2">Total</th>
-                        <th class="border px-3 py-2">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php $grandTotal = 0; @endphp
-                    @foreach ($transaksis as $transaksi)
-                    @php $grandTotal += $transaksi->total; @endphp
-                    <tr class="hover:bg-amber-50 text-sm">
-                        <td class="border border-gray-300 px-4 py-2">{{ $transaksi->plu }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $transaksi->deskripsi }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $transaksi->qty }}</td>
-                        <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($transaksi->harga, 0, ',', '.') }}</td>
-                        <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($transaksi->diskon, 0, ',', '.') }}</td>
-                        <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($transaksi->total, 0, ',', '.') }}</td>
-                        <td class="border border-gray-300 px-4 py-2">
-                            <div class="flex justify-center gap-2">
-                                <a href="{{ route('transaksi.edit', $transaksi->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition">Edit</a>
-                                <form action="{{ route('transaksi.destroy', $transaksi->id) }}" method="POST">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="return confirm('Yakin ingin menghapus transaksi ini?')">Hapus</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+
+                </div>
+            </div>
+
+            @if(session('success'))
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4">
+                    <p>{{ session('success') }}</p>
+                </div>
+            @endif
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-stone-50 text-stone-600 text-sm uppercase">
+                        <tr>
+                            <th class="py-3 px-4 text-left">No</th>
+                            <th class="py-3 px-4 text-left">Nama Barang</th>
+                            <th class="py-3 px-4 text-left">Kategori</th>
+                            <th class="py-3 px-4 text-left">Qty</th>
+                            <th class="py-3 px-4 text-left">Harga</th>
+                            <th class="py-3 px-4 text-left">Diskon</th>
+                            <th class="py-3 px-4 text-left">Total</th>
+                            <th class="py-3 px-4 text-left">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-stone-100">
+                        @forelse($transaksis as $item)
+                        <tr class="hover:bg-amber-50">
+                            <td class="py-4 px-4">{{ $loop->iteration }}</td>
+                            <td class="py-4 px-4 font-medium">{{ $item->deskripsi }}</td>
+                            <td class="py-4 px-4">
+                                <span class="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-800">
+                                    {{ $item->kategori }}
+                                </span>
+                            </td>
+                            <td class="py-4 px-4">{{ $item->qty }}</td>
+                            <td class="py-4 px-4">Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
+                            <td class="py-4 px-4">Rp {{ number_format($item->diskon, 0, ',', '.') }}</td>
+                            <td class="py-4 px-4 font-medium">Rp {{ number_format($item->total, 0, ',', '.') }}</td>
+                            <td class="py-4 px-4">
+                                <div class="flex space-x-2">
+                                    <a href="{{ route('transaksi.edit', $item->id) }}" class="text-blue-500 hover:text-blue-700">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('transaksi.destroy', $item->id) }}" method="POST">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:text-red-700" onclick="return confirm('Hapus item ini?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="8" class="py-8 text-center text-stone-500">
+                                <i class="fas fa-shopping-cart text-3xl mb-2"></i>
+                                <p>Belum ada transaksi</p>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- SIDE PANEL: ADD TRANSACTION & PAYMENT CALCULATOR -->
-    <div class="lg:w-1/4 w-full flex flex-col gap-4">
-        <!-- Add Transaction Form -->
-        <div class="p-4 bg-white rounded-lg shadow-md" style="border-top: 4px solid #8B5A2B;">
-            <h3 class="text-lg md:text-xl font-semibold mb-4 text-center" style="color: #63452c;">Tambah Transaksi</h3>
-            <form action="{{ route('transaksi.store') }}" method="POST">
-                @csrf
-                <div class="mb-2">
-                    <label class="block text-sm font-medium" style="color: #63452c;">PLU</label>
-                    <input type="text" name="plu" class="w-full border rounded p-2 focus:ring focus:ring-amber-200" style="border-color: #D2B48C;">
-                    @error('plu')
-                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="mb-2">
-                    <label class="block text-sm font-medium" style="color: #63452c;">Deskripsi</label>
-                    <input type="text" name="deskripsi" class="w-full border rounded p-2 focus:ring focus:ring-amber-200" style="border-color: #D2B48C;">
-                    @error('deskripsi')
-                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="mb-2">
-                    <label class="block text-sm font-medium" style="color: #63452c;">Qty</label>
-                    <input type="number" name="qty" class="w-full border rounded p-2 focus:ring focus:ring-amber-200" style="border-color: #D2B48C;">
-                    @error('qty')
-                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="mb-2">
-                    <label class="block text-sm font-medium" style="color: #63452c;">Harga</label>
-                    <input type="number" name="harga" class="w-full border rounded p-2 focus:ring focus:ring-amber-200" style="border-color: #D2B48C;">
-                    @error('harga')
-                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="mb-2">
-                    <label class="block text-sm font-medium" style="color: #63452c;">Diskon</label>
-                    <input type="number" name="diskon" class="w-full border rounded p-2 focus:ring focus:ring-amber-200" style="border-color: #D2B48C;">
-                    @error('diskon')
-                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="mb-2">
-                    <input type="number" name="" class="w-full border rounded p-2 focus:ring focus:ring-amber-200" style="border-color: #D2B48C;">
-                    @error('')
-                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
-                <button type="submit" class="bg-blue-500 text-white w-full py-2 rounded mt-2 hover:bg-blue-600 transition">Tambah</button>
-            </form>
+    <!-- Form Pembayaran -->
+    <div class="space-y-6">
+        <!-- Form Tambah Item -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-amber-600 px-6 py-4">
+                <h2 class="text-white font-bold text-lg">Tambah Item</h2>
+            </div>
+            <div class="p-6">
+                <form action="{{ route('transaksi.store') }}" method="POST">
+                    @csrf
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-stone-600 mb-1">PLU/Kode Barang</label>
+                            <input type="text" name="plu" class="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-stone-600 mb-1">Nama Barang</label>
+                            <input type="text" name="deskripsi" class="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-stone-600 mb-1">Kategori</label>
+                            <select name="kategori" class="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="Makanan">Makanan</option>
+                                <option value="Minuman">Minuman</option>
+                                <option value="Alat Tulis">Alat Tulis</option>
+                                <option value="Seragam">Seragam</option>
+                                <option value="Kesehatan & Kebersihan">Kesehatan & Kebersihan</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-stone-600 mb-1">Jumlah</label>
+                            <input type="number" name="qty" min="1" class="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-stone-600 mb-1">Harga Satuan</label>
+                            <input type="number" name="harga" min="0" class="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-stone-600 mb-1">Diskon</label>
+                            <input type="number" name="diskon" min="0" class="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-amber-500 focus:border-amber-500" value="0">
+                        </div>
+                        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-lg transition-colors">
+                            <i class="fas fa-plus-circle mr-2"></i> Tambahkan
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
 
-        <!-- Payment Calculator -->
-        <div class="p-4 bg-white rounded-lg shadow-md text-center" style="border-top: 4px solid #8B5A2B;">
-            <h3 class="text-lg md:text-xl font-semibold mb-2" style="color: #63452c;">Total Pembayaran:</h3>
-            <h4 class="text-blue-600 font-bold text-xl mb-3" style="color: #8B5A2B;">Rp {{ number_format($grandTotal, 0, ',', '.') }}</h4>
-            <div style="background-color: #F5EFE6; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
-                <label class="block text-sm font-medium mb-1" style="color: #63452c;">Masukkan Jumlah Uang</label>
-                <input type="number" id="jumlah_uang" class="w-full border rounded p-2 mb-2" style="border-color: #D2B48C;" placeholder="Masukkan jumlah uang">
-                <button onclick="hitungKembalian()" class="bg-green-500 text-white w-full py-2 rounded hover:bg-green-600 transition">Hitung Kembalian</button>
+        <!-- Pembayaran -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-amber-600 px-6 py-4">
+                <h2 class="text-white font-bold text-lg">Pembayaran</h2>
             </div>
-            <div style="background-color: #F5EFE6; padding: 10px; border-radius: 8px;">
-                <h3 class="text-lg font-semibold" style="color: #63452c;">Kembalian: Rp <span id="kembalian" style="color: #8B5A2B;">0</span></h3>
-                <p id="warning" class="text-red-500 text-sm mt-2 hidden">Uang tidak cukup!</p>
+            <div class="p-6 space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-stone-600 font-medium">Total Belanja:</span>
+                    <span class="text-2xl font-bold text-amber-600">Rp {{ number_format($grandTotal, 0, ',', '.') }}</span>
+                </div>
+
+                <form action="{{ route('transaksi.checkout') }}" method="POST">
+                    @csrf
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-1">Jumlah Uang</label>
+                        <input type="number" id="uang_dibayar" name="uang_dibayar" min="0" class="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
+                    </div>
+                    <div class="mt-2">
+                        <label class="block text-sm font-medium text-stone-600 mb-1">Kembalian</label>
+                        <input type="text" id="kembalian" class="w-full px-4 py-2 border border-stone-200 rounded-lg bg-stone-100" readonly>
+                    </div>
+                    <button type="submit" class="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-cash-register mr-2"></i> Proses Pembayaran
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
+@push('scripts')
 <script>
-    function hitungKembalian() {
-        let total = {{ $grandTotal }};
-        let jumlahUang = document.getElementById('jumlah_uang').value;
-        let kembalian = jumlahUang - total;
+    // Hitung kembalian
+    document.getElementById('uang_dibayar').addEventListener('input', function() {
+        const total = {{ $grandTotal }};
+        const uangDibayar = parseFloat(this.value) || 0;
+        const kembalian = uangDibayar - total;
+        
+        document.getElementById('kembalian').value = kembalian >= 0 
+            ? 'Rp ' + kembalian.toLocaleString('id-ID') 
+            : 'Uang kurang Rp ' + Math.abs(kembalian).toLocaleString('id-ID');
+    });
 
-        if (kembalian < 0) {
-            document.getElementById('warning').classList.remove('hidden');
-            document.getElementById('kembalian').innerText = "0";
-        } else {
-            document.getElementById('warning').classList.add('hidden');
-            document.getElementById('kembalian').innerText = kembalian.toLocaleString('id-ID');
+    // Fungsi cetak struk
+    function printReceipt() {
+        const transaksis = {!! json_encode($transaksis) !!};
+        const grandTotal = {!! $grandTotal !!};
+        
+        if (transaksis.length === 0) {
+            alert('Tidak ada transaksi untuk dicetak!');
+            return;
         }
+
+        let receiptContent = `
+            <style>
+                body { font-family: Arial, sans-serif; }
+                .receipt { width: 80mm; margin: 0 auto; padding: 10px; }
+                .header { text-align: center; margin-bottom: 10px; }
+                .title { font-weight: bold; font-size: 18px; }
+                .address { font-size: 12px; margin-bottom: 10px; }
+                .divider { border-top: 1px dashed #000; margin: 10px 0; }
+                .item { display: flex; justify-content: space-between; margin-bottom: 5px; }
+                .total { font-weight: bold; margin-top: 10px; text-align: right; }
+                .footer { text-align: center; margin-top: 20px; font-size: 12px; }
+            </style>
+            <div class="receipt">
+                <div class="header">
+                    <div class="title">Toko Amaliah</div>
+                    <div class="address">Jl. Contoh No. 123, Kota</div>
+                </div>
+                <div class="divider"></div>
+                <div>${new Date().toLocaleString()}</div>
+                <div class="divider"></div>
+        `;
+
+        transaksis.forEach(item => {
+            receiptContent += `
+                <div class="item">
+                    <div>${item.deskripsi} (${item.qty}x)</div>
+                    <div>Rp ${item.harga.toLocaleString('id-ID')}</div>
+                </div>
+            `;
+        });
+
+        receiptContent += `
+            <div class="divider"></div>
+            <div class="item">
+                <div>Total:</div>
+                <div>Rp ${grandTotal.toLocaleString('id-ID')}</div>
+            </div>
+            <div class="footer">
+                Terima kasih telah berbelanja
+            </div>
+        `;
+
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(receiptContent);
+        printWindow.document.close();
+        printWindow.print();
     }
 </script>
-
+@endpush
 @endsection

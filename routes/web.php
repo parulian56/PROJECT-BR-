@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\{
     Auth\AuthenticatedSessionController,
@@ -7,7 +8,12 @@ use App\Http\Controllers\{
     MakananController,
     DashboardController,
     TransaksiKasirController,
+    KesehatandankebebersihanController,
+    MinumanController,
+    AlattulisController,
     ReportController,
+    LainyaController,
+    SeragamController,
     UserController,
 };
 use Illuminate\Support\Facades\Route;
@@ -29,7 +35,7 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'register']);
-    
+
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 });
@@ -38,25 +44,30 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-    // USER - Dashboard & Profile
-    Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
-
+    // Profile Routes (untuk semua user)
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('edit');
         Route::patch('/', [ProfileController::class, 'update'])->name('update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
     });
 
-    // USER - Transaksi Kasir
-    Route::prefix('user/transaksi')->name('transaksi.')->group(function () {
-        Route::get('/', [TransaksiKasirController::class, 'index'])->name('index');
-        Route::get('/create', [TransaksiKasirController::class, 'create'])->name('create');
-        Route::post('/', [TransaksiKasirController::class, 'store'])->name('store');
-        Route::get('/{transaksi}', [TransaksiKasirController::class, 'show'])->name('show');
-        Route::get('/{transaksi}/edit', [TransaksiKasirController::class, 'edit'])->name('edit');
-        Route::put('/{transaksi}', [TransaksiKasirController::class, 'update'])->name('update');
-        Route::delete('/{transaksi}', [TransaksiKasirController::class, 'destroy'])->name('destroy');
-        Route::delete('/', [TransaksiKasirController::class, 'hapusSemua'])->name('hapusSemua');
+    // USER Routes
+    Route::middleware(['role:user'])->group(function () {
+        // Dashboard User
+        Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
+
+        // Transaksi Kasir
+        Route::prefix('transaksi')->name('transaksi.')->group(function () {
+            Route::get('/', [TransaksiKasirController::class, 'index'])->name('index');
+            Route::get('/create', [TransaksiKasirController::class, 'create'])->name('create');
+            Route::post('/', [TransaksiKasirController::class, 'store'])->name('store');
+            Route::get('/{transaksi}', [TransaksiKasirController::class, 'show'])->name('show');
+            Route::get('/{transaksi}/edit', [TransaksiKasirController::class, 'edit'])->name('edit');
+            Route::put('/{transaksi}', [TransaksiKasirController::class, 'update'])->name('update');
+            Route::delete('/{transaksi}', [TransaksiKasirController::class, 'destroy'])->name('destroy');
+            Route::delete('/transaksi/clear', [TransaksiKasirController::class, 'clearAll'])->name('transaksi.clearAll');
+            Route::post('/checkout', [TransaksiKasirController::class, 'checkout'])->name('checkout');
+        });
     });
 
     // ADMIN - Hanya untuk role admin
@@ -92,26 +103,15 @@ Route::middleware('auth')->group(function () {
                 'destroy' => 'makanan.destroy'
             ]);
 
-            Route::resource('kesehatandankebersihan', KesehatandankebersihanController::class)->names([
-                'index'   => 'kesehatandankebersihan.index',
-                'create'  => 'kesehatandankebersihan.create',
-                'store'   => 'kesehatandankebersihan.store',
-                'show'    => 'kesehatandankebersihan.show',
-                'edit'    => 'kesehatandankebersihan.edit',
-                'update'  => 'kesehatandankebersihan.update',
-                'destroy' => 'kesehatandankebersihan.destroy',
-            ]);
-
-            // Kategori lain (pakai DataController)
-            Route::resource('minuman', MinumanController::class)->names([
-                'index'   => 'minuman.index',
-                'create'  => 'minuman.create',
-                'store'   => 'minuman.store',
-                'show'    => 'minuman.show',
-                'edit'    => 'minuman.edit',
-                'update'  => 'minuman.update',
-                'destroy' => 'minuman.destroy',
-            ]);
+                    Route::resource('minuman', MinumanController::class)->names([
+                        'index' => 'minuman.index',
+                        'create' => 'minuman.create',
+                        'store' => 'minuman.store',
+                        'show' => 'minuman.show',
+                        'edit' => 'minuman.edit',
+                        'update' => 'minuman.update',
+                        'destroy' => 'minuman.destroy'
+                    ]);
 
               Route::resource('alattulis', AlattulisController::class)->names([
                 'index' => 'alattulis.index',

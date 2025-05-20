@@ -1,198 +1,149 @@
+<!-- resources/views/layouts/user.blade.php -->
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Halaman Kasir')</title>
-    
-    <!-- Tailwind CSS -->
-    @vite('resources/css/app.css')
-    
-    <!-- Alpine.js -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x/dist/cdn.min.js" defer></script>
-    
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-    
+    <title>Kasir Amaliah - {{ $title ?? 'Dashboard' }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     @stack('styles')
-</head>
-<body class="bg-amber-50 min-h-screen font-sans text-stone-800">
-    <!-- Using Alpine.js to manage sidebar state -->
-    <div x-data="{ sidebarOpen: true }" class="flex w-full h-screen">
-        <!-- Sidebar -->
-        <aside 
-            :class="{'w-64': sidebarOpen, 'w-16': !sidebarOpen}" 
-            class="bg-gradient-to-b from-stone-700 via-amber-800 to-stone-800 border-r border-amber-700 shadow-lg h-screen transition-all duration-500 ease-in-out">
-
-            <div class="flex flex-col h-full justify-between">
-                <!-- Logo & Navigation -->
-                <div>
-                    <!-- Logo & Toggle -->
-                    <div class="p-4 border-b border-amber-700 flex justify-between items-center">
-                        <!-- Logo and title when expanded -->
-                        <div class="flex items-center space-x-3" 
-                            x-show="sidebarOpen" 
-                            x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 transform -translate-x-4"
-                            x-transition:enter-end="opacity-100 transform translate-x-0"
-                            x-transition:leave="transition ease-in duration-300"
-                            x-transition:leave-start="opacity-100 transform translate-x-0"
-                            x-transition:leave-end="opacity-0 transform -translate-x-4">
-                            <div class="bg-amber-600 p-2 rounded-lg">
-                                <img alt="Logo" class="w-8 h-8" src="{{ asset('asset/image/logo amaliah.png') }}"/>
-                            </div>
-                            <div>
-                                <h1 class="text-xl font-bold text-amber-200">Amaliah</h1>
-                                <p class="text-sm text-amber-400">Sistem Kasir</p>
-                            </div>
-                        </div>
-
-                        <!-- Only logo when collapsed -->
-                        <div class="flex justify-center items-center" 
-                            x-show="!sidebarOpen"
-                            x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 transform scale-90"
-                            x-transition:enter-end="opacity-100 transform scale-100"
-                            x-transition:leave="transition ease-in duration-300"
-                            x-transition:leave-start="opacity-100 transform scale-100"
-                            x-transition:leave-end="opacity-0 transform scale-90">
-                            <div class="bg-amber-600 p-2 rounded-lg">
-                                <img alt="Logo" class="w-8 h-8" src="{{ asset('asset/image/logo amaliah.png') }}"/>
-                            </div>
-                        </div>
-
-                        <!-- Toggle button -->
-                        <button 
-                            @click="sidebarOpen = !sidebarOpen" 
-                            class="p-2 rounded-full hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors text-amber-300 transform transition-transform duration-500 ease-in-out"
-                            :class="{'rotate-180': !sidebarOpen}">
-                            <i class="fas" :class="sidebarOpen ? 'fa-chevron-left' : 'fa-chevron-right'"></i>
-                        </button>
-                    </div>
-
-                    <!-- Navigation -->
-                    <nav class="p-4">
-                        <div x-show="sidebarOpen" 
-                            x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0"
-                            x-transition:enter-end="opacity-100"
-                            class="mb-2 text-xs font-semibold text-amber-400 uppercase tracking-wider pl-4">Menu</div>
-
-                        <!-- Transaksi -->
-                        <a href="{{ url('user/transaksi') }}" 
-                            class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('user/transaksi*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300 ease-in-out transform hover:translate-x-1 hover:shadow-md relative overflow-hidden">
-                            <div class="z-10 flex items-center">
-                                <i class="fas fa-cash-register text-lg"></i>
-                                <span x-show="sidebarOpen" 
-                                    x-transition:enter="transition ease-out duration-300 delay-100"
-                                    x-transition:enter-start="opacity-0 transform -translate-x-4"
-                                    x-transition:enter-end="opacity-100 transform translate-x-0"
-                                    x-transition:leave="transition ease-in duration-200"
-                                    x-transition:leave-start="opacity-100 transform translate-x-0"
-                                    x-transition:leave-end="opacity-0 transform -translate-x-4"
-                                    class="ml-3">Transaksi</span>
-                            </div>
-                            <div class="absolute inset-0 w-0 bg-gradient-to-r from-amber-500 to-yellow-500 transition-all duration-300 ease-out -z-0 nav-highlight"></div>
-                        </a>
-
-                        <!-- Data Barang -->
-                        <a href="{{ url('user/barang') }}" 
-                            class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('user/barang*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300 ease-in-out transform hover:translate-x-1 hover:shadow-md relative overflow-hidden">
-                            <div class="z-10 flex items-center">
-                                <i class="fas fa-box text-lg"></i>
-                                <span x-show="sidebarOpen" 
-                                    x-transition:enter="transition ease-out duration-300 delay-100"
-                                    x-transition:enter-start="opacity-0 transform -translate-x-4"
-                                    x-transition:enter-end="opacity-100 transform translate-x-0"
-                                    x-transition:leave="transition ease-in duration-200"
-                                    x-transition:leave-start="opacity-100 transform translate-x-0"
-                                    x-transition:leave-end="opacity-0 transform -translate-x-4"
-                                    class="ml-3">Data Barang</span>
-                            </div>
-                            <div class="absolute inset-0 w-0 bg-gradient-to-r from-amber-500 to-yellow-500 transition-all duration-300 ease-out -z-0 nav-highlight"></div>
-                        </a>
-                    </nav>
-                </div>
-
-                <!-- Logout Button - Fixed Version -->
-                <div class="p-4 border-t border-amber-700">
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="w-full">
-                        @csrf
-                        <button type="submit" class="flex items-center justify-center w-full py-2 text-sm bg-amber-700 text-amber-200 rounded-lg hover:bg-gradient-to-r hover:from-amber-800 hover:to-amber-600 transition-all duration-300 transform hover:scale-105">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span x-show="sidebarOpen" 
-                                x-transition:enter="transition ease-out duration-300"
-                                x-transition:enter-start="opacity-0"
-                                x-transition:enter-end="opacity-100"
-                                class="ml-2">Logout</span>
-                        </button>
-                    </form>
-                </div>    
-            </div>
-        </aside>
-
-        <!-- Main Content Area -->
-        <main class="flex-1 flex flex-col overflow-hidden bg-gradient-to-br from-amber-50 to-stone-100">
-            <!-- Top Navbar -->
-            <header class="bg-white border-b border-amber-100 py-4 px-6 flex items-center justify-between shadow-sm">
-                <div class="flex items-center">
-                    <h2 class="text-xl font-semibold ml-4 text-amber-900">@yield('header', 'Transaksi')</h2>
-                </div>
-                
-                <!-- Search & Actions -->
-                <div class="flex items-center space-x-4">
-                    <div class="relative">
-                        <input type="text" placeholder="Cari..." class="pl-10 pr-4 py-2 rounded-lg border border-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all duration-300">
-                        <i class="fas fa-search absolute left-3 top-3 text-amber-400"></i>
-                    </div>
-                    
-                    <button class="p-2 rounded-full bg-amber-50 text-amber-700 hover:bg-amber-100 relative transition-all duration-300 ease-in-out transform hover:scale-110">
-                        <i class="fas fa-bell text-lg"></i>
-                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-                    </button>
-                </div>
-            </header>
-
-            <!-- Page Content -->
-            <div class="flex-1 overflow-auto p-6">
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-amber-100 transition-all duration-300 hover:shadow-md">
-                    @yield('content')
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <footer class="bg-white border-t border-amber-100 p-4 text-center text-sm text-amber-700">
-                &copy; 2025 Amaliah Kasir System. All rights reserved.
-            </footer>
-        </main>
-    </div>
-    
     <style>
-        [x-cloak] { display: none !important; }
-        
-        /* Colored navigation highlight animation */
-        .menu-item:hover .nav-highlight {
-            width: 100%;
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f8f5f2;
         }
-        
-        /* Pulse animation for active menu item */
-        .menu-item.bg-gradient-to-r {
-            animation: pulse-border 2s infinite;
+
+        .shadow-inner {
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
         }
-        
-        @keyframes pulse-border {
-            0% {
-                box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 6px rgba(217, 119, 6, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(217, 119, 6, 0);
-            }
+
+        .transition-colors {
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .hover\:shadow-md:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .border-l-4 {
+            border-left-width: 4px;
+        }
+
+        .text-stone-800 {
+            color: #292524;
+        }
+
+        .text-stone-700 {
+            color: #44403c;
+        }
+
+        .text-stone-600 {
+            color: #57534e;
+        }
+
+        .text-stone-500 {
+            color: #78716c;
+        }
+
+        .text-stone-400 {
+            color: #a8a29e;
+        }
+
+        .bg-stone-100 {
+            background-color: #f5f5f4;
+        }
+
+        .bg-stone-200 {
+            background-color: #e7e5e4;
+        }
+
+        .bg-amber-50 {
+            background-color: #fffbeb;
+        }
+
+        .bg-amber-100 {
+            background-color: #fef3c7;
+        }
+
+        .bg-amber-200 {
+            background-color: #fde68a;
+        }
+
+        .bg-amber-600 {
+            background-color: #d97706;
+        }
+
+        .bg-amber-700 {
+            background-color: #b45309;
+        }
+
+        .border-stone-100 {
+            border-color: #f5f5f4;
+        }
+
+        .border-amber-200 {
+            border-color: #fde68a;
+        }
+
+        .divide-stone-100 {
+            border-color: #f5f5f4;
+        }
+
+        .text-amber-600 {
+            color: #d97706;
+        }
+
+        .text-amber-700 {
+            color: #b45309;
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
         }
     </style>
-    
+</head>
+<body class="bg-stone-100">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-amber-700 text-white shadow-md">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-store text-2xl"></i>
+                    <h1 class="text-xl font-bold">Kasir Amaliah</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="date-display flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100 text-stone-700 shadow-md border border-amber-200">
+                        <i class="far fa-calendar-alt text-amber-600"></i>
+                        <span class="font-medium tracking-wide">{{ now()->format('d M Y') }}</span>
+                    </div>
+                    <span class="text-sm"><i class="far fa-user mr-1"></i> {{ auth()->user()->name }}</span>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="text-sm hover:text-amber-200 transition">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-6">
+            @yield('content')
+        </main>
+    </div>
+
     @stack('scripts')
 </body>
 </html>
