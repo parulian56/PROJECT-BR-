@@ -21,7 +21,7 @@ class KesehatandankebersihanController extends Controller
 
     public function show()
     {
-        //kontol
+        //soidihfadi
     }
 
   public function store(Request $request)
