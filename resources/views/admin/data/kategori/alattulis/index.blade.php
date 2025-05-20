@@ -12,28 +12,21 @@
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
                 </span>
             </h2>
-            <p class="text-stone-600 mt-2">Kelola inventaris Barang mudah dan efisien</p>
+            <p class="text-stone-600 mt-2">Kelola inventaris barang dengan mudah dan efisien</p>
         </div>
 
-        <!-- Search & Add Button with responsive design -->
-        <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
-            <form action="{{ route('admin.data.kategori.alattulis.index') }}" method="GET" class="w-full md:w-1/2">
-                <div class="relative flex w-full overflow-hidden rounded-lg shadow-md transition-all duration-300 focus-within:shadow-lg">
-                    <input
-                        type="text"
-                        name="search"
-                        class="w-full py-3 px-4 text-stone-800 bg-white border-0 focus:ring-0 focus:outline-none"
-                        placeholder="🔍 Cari barang..."
-                        value="{{ request('search') }}"
-                    >
-                    <button
-                        class="bg-amber-700 hover:bg-amber-800 text-white px-6 flex items-center justify-center transition-colors duration-300"
-                        type="submit"
-                    >
-                        Cari
-                    </button>
-                </div>
-            </form>
+        <!-- Navigation and search bar -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+            <a
+                href="{{ route('admin.data.index') }}"
+                class="bg-stone-700 hover:bg-stone-800 text-white font-medium rounded-lg py-3 px-6 flex items-center justify-center gap-2 shadow-md transition-all duration-300 hover:shadow-lg"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Kembali
+            </a>
+
 
             <a
                 href="{{ route('admin.data.kategori.alattulis.create') }}"
@@ -120,7 +113,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                         </svg>
                                         <span class="font-medium">Tidak ada data barang</span>
-                                        <p class="text-stone-400 text-sm">Tambahkan data untuk menampilkan inventaris barang</p>
+                                        <p class="text-stone-400 text-sm">Tambahkan data untuk menampilkan inventaris makanan</p>
                                     </div>
                                 </td>
                             </tr>

@@ -353,7 +353,6 @@
                     </div>
                 </div>
 
-            @endif
 
             <!-- Page Content -->
             <main>
