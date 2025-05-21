@@ -108,7 +108,13 @@ class TransaksiKasirController extends Controller
                          ->with('success', 'Item berhasil dihapus dari transaksi!');
     }
 
-   
+    public function deleteAll()
+    {
+        TransaksiKasir::truncate();
+
+        return redirect()->route('transaksi.index')
+                         ->with('success', 'Semua item transaksi berhasil dihapus!');
+    }
 
     public function checkout(Request $request)
     {

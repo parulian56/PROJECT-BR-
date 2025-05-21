@@ -7,13 +7,24 @@
     <div class="lg:col-span-2">
         <div class="bg-white rounded-xl shadow-md overflow-hidden">
             <div class="bg-amber-600 px-6 py-4 flex justify-between items-center">
-                <h2 class="text-white font-bold text-lg">Daftar Transaksi</h2>
-                <div>
-    <button onclick="printReceipt()" class="px-3 py-1 bg-white text-amber-600 rounded text-sm font-medium">
-        <i class="fas fa-print mr-1"></i> Cetak
-    </button>
+    <h2 class="text-white font-bold text-lg">Daftar Transaksi</h2>
+    <div class="flex items-center space-x-2">
+        <button onclick="printReceipt()" class="px-3 py-1 bg-white text-amber-600 rounded text-sm font-medium">
+            <i class="fas fa-print mr-1"></i> Cetak
+        </button>
+       <form action="{{ route('transaksi.deleteAll') }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus semua item transaksi?')">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-medium transition-colors">
+    <i class="fas fa-trash-alt mr-1"></i> Hapus Semua
+</button>
+
+</form>
+
+
+    </div>
 </div>
-            </div>
+
 
             @if(session('success'))
                 <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4">

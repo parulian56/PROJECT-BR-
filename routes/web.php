@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{transaksi}', [TransaksiKasirController::class, 'show'])->name('show');
             Route::get('/{transaksi}/edit', [TransaksiKasirController::class, 'edit'])->name('edit');
             Route::put('/{transaksi}', [TransaksiKasirController::class, 'update'])->name('update');
+            Route::delete('/delete-all', [TransaksiKasirController::class, 'deleteAll'])->name('deleteAll');
             Route::delete('/{transaksi}', [TransaksiKasirController::class, 'destroy'])->name('destroy');
             Route::post('/checkout', [TransaksiKasirController::class, 'checkout'])->name('checkout');
         });
