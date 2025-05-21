@@ -79,30 +79,31 @@
 
                     <!-- Navigation -->
                     <nav class="flex-1">
-                        <div class="mb-2 text-xs font-semibold text-amber-400 uppercase tracking-wider pl-4">Menu</div>
+    <div class="mb-2 text-xs font-semibold text-amber-400 uppercase tracking-wider pl-4">Menu</div>
 
-                        <a href="{{ url('admin/dashboard') }}"
-                           @click="activeTab = 'dashboard'; showSidebar = false"
-                           class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/dashboard*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
-                            <i class="fas fa-home text-lg"></i>
-                            <span class="ml-3">Dashboard</span>
-                        </a>
+    <a href="{{ url('admin/dashboard') }}"
+       @click="activeTab = 'dashboard'; showSidebar = false"
+       class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/dashboard*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
+        <i class="fas fa-home text-lg"></i>
+        <span class="ml-3">Dashboard</span>
+    </a>
 
-                        <a href="{{ url('admin/data') }}"
-                           @click="activeTab = 'data'; showSidebar = false"
-                           class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/data*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
-                            <i class="fas fa-box text-lg"></i>
-                            <span class="ml-3">Data Barang</span>
-                        </a>
+    <a href="{{ url('admin/data') }}"
+       @click="activeTab = 'data'; showSidebar = false"
+       class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/data*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
+        <i class="fas fa-box text-lg"></i>
+        <span class="ml-3">Data Barang</span>
+    </a>
 
-                        <a href="{{ route('admin.reports.index') }}"
-   @click="activeTab = 'reports'; showSidebar = false"
-   class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/reports*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
-    <i class="fas fa-chart-bar text-lg"></i> <!-- Ganti icon -->
-    <span class="ml-3">Laporan</span> <!-- Ganti teks -->
-</a>
+    <!-- Tambahkan menu Reports di sini -->
+    <a href="{{ url('admin/reports') }}"
+       @click="activeTab = 'reports'; showSidebar = false"
+       class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/reports*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
+        <i class="fas fa-chart-line text-lg"></i>
+        <span class="ml-3">Reports</span>
+    </a>
 
-                    </nav>
+</nav>
 
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
@@ -147,13 +148,14 @@
                     <span class="text-xs">Data Barang</span>
                 </a>
 
-                <a href="{{ route('admin.reports.index') }}"
-   @click="activeTab = 'reports'"
-   class="flex flex-col items-center justify-center p-3 text-center w-full transition-colors duration-300"
-   :class="activeTab === 'reports' ? 'text-amber-600' : 'text-stone-500 hover:text-amber-600'">
-    <i class="fas fa-chart-bar text-xl mb-1"></i> <!-- Ganti icon -->
-    <span class="text-xs">Laporan</span>
-</a>
+                <a href="{{ url('admin/reports') }}"
+                @click="activeTab = 'reports'"
+                class="flex flex-col items-center justify-center p-3 text-center w-full transition-colors duration-300"
+                :class="activeTab === 'reports' ? 'text-amber-600' : 'text-stone-500 hover:text-amber-600'">
+                <i class="fas fa-chart-line text-xl mb-1"></i>
+                <span class="text-xs">Reports</span>
+                </a>
+
             </div>
         </nav>
     </div>

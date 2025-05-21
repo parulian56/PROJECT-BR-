@@ -101,7 +101,7 @@
 
     <!-- Filter Section -->
     <div class="bg-white p-5 rounded-xl mb-8 border border-secondary-200 shadow-elegant hover:shadow-elegant transition-smooth">
-        <form method="GET" action="{{ route('admin.data') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
                 <label class="block text-sm font-medium text-secondary-700 mb-2">Periode Laporan</label>
                 <select name="filter" class="w-full px-4 py-2 border border-secondary-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white transition-smooth">
