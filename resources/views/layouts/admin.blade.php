@@ -28,22 +28,23 @@
     }" class="flex flex-col min-h-screen">
 
         <!-- Top App Bar (Header) -->
-        <header class="bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-md sticky top-0 z-10">
-            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                    <button @click="showSidebar = !showSidebar" class="p-2 rounded-full hover:bg-amber-700 focus:outline-none">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                    <h1 class="text-xl font-bold">Amaliah Kasir</h1>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <button class="p-2 relative">
-                        <i class="fas fa-bell text-xl"></i>
-                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-                    </button>
-                </div>
+<header class="bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-md sticky top-0 z-10">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <button @click="showSidebar = !showSidebar" class="p-2 rounded-full hover:bg-amber-700 focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <h1 class="text-xl font-bold">Amaliah Kasir</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="date-display flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100 text-stone-700 shadow-md border border-amber-200">
+                <i class="far fa-calendar-alt text-amber-600"></i>
+                <span class="font-medium tracking-wide">{{ now()->format('d M Y') }}</span>
             </div>
-        </header>
+            <span class="text-sm text-amber-100"><i class="far fa-user mr-1"></i> {{ auth()->user()->name }}</span>
+        </div>
+    </div>
+</header>
 
         <!-- Sidebar for Mobile -->
         <div x-show="showSidebar"
@@ -80,7 +81,7 @@
                     <nav class="flex-1">
                         <div class="mb-2 text-xs font-semibold text-amber-400 uppercase tracking-wider pl-4">Menu</div>
 
-                        <a href="{{ url('user/transaksi') }}"
+                        <a href="{{ url('admin/dashboard') }}"
                            @click="activeTab = 'dashboard'; showSidebar = false"
                            class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/dashboard*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
                             <i class="fas fa-home text-lg"></i>
@@ -94,11 +95,11 @@
                             <span class="ml-3">Data Barang</span>
                         </a>
 
-                        <a href="{{ route('admin.data.index') }}"
-   @click="activeTab = 'data'; showSidebar = false"
+                        <a href="{{ route('admin.reports.index') }}"
+   @click="activeTab = 'reports'; showSidebar = false"
    class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/reports*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
-    <i class="fas fa-box text-lg"></i>
-    <span class="ml-3">Reports</span>
+    <i class="fas fa-chart-bar text-lg"></i> <!-- Ganti icon -->
+    <span class="ml-3">Laporan</span> <!-- Ganti teks -->
 </a>
 
                     </nav>
@@ -147,12 +148,12 @@
                 </a>
 
                 <a href="{{ route('admin.reports.index') }}"
-                   @click="activeTab = 'reports'"
-                   class="flex flex-col items-center justify-center p-3 text-center w-full transition-colors duration-300"
-                   :class="activeTab === 'reports' ? 'text-amber-600' : 'text-stone-500 hover:text-amber-600'">
-                    <i class="fas fa-file-alt text-xl mb-1"></i>
-                    <span class="text-xs">Laporan</span>
-                </a>
+   @click="activeTab = 'reports'"
+   class="flex flex-col items-center justify-center p-3 text-center w-full transition-colors duration-300"
+   :class="activeTab === 'reports' ? 'text-amber-600' : 'text-stone-500 hover:text-amber-600'">
+    <i class="fas fa-chart-bar text-xl mb-1"></i> <!-- Ganti icon -->
+    <span class="text-xs">Laporan</span>
+</a>
             </div>
         </nav>
     </div>
