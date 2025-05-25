@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
-use Spatie\Permission\Middlewares\RoleMiddleware;
+use Illuminate\Contracts\Http\Kernel;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -11,20 +11,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function ($middleware) {
-        
-        return [
-            'web' => [],
-            'api' => [],
-            'middleware' => [], // global middleware
-            'route' => [
-                // Middleware bawaan Laravel seperti 'auth' biasanya otomatis
-                // Kita tambahkan 'role' dari Spatie
-                 $middleware->alias([
-                'role' =>  \App\Http\Middleware\RoleMiddleware::class,
-                ]),
-            ],
-         
-        ];
+        $middleware->alias([
+            'role' => \App\Http\Middleware\RoleMiddleware::class,
+            // Jika pakai Spatie:
+            // 'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        ]);
     })
-    ->withExceptions()
+    ->withExceptions(function ($exceptions) {
+        //
+    })
     ->create();

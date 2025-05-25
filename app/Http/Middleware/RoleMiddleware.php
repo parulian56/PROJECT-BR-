@@ -8,12 +8,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, string $role): Response
-    {
-        if (auth()->user()->role !== $role) {
-            abort(403); // atau bisa redirect ke halaman lain
-        }
-
-        return $next($request);
+    public function handle(Request $request, Closure $next, string $role)
+{
+    if (!auth()->check()) {
+        return redirect()->route('login');
     }
+
+    \Log::debug('Role Check', [
+        'user_role' => auth()->user()->role,
+        'required_role' => $role
+    ]);
+
+    if (auth()->user()->role !== $role) {
+        abort(403, 'Akses ditolak untuk role ini');
+    }
+
+    return $next($request);
+}
+
 }
