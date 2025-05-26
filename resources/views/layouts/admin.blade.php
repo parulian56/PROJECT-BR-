@@ -23,28 +23,27 @@
     <!-- Mobile-first layout with bottom navigation -->
     <div x-data="{
         showSidebar: false,
-        activeTab: 'dashboard',
         cartCount: 0
     }" class="flex flex-col min-h-screen">
 
         <!-- Top App Bar (Header) -->
-<header class="bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-md sticky top-0 z-10">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div class="flex items-center space-x-3">
-            <button @click="showSidebar = !showSidebar" class="p-2 rounded-full hover:bg-amber-700 focus:outline-none">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
-            <h1 class="text-xl font-bold">Amaliah Kasir</h1>
-        </div>
-        <div class="flex items-center space-x-4">
-            <div class="date-display flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100 text-stone-700 shadow-md border border-amber-200">
-                <i class="far fa-calendar-alt text-amber-600"></i>
-                <span class="font-medium tracking-wide">{{ now()->format('d M Y') }}</span>
+        <header class="bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-md sticky top-0 z-10">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <button @click="showSidebar = !showSidebar" class="p-2 rounded-full hover:bg-amber-700 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h1 class="text-xl font-bold">Amaliah Kasir</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="date-display flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100 text-stone-700 shadow-md border border-amber-200">
+                        <i class="far fa-calendar-alt text-amber-600"></i>
+                        <span class="font-medium tracking-wide">{{ now()->format('d M Y') }}</span>
+                    </div>
+                    <span class="text-sm text-amber-100"><i class="far fa-user mr-1"></i> {{ auth()->user()->name }}</span>
+                </div>
             </div>
-            <span class="text-sm text-amber-100"><i class="far fa-user mr-1"></i> {{ auth()->user()->name }}</span>
-        </div>
-    </div>
-</header>
+        </header>
 
         <!-- Sidebar for Mobile -->
         <div x-show="showSidebar"
@@ -79,31 +78,29 @@
 
                     <!-- Navigation -->
                     <nav class="flex-1">
-    <div class="mb-2 text-xs font-semibold text-amber-400 uppercase tracking-wider pl-4">Menu</div>
+                        <div class="mb-2 text-xs font-semibold text-amber-400 uppercase tracking-wider pl-4">Menu</div>
 
-    <a href="{{ url('admin/dashboard') }}"
-       @click="activeTab = 'dashboard'; showSidebar = false"
-       class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/dashboard*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
-        <i class="fas fa-home text-lg"></i>
-        <span class="ml-3">Dashboard</span>
-    </a>
+                        <a href="{{ url('admin/dashboard') }}"
+                           @click="activeTab = 'dashboard'; showSidebar = false"
+                           class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/dashboard*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
+                            <i class="fas fa-home text-lg"></i>
+                            <span class="ml-3">Dashboard</span>
+                        </a>
 
-    <a href="{{ url('admin/data') }}"
-       @click="activeTab = 'data'; showSidebar = false"
-       class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/data*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
-        <i class="fas fa-box text-lg"></i>
-        <span class="ml-3">Data Barang</span>
-    </a>
+                        <a href="{{ url('admin/data') }}"
+                           @click="activeTab = 'data'; showSidebar = false"
+                           class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/data*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
+                            <i class="fas fa-box text-lg"></i>
+                            <span class="ml-3">Data Barang</span>
+                        </a>
 
-    <!-- Tambahkan menu Reports di sini -->
-    <a href="{{ url('admin/reports') }}"
-       @click="activeTab = 'reports'; showSidebar = false"
-       class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/reports*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
-        <i class="fas fa-chart-line text-lg"></i>
-        <span class="ml-3">Reports</span>
-    </a>
-
-</nav>
+                        <a href="{{ url('admin/reports') }}"
+                           @click="activeTab = 'reports'; showSidebar = false"
+                           class="menu-item flex items-center my-1 px-4 py-3 rounded-lg {{ request()->is('admin/reports*') ? 'bg-gradient-to-r from-amber-700 to-amber-600 text-amber-100' : 'text-amber-200 hover:bg-gradient-to-r hover:from-amber-700 hover:to-amber-600 hover:text-amber-100' }} font-medium transition-all duration-300">
+                            <i class="fas fa-chart-line text-lg"></i>
+                            <span class="ml-3">Reports</span>
+                        </a>
+                    </nav>
 
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
@@ -117,14 +114,12 @@
         </div>
 
         <!-- Main Content -->
-        <main class="flex-1 container mx-auto px-4 py-4">
+        <main >
             <!-- Dynamic Page Title -->
-            <div class="mb-4">
-                <h2 class="text-xl font-semibold text-amber-900">@yield('header', 'Dashboard')</h2>
-            </div>
-
-            <!-- Content Area -->
-            <div class="bg-white rounded-xl shadow-sm p-4 mb-16 border border-amber-100">
+            @yield('page-title')
+            
+            <!-- Content Area with better spacing -->
+            <div class=>
                 @yield('content')
             </div>
         </main>
@@ -149,13 +144,12 @@
                 </a>
 
                 <a href="{{ url('admin/reports') }}"
-                @click="activeTab = 'reports'"
-                class="flex flex-col items-center justify-center p-3 text-center w-full transition-colors duration-300"
-                :class="activeTab === 'reports' ? 'text-amber-600' : 'text-stone-500 hover:text-amber-600'">
-                <i class="fas fa-chart-line text-xl mb-1"></i>
-                <span class="text-xs">Reports</span>
+                   @click="activeTab = 'reports'"
+                   class="flex flex-col items-center justify-center p-3 text-center w-full transition-colors duration-300"
+                   :class="activeTab === 'reports' ? 'text-amber-600' : 'text-stone-500 hover:text-amber-600'">
+                    <i class="fas fa-chart-line text-xl mb-1"></i>
+                    <span class="text-xs">Reports</span>
                 </a>
-
             </div>
         </nav>
     </div>
@@ -188,6 +182,12 @@
         /* Optimize for touch targets */
         button, a {
             touch-action: manipulation;
+        }
+
+        /* Improved content container */
+        .content-container {
+            padding: 1.5rem;
+            margin-bottom: 5rem;
         }
     </style>
 
