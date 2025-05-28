@@ -85,10 +85,10 @@ Route::middleware('auth')->group(function () {
                     Route::get('/', [DataController::class, 'index'])->name('index');
 
                     // Subkategori kategori
-                    Route::prefix('kategori')->name('kategori.')->group(function () {
-                        Route::resource('makanan', MakananController::class)->names([
-                            'index' => 'makanan.index',
-                            'create' => 'makanan.create',
+                        Route::prefix('kategori')->name('kategori.')->group(function () {
+                            Route::resource('makanan', MakananController::class)->names([
+                                'index' => 'makanan.index',
+                                'create' => 'makanan.create',
                             'store' => 'makanan.store',
                             'show' => 'makanan.show',
                             'edit' => 'makanan.edit',

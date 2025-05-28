@@ -12,17 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         // database/migrations/xxxx_create_makanans_table.php
-Schema::create('kesehatandankebersihan', function (Blueprint $table) {
-    $table->id();
-    $table->string('nama_barang');
-    $table->string('kategori');
-    $table->text('deskripsi')->nullable();
-    $table->integer('jumlah');
-    $table->decimal('harga_pokok', 10, 2);
-    $table->decimal('harga_jual', 10, 2);
-    $table->string('lokasi_penyimpanan');
-    $table->timestamps();
-});
     }
 
     /**
