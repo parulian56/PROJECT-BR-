@@ -41,7 +41,7 @@ Route::middleware('guest')->group(function () {
 });
 
 // Authenticated Routes
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function () {});
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
     // Profile Routes (semua user)
@@ -77,71 +77,18 @@ Route::middleware('auth')->group(function () {
             // Dashboard Admin
             Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-            // Admin Data Routes (prefix admin/data)
-            Route::prefix('data')
-                ->name('data.')
-                ->group(function () {
-                    // Route ke DataController@index untuk /admin/data
-                    Route::get('/', [DataController::class, 'index'])->name('index');
+// Group route untuk admin/data
+            Route::prefix('admin/data')->name('admin.data.')->group(function () {
+                Route::get('/', [DataController::class, 'index'])->name('index');         // Menampilkan semua data
+                Route::get('/create', [DataController::class, 'create'])->name('create'); // Form tambah data
+                Route::post('/', [DataController::class, 'store'])->name('store');        // Proses simpan data baru
+                Route::get('/{id}/edit', [DataController::class, 'edit'])->name('edit');  // Form edit data
+                Route::put('/{id}', [DataController::class, 'update'])->name('update');   // Proses update data
+                Route::delete('/{id}', [DataController::class, 'destroy'])->name('destroy'); // Proses hapus data
 
-                    // Subkategori kategori
-                        Route::prefix('kategori')->name('kategori.')->group(function () {
-                            Route::resource('makanan', MakananController::class)->names([
-                                'index' => 'makanan.index',
-                                'create' => 'makanan.create',
-                            'store' => 'makanan.store',
-                            'show' => 'makanan.show',
-                            'edit' => 'makanan.edit',
-                            'update' => 'makanan.update',
-                            'destroy' => 'makanan.destroy',
-                        ]);
-                        Route::resource('minuman', MinumanController::class)->names([
-                            'index' => 'minuman.index',
-                            'create' => 'minuman.create',
-                            'store' => 'minuman.store',
-                            'show' => 'minuman.show',
-                            'edit' => 'minuman.edit',
-                            'update' => 'minuman.update',
-                            'destroy' => 'minuman.destroy',
-                        ]);
-                        Route::resource('alattulis', AlattulisController::class)->names([
-                            'index' => 'alattulis.index',
-                            'create' => 'alattulis.create',
-                            'store' => 'alattulis.store',
-                            'show' => 'alattulis.show',
-                            'edit' => 'alattulis.edit',
-                            'update' => 'alattulis.update',
-                            'destroy' => 'alattulis.destroy',
-                        ]);
-                        Route::resource('seragam', SeragamController::class)->names([
-                            'index' => 'seragam.index',
-                            'create' => 'seragam.create',
-                            'store' => 'seragam.store',
-                            'show' => 'seragam.show',
-                            'edit' => 'seragam.edit',
-                            'update' => 'seragam.update',
-                            'destroy' => 'seragam.destroy',
-                        ]);
-                        Route::resource('kesehatandankebersihan', KesehatandankebersihanController::class)->names([
-                            'index' => 'kesehatandankebersihan.index',
-                            'create' => 'kesehatandankebersihan.create',
-                            'store' => 'kesehatandankebersihan.store',
-                            'show' => 'kesehatandankebersihan.show',
-                            'edit' => 'kesehatandankebersihan.edit',
-                            'update' => 'kesehatandankebersihan.update',
-                            'destroy' => 'kesehatandankebersihan.destroy',
-                        ]);
-                        Route::resource('lainya', LainyaController::class)->names([
-                            'index' => 'lainya.index',
-                            'create' => 'lainya.create',
-                            'store' => 'lainya.store',
-                            'show' => 'lainya.show',
-                            'edit' => 'lainya.edit',
-                            'update' => 'lainya.update',
-                            'destroy' => 'lainya.destroy',
-                        ]);
-                    });
-                });
+                // Tambahan jika kamu punya halaman stok
+                Route::get('/stok', [DataController::class, 'stok'])->name('stok');
+            });
 
             // User Management
             Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -156,4 +103,5 @@ Route::middleware('auth')->group(function () {
                 Route::get('/custom', [ReportController::class, 'custom'])->name('custom');
             });
         });
-});
+
+
