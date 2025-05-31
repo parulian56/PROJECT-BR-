@@ -27,7 +27,7 @@
                     <!-- Code TRX Field -->
                     <div class="grid grid-cols-1 gap-4">
                         <div class="form-group">
-                            <label for="code_trx" class="block text-sm font-medium text-stone-700 mb-1">
+                            <label for="codetrx" class="block text-sm font-medium text-stone-700 mb-1">
                                 Code TRX
                             </label>
                             <div class="mt-1 relative rounded-md shadow-sm">
@@ -38,8 +38,8 @@
                                 </div>
                                 <input
                                     type="text"
-                                    id="code_trx"
-                                    name="code_trx"
+                                    id="codetrx"
+                                    name="codetrx"
                                     class="focus:ring-amber-500 focus:border-amber-500 block w-full pl-10 pr-4 py-3 sm:text-sm border-stone-300 rounded-lg"
                                     placeholder="Masukkan kode transaksi"
                                     required
@@ -200,10 +200,10 @@
 
                     <!-- Buttons -->
                     <div class="pt-4 flex flex-col sm:flex-row-reverse gap-3">
-                        <button                        type="button"
+                        <button
                             type="submit"
                             class="w-full sm:w-auto flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors duration-300"
-                        >
+                            >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
@@ -267,7 +267,6 @@
 
 @push('scripts')
 
-@push('scripts')
 <script>
 function formatRupiah(angka, prefix = 'Rp ') {
     let number_string = angka.replace(/[^,\d]/g, '').toString(),

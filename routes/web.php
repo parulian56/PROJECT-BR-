@@ -78,18 +78,14 @@ Route::middleware('auth')->group(function () {});
             Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // Group route untuk admin/data
-            Route::prefix('admin/data')->name('admin.data.')->group(function () {
+            Route::prefix('data')->name('admin.data.')->group(function () {
                 Route::get('/', [DataController::class, 'index'])->name('index');         // Menampilkan semua data
                 Route::get('/create', [DataController::class, 'create'])->name('create'); // Form tambah data
                 Route::post('/', [DataController::class, 'store'])->name('store');        // Proses simpan data baru
                 Route::get('/{id}/edit', [DataController::class, 'edit'])->name('edit');  // Form edit data
                 Route::put('/{id}', [DataController::class, 'update'])->name('update');   // Proses update data
-                Route::delete('/{id}', [DataController::class, 'destroy'])->name('destroy'); // Proses hapus data
-
-                // Tambahan jika kamu punya halaman stok
-                Route::get('/stok', [DataController::class, 'stok'])->name('stok');
+                Route::delete('/{id}', [DataController::class, 'destroy'])->name('destroy'); // Proses hapus d
             });
-
             // User Management
             Route::get('/users', [UserController::class, 'index'])->name('users.index');
 

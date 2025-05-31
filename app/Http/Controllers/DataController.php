@@ -43,7 +43,7 @@ class DataController extends Controller
     {
         // Validasi input
         $request->validate([
-            'code_trx' => 'required|unique:data_barang,code_trx',
+            'codetrx' => 'required|unique:data,codetrx',
             'nama_barang' => 'required|string',
             'kategori' => 'required|string',
             'stok' => 'required|integer|min:1',
