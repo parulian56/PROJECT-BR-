@@ -1,138 +1,133 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-    <!-- Main card with subtle shadow -->
-    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-        <!-- Header with elegant border -->
-        <div class="border-b border-gray-100 py-6 px-6 sm:px-8">
-            <div class="text-center">
-                <h2 class="text-2xl md:text-3xl font-semibold text-gray-800">
-                    Daftar Kategori Produk
-                </h2>
-                <p class="mt-2 text-gray-500">Kelola kategori produk toko Anda</p>
+<div class="bg-stone-100 min-h-screen py-8 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header with subtle animation -->
+        <div class="mb-8 relative">
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-700 inline-flex items-center group">
+                <span class="mr-3 transform transition-transform duration-300 group-hover:rotate-12">📋</span>
+                <span class="relative">
+                    Daftar Barang
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
+                </span>
+            </h2>
+            <p class="text-stone-600 mt-2">Kelola inventaris barang dengan mudah dan efisien</p>
+        </div>
+
+        <!-- Navigation and search bar -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+            <a
+                href="{{ route('admin.dashboard') }}"
+                class="bg-stone-700 hover:bg-stone-800 text-white font-medium rounded-lg py-3 px-6 flex items-center justify-center gap-2 shadow-md transition-all duration-300 hover:shadow-lg"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Kembali
+            </a>
+
+
+            <a
+                href="{{ route('admin.data.create') }}"
+                class="bg-stone-800 hover:bg-stone-900 text-white font-medium rounded-lg py-3 px-6 flex items-center justify-center gap-2 shadow-md transition-all duration-300 hover:shadow-lg"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Tambah Data
+            </a>
+
+
+        </div>
+
+        <!-- Table with enhanced design -->
+        <div class="overflow-hidden bg-white rounded-xl shadow-lg border border-stone-200">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">No</th>
+                            <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">Code TRX</th>
+                            <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">Nama Barang</th>
+                            <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">Jumlah</th>
+                            <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">Harga Pokok</th>
+                            <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">Harga Jual</th>
+                            <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">Lokasi</th>
+                            <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-center text-sm tracking-wider">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-stone-200">
+                        @forelse ($data as $item)
+                            <tr class="hover:bg-amber-50 transition-colors duration-150">
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-600">
+                                    {{ $loop->iteration + ($data->perPage() * ($data->currentPage() - 1)) }}
+                                </td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-stone-800">
+                                    {{ $item->codetrx }}
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-stone-800">
+                                    {{ $item->nama_barang }}
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-600">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        {{ $item->jumlah }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-600">
+                                    Rp {{ number_format($item->harga_pokok, 0, ',', '.') }}
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-600">
+                                    Rp {{ number_format($item->harga_jual, 0, ',', '.') }}
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-600">
+                                    <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-stone-100 text-stone-800">
+                                        {{ $item->lokasi_penyimpanan }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-center">
+                                    <div class="flex justify-center space-x-2">
+                                        <a href="{{ route('admin.data.edit', $item->id) }}"
+                                           class="bg-stone-300 hover:bg-stone-400 text-stone-800 p-2 rounded-md transition-colors duration-200"
+                                           title="Edit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                            </svg>
+                                        </a>
+                                        <form action="{{ route('admin.data.destroy', $item->id) }}"
+                                              method="POST"
+                                              class="inline-block"
+                                              onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                    class="bg-stone-600 hover:bg-stone-700 text-white p-2 rounded-md transition-colors duration-200"
+                                                    title="Hapus">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="px-4 py-8 text-center text-stone-500">
+                                    <div class="flex flex-col items-center justify-center space-y-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                        </svg>
+                                        <span class="font-medium">Barang tidak ada</span>
+                                        <p class="text-stone-400 text-sm">Tambahkan data untuk menampilkan inventaris makanan</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- Categories grid -->
-        <div class="p-6 sm:p-8">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Makanan -->
-                <div class="group">
-                    <a href="{{ url('admin/data/kategori/makanan') }}"
-                       class="flex flex-col items-center justify-center h-36 rounded-lg bg-white border border-gray-200 hover:border-orange-300 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden">
-                        <div class="w-14 h-14 rounded-full bg-orange-50 flex items-center justify-center mb-3 group-hover:bg-orange-100 transition-colors duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01M5 12h14a2 2 0 012 2v3a2 2 0 01-2 2H7a2 2 0 01-2-2v-3a2 2 0 012-2z M8 7V5c0-1.1.9-2 2-2h4a2 2 0 012 2v2M8 7h8" />
-                            </svg>
-                        </div>
-                        <span class="text-lg font-medium text-gray-800">Makanan</span>
-                        <div class="absolute bottom-0 left-0 right-0 h-1 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                    </a>
-                </div>
-
-                <!-- Minuman -->
-                <div class="group">
-                    <a href="{{ url('admin/data/kategori/minuman') }}"
-                       class="flex flex-col items-center justify-center h-36 rounded-lg bg-white border border-gray-200 hover:border-orange-300 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden">
-                        <div class="w-14 h-14 rounded-full bg-orange-50 flex items-center justify-center mb-3 group-hover:bg-orange-100 transition-colors duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 20h5.656M7 2h10l-2 6h-6L7 2zM5 8h14v1a5 5 0 01-5 5h-4a5 5 0 01-5-5V8z" />
-                            </svg>
-                        </div>
-                        <span class="text-lg font-medium text-gray-800">Minuman</span>
-                        <div class="absolute bottom-0 left-0 right-0 h-1 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                    </a>
-                </div>
-
-                <!-- Alat Tulis -->
-                <div class="group">
-                    <a href="{{ url('admin/data/kategori/alattulis') }}"
-                       class="flex flex-col items-center justify-center h-36 rounded-lg bg-white border border-gray-200 hover:border-orange-300 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden">
-                        <div class="w-14 h-14 rounded-full bg-orange-50 flex items-center justify-center mb-3 group-hover:bg-orange-100 transition-colors duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                            </svg>
-                        </div>
-                        <span class="text-lg font-medium text-gray-800">Alat Tulis</span>
-                        <div class="absolute bottom-0 left-0 right-0 h-1 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                    </a>
-                </div>
-
-                <!-- Seragam -->
-                <div class="group">
-                    <a href="{{ url('admin/data/kategori/seragam') }}"
-                       class="flex flex-col items-center justify-center h-36 rounded-lg bg-white border border-gray-200 hover:border-orange-300 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden">
-                        <div class="w-14 h-14 rounded-full bg-orange-50 flex items-center justify-center mb-3 group-hover:bg-orange-100 transition-colors duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 3h12l-2 5M16 8l-4 4-4-4M6 3l-2 5 2 12h12l2-12-2-5M12 16v5" />
-                            </svg>
-                        </div>
-                        <span class="text-lg font-medium text-gray-800">Seragam</span>
-                        <div class="absolute bottom-0 left-0 right-0 h-1 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                    </a>
-                </div>
-
-                <!-- Kesehatan & Kebersihan -->
-                <div class="group">
-                    <a href="{{ url('admin/data/kategori/kesehatandankebersihan') }}"
-                       class="flex flex-col items-center justify-center h-36 rounded-lg bg-white border border-gray-200 hover:border-orange-300 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden">
-                        <div class="w-14 h-14 rounded-full bg-orange-50 flex items-center justify-center mb-3 group-hover:bg-orange-100 transition-colors duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                            </svg>
-                        </div>
-                        <span class="text-lg font-medium text-gray-800 text-center">Kesehatan & Kebersihan</span>
-                        <div class="absolute bottom-0 left-0 right-0 h-1 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                    </a>
-                </div>
-
-                <!-- Lainnya -->
-                <div class="group">
-                    <a href="{{ url('admin/data/kategori/lainya') }}"
-                       class="flex flex-col items-center justify-center h-36 rounded-lg bg-white border border-gray-200 hover:border-orange-300 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden">
-                        <div class="w-14 h-14 rounded-full bg-orange-50 flex items-center justify-center mb-3 group-hover:bg-orange-100 transition-colors duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                            </svg>
-                        </div>
-                        <span class="text-lg font-medium text-gray-800">Lainnya</span>
-                        <div class="absolute bottom-0 left-0 right-0 h-1 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="bg-gray-50 px-6 py-4 text-center border-t border-gray-100">
-            <p class="text-gray-500 text-sm">Admin Panel • {{ now()->format('d M Y') }}</p>
-        </div>
-    </div>
-</div>
-
-<style>
-    /* Smooth transitions */
-    .group:hover .transform {
-        transition-duration: 200ms;
-    }
-
-    /* Subtle shadow for cards */
-    .shadow-xs {
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    }
-
-    /* Custom focus styles for accessibility */
-    a:focus {
-        outline: 2px solid rgba(249, 115, 22, 0.5);
-        outline-offset: 2px;
-    }
-
-    /* Reduce motion for users who prefer it */
-    @media (prefers-reduced-motion: reduce) {
-        * {
-            transition: none !important;
-            animation: none !important;
-        }
-    }
-</style>
+        <!-- Pagination with custom design -->
 @endsection

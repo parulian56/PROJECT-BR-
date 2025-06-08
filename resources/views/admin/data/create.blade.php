@@ -16,13 +16,39 @@
                     </svg>
                     Tambah Data Makanan
                 </h2>
-                <p class="text-amber-100 mt-1 relative z-10">Lengkapi form berikut untuk menambahkan data makanan baru</p>
+                <p class="text-amber-100 mt-1 relative z-10">Lengkapi form berikut untuk menambahkan data barang baru</p>
             </div>
 
             <!-- Form -->
-            <form action="{{ route('admin.data.kategori.seragam.store') }}" method="POST" class="p-6">
+            <form action="{{ route('admin.data.store') }}" method="POST" class="p-6">
                 @csrf
                 <div class="space-y-6">
+
+                    <!-- Code TRX Field -->
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="form-group">
+                            <label for="codetrx" class="block text-sm font-medium text-stone-700 mb-1">
+                                Code TRX
+                            </label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                                    </svg>
+                                </div>
+                                <input
+                                    type="text"
+                                    id="codetrx"
+                                    name="codetrx"
+                                    class="focus:ring-amber-500 focus:border-amber-500 block w-full pl-10 pr-4 py-3 sm:text-sm border-stone-300 rounded-lg"
+                                    placeholder="Masukkan kode transaksi"
+                                    required
+                                >
+                            </div>
+                            <p class="mt-1 text-xs text-stone-500">Kode unik untuk identifikasi transaksi</p>
+                        </div>
+                    </div>
+
                     <!-- Nama Barang Field -->
                     <div class="grid grid-cols-1 gap-4">
                         <div class="form-group">
@@ -40,7 +66,7 @@
                                     id="nama_barang"
                                     name="nama_barang"
                                     class="focus:ring-amber-500 focus:border-amber-500 block w-full pl-10 pr-4 py-3 sm:text-sm border-stone-300 rounded-lg"
-                                    placeholder="Masukkan nama barang"
+                                    placeholder="Masukkan nama makanan"
                                     required
                                 >
                             </div>
@@ -60,21 +86,27 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                                     </svg>
                                 </div>
-                                <input
-                                    type="text"
+                                <select
                                     id="kategori"
                                     name="kategori"
-                                    value="seragam"
-                                    readonly
-                                    class="bg-stone-50 text-stone-500 focus:ring-amber-500 focus:border-amber-500 block w-full pl-10 pr-4 py-3 sm:text-sm border-stone-300 rounded-lg cursor-not-allowed"
+                                    class="bg-stone-50 text-stone-700 focus:ring-amber-500 focus:border-amber-500 block w-full pl-10 pr-4 py-3 sm:text-sm border-stone-300 rounded-lg"
+                                    required
                                 >
+                                    <option value="" disabled selected>Pilih kategori</option>
+                                    <option value="makanan">Makanan</option>
+                                    <option value="minuman">Minuman</option>
+                                    <option value="seragam">Seragam</option>
+                                    <option value="alat tulis">Alat Tulis</option>
+                                    <option value="medicine">Medicine</option>
+                                    <option value="lainnya">Lainnya</option>
+                                </select>
                             </div>
                         </div>
 
                         <!-- Jumlah Field -->
                         <div class="form-group">
-                            <label for="jumlah" class="block text-sm font-medium text-stone-700 mb-1">
-                                Jumlah
+                            <label for="stok" class="block text-sm font-medium text-stone-700 mb-1">
+                                Stock
                             </label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -84,11 +116,11 @@
                                 </div>
                                 <input
                                     type="number"
-                                    id="jumlah"
-                                    name="jumlah"
+                                    id="stok"
+                                    name="stok"
                                     min="1"
                                     class="focus:ring-amber-500 focus:border-amber-500 block w-full pl-10 pr-4 py-3 sm:text-sm border-stone-300 rounded-lg"
-                                    placeholder="Masukkan jumlah"
+                                    placeholder="Masukkan Stock"
                                     required
                                 >
                             </div>
@@ -107,15 +139,14 @@
                                     <span class="text-stone-500 sm:text-sm">Rp</span>
                                 </div>
                                 <input
-                                    type="number"
+                                    type="text"
                                     id="harga_pokok"
                                     name="harga_pokok"
-                                    min="0"
-                                    step="0.01"
-                                    class="focus:ring-amber-500 focus:border-amber-500 block w-full pl-12 pr-4 py-3 sm:text-sm border-stone-300 rounded-lg"
-                                    placeholder="0"
+                                    class="rupiah-input focus:ring-amber-500 focus:border-amber-500 block w-full pl-12 pr-4 py-3 sm:text-sm border-stone-300 rounded-lg"
+                                    placeholder="Rp 0"
                                     required
                                 >
+
                             </div>
                             <p class="mt-1 text-xs text-stone-500">Harga pembelian per unit</p>
                         </div>
@@ -130,13 +161,11 @@
                                     <span class="text-stone-500 sm:text-sm">Rp</span>
                                 </div>
                                 <input
-                                    type="number"
+                                    type="text"
                                     id="harga_jual"
                                     name="harga_jual"
-                                    min="0"
-                                    step="0.01"
-                                    class="focus:ring-amber-500 focus:border-amber-500 block w-full pl-12 pr-4 py-3 sm:text-sm border-stone-300 rounded-lg"
-                                    placeholder="0"
+                                    class="rupiah-input focus:ring-amber-500 focus:border-amber-500 block w-full pl-12 pr-4 py-3 sm:text-sm border-stone-300 rounded-lg"
+                                    placeholder="Rp 0"
                                     required
                                 >
                             </div>
@@ -174,14 +203,14 @@
                         <button
                             type="submit"
                             class="w-full sm:w-auto flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors duration-300"
-                        >
+                            >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
                             Simpan Data
                         </button>
                         <a
-                            href="{{ route('admin.data.kategori.seragam.index') }}"
+                            href="{{ route('admin.data.index') }}"
                             class="w-full sm:w-auto flex justify-center items-center px-6 py-3 border border-stone-300 text-base font-medium rounded-lg shadow-sm text-stone-700 bg-white hover:bg-stone-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-500 transition-colors duration-300"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -210,6 +239,12 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
+                        <span>Code TRX harus unik untuk setiap transaksi agar mudah dilacak.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                         <span>Selalu periksa kembali harga pokok dan harga jual untuk memastikan margin keuntungan.</span>
                     </li>
                     <li class="flex items-start">
@@ -229,4 +264,35 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+
+<script>
+function formatRupiah(angka, prefix = 'Rp ') {
+    let number_string = angka.replace(/[^,\d]/g, '').toString(),
+        split = number_string.split(','),
+        sisa = split[0].length % 3,
+        rupiah = split[0].substr(0, sisa),
+        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+    if (ribuan) {
+        rupiah += (sisa ? '.' : '') + ribuan.join('.');
+    }
+
+    rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+    return prefix + rupiah;
+}
+
+// Event listener
+document.querySelectorAll('.rupiah-input').forEach(function(input) {
+    input.addEventListener('input', function(e) {
+        let cursorPos = this.selectionStart;
+        this.value = formatRupiah(this.value);
+        this.setSelectionRange(cursorPos, cursorPos); // menjaga posisi kursor
+    });
+});
+</script>
+@endpush
+
+
 @endsection

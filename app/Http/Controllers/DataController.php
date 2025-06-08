@@ -11,10 +11,10 @@ class DataController extends Controller
     public function index()
     {
         // Ambil semua data penyimpanan
-        $datas = Data::all();
+        $data = Data::paginate(10);
 
         // Kirim data penyimpanan ke tampilan
-        return view('admin.data.index', compact('datas'));
+        return view('admin.data.index', compact('data'));
     }
 
     // Menampilkan form untuk menambah data penyimpanan
@@ -22,6 +22,10 @@ class DataController extends Controller
     {
         // Tampilkan form tambah data penyimpanan
         return view('admin.data.create');
+    }
+
+    public function stok(){
+        return view('admin.data.stok');
     }
 
     // Menampilkan form edit data penyimpanan
@@ -39,12 +43,12 @@ class DataController extends Controller
     {
         // Validasi input
         $request->validate([
+            'codetrx' => 'required|unique:data,codetrx',
             'nama_barang' => 'required|string',
             'kategori' => 'required|string',
-            'deskripsi' => 'nullable|string',
-            'jumlah' => 'required|integer|min:1|max:9999',
-            'harga_pokok' => 'required|numeric',
-            'harga_jual' => 'required|numeric',
+            'stok' => 'required|integer|min:1',
+            'harga_pokok' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'harga_jual' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'lokasi_penyimpanan' => 'required|string',
         ]);
 
@@ -52,10 +56,11 @@ class DataController extends Controller
 
         // Simpan data penyimpanan baru
         Data::create([
+            'codetrx' => $request->codetrx,
             'nama_barang' => $request->nama_barang,
             'kategori' => $request->kategori,
             'deskripsi' => $request->deskripsi,
-            'jumlah' => $request->jumlah,
+            'stok' => $request->stok,
             'harga_pokok' => $request->harga_pokok,
             'harga_jual' => $request->harga_jual,
             'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
@@ -73,7 +78,7 @@ class DataController extends Controller
             'nama_barang' => 'required|string',
             'kategori' => 'required|string',
             'deskripsi' => 'nullable|string',
-            'jumlah' => 'required|integer',
+            'stok' => 'required|integer|min:1|max:9999',
             'harga_pokok' => 'required|numeric',
             'harga_jual' => 'required|numeric',
             'lokasi_penyimpanan' => 'required|string',
@@ -89,7 +94,7 @@ class DataController extends Controller
             'nama_barang' => $request->nama_barang,
             'kategori' => $request->kategori,
             'deskripsi' => $request->deskripsi,
-            'jumlah' => $request->jumlah,
+            'stok' => $request->stok,
             'harga_pokok' => $request->harga_pokok,
             'harga_jual' => $request->harga_jual,
             'lokasi_penyimpanan' => $request->lokasi_penyimpanan,
