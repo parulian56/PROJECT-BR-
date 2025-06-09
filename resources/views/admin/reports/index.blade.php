@@ -529,7 +529,7 @@
             <h3 class="text-xl font-semibold text-navy-800">Filter Laporan</h3>
         </div>
 
-        <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+   `     <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-6">
            
 
             <div>
