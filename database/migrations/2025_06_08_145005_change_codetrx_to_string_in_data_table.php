@@ -9,19 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+        public function up()
     {
-        Schema::create('transaksi_items', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('data', function (Blueprint $table) {
+            $table->string('codetrx', 50)->change();
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+        public function down()
     {
-        Schema::dropIfExists('transaksi_items');
+        Schema::table('data', function (Blueprint $table) {
+            $table->decimal('codetrx', 15, 2)->change();
+        });
     }
 };

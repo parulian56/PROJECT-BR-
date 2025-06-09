@@ -6,37 +6,34 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
-
     /**
-     * Run the migrations.
+     * Jalankan migrasi.
      */
-    public function up()
-{
-
-
-    if (!Schema::hasTable('data')) {
-        Schema::create('data', function (Blueprint $table) {
-            $table->id();
-            $table->decimal('codetrx',15,2);
-            $table->string('nama_barang');
-            $table->string('kategori');
-            $table->text('deskripsi')->nullable();
-            $table->decimal('stok', 15, 2);
-            $table->decimal('harga_pokok', 16, 2);
-            $table->decimal('harga_jual', 15, 2);
-            $table->string('lokasi_penyimpanan');
-            $table->timestamps();
-        });
+    public function up(): void
+    {
+        if (!Schema::hasTable('data')) {
+            Schema::create('data', function (Blueprint $table) {
+                $table->id();
+                $table->string('codetrx', 50); // ubah jadi string
+                $table->string('nama_barang');
+                $table->string('kategori');
+                $table->text('deskripsi')->nullable();
+                $table->integer('stok'); // stok bisa integer saja kalau stok adalah jumlah barang
+                $table->decimal('harga_pokok', 16, 2);
+                $table->decimal('harga_jual', 15, 2);
+                $table->string('lokasi_penyimpanan');
+                $table->timestamps();
+            });
+        }
     }
-}
+
 
 
     /**
-     * Reverse the migrations.
+     * Rollback migrasi.
      */
     public function down(): void
     {
-        Schema::dropIfExists('data'); // Menghapus tabel 'data' jika rollback
+        Schema::dropIfExists('data');
     }
 };

@@ -157,4 +157,15 @@ class TransaksiKasirController extends Controller
         return redirect()->route('transaksi.index')
                          ->with('success', 'Transaksi berhasil diselesaikan! Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
     }
+    //method untuk mencari produk
+    public function searchProduct(Request $request)
+{
+    $term = $request->get('term');
+    
+    $products = Produk::where('codetrx', 'like', '%'.$term.'%')
+                     ->orWhere('nama_barang', 'like', '%'.$term.'%')
+                     ->get(['codetrx', 'nama_barang', 'harga_jual', 'kategori']);
+    
+    return response()->json($products);
+}
 }

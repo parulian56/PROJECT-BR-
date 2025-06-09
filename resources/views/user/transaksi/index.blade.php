@@ -7,24 +7,20 @@
     <div class="lg:col-span-2">
         <div class="bg-white rounded-xl shadow-md overflow-hidden">
             <div class="bg-amber-600 px-6 py-4 flex justify-between items-center">
-    <h2 class="text-white font-bold text-lg">Daftar Transaksi</h2>
-    <div class="flex items-center space-x-2">
-        <button onclick="printReceipt()" class="px-3 py-1 bg-white text-amber-600 rounded text-sm font-medium">
-            <i class="fas fa-print mr-1"></i> Cetak
-        </button>
-       <form action="{{ route('transaksi.deleteAll') }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus semua item transaksi?')">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-medium transition-colors">
-    <i class="fas fa-trash-alt mr-1"></i> Hapus Semua
-</button>
-
-</form>
-
-
-    </div>
-</div>
-
+                <h2 class="text-white font-bold text-lg">Daftar Transaksi</h2>
+                <div class="flex items-center space-x-2">
+                    <button onclick="printReceipt()" class="px-3 py-1 bg-white text-amber-600 rounded text-sm font-medium">
+                        <i class="fas fa-print mr-1"></i> Cetak
+                    </button>
+                    <form action="{{ route('transaksi.deleteAll') }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus semua item transaksi?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-medium transition-colors">
+                            <i class="fas fa-trash-alt mr-1"></i> Hapus Semua
+                        </button>
+                    </form>
+                </div>
+            </div>
 
             @if(session('success'))
                 <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4">
@@ -99,14 +95,22 @@
                 <form action="{{ route('transaksi.store') }}" method="POST">
                     @csrf
                     <div class="space-y-4">
+                        <!-- Input Pencarian Barang -->
                         <div>
-                            <label class="block text-sm font-medium text-stone-600 mb-1">PLU/Kode Barang</label>
-                            <input type="text" name="plu" class="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
+                            <label class="block text-sm font-medium text-stone-600 mb-1">Cari Barang</label>
+                            <input type="text" id="product-search" 
+                                   class="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-amber-500 focus:border-amber-500" 
+                                   placeholder="Ketik PLU atau nama barang...">
+                            <input type="hidden" name="plu" id="plu">
                         </div>
+
+                        <!-- Input Nama Barang (otomatis terisi) -->
                         <div>
                             <label class="block text-sm font-medium text-stone-600 mb-1">Nama Barang</label>
-                            <input type="text" name="deskripsi" class="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
+                            <input type="text" name="deskripsi" id="deskripsi" readonly
+                                   class="w-full px-4 py-2 border border-stone-200 rounded-lg bg-stone-100">
                         </div>
+
                         <div>
                             <label class="block text-sm font-medium text-stone-600 mb-1">Kategori</label>
                             <select name="kategori" class="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
@@ -171,15 +175,34 @@
 
 @push('scripts')
 <script>
-    // Hitung kembalian
-    document.getElementById('uang_dibayar').addEventListener('input', function() {
-        const total = {{ $grandTotal }};
-        const uangDibayar = parseFloat(this.value) || 0;
-        const kembalian = uangDibayar - total;
-        
-        document.getElementById('kembalian').value = kembalian >= 0 
-            ? 'Rp ' + kembalian.toLocaleString('id-ID') 
-            : 'Uang kurang Rp ' + Math.abs(kembalian).toLocaleString('id-ID');
+    $(function() {
+        $("#product-search").autocomplete({
+            source: "{{ route('transaksi.searchProduct') }}",
+            minLength: 2,
+            select: function(event, ui) {
+                // Isi form otomatis
+                $("#plu").val(ui.item.codetrx);
+                $("#deskripsi").val(ui.item.nama_barang);
+                $("select[name='kategori']").val(ui.item.kategori);
+                $("input[name='harga']").val(ui.item.harga_jual);
+                $("input[name='qty']").focus();
+            }
+        }).autocomplete("instance")._renderItem = function(ul, item) {
+            return $("<li>")
+                .append(`<div>${item.codetrx} - ${item.nama_barang} (Rp ${item.harga_jual.toLocaleString('id-ID')})</div>`)
+                .appendTo(ul);
+        };
+
+        // Hitung kembalian
+        document.getElementById('uang_dibayar').addEventListener('input', function() {
+            const total = {{ $grandTotal }};
+            const uangDibayar = parseFloat(this.value) || 0;
+            const kembalian = uangDibayar - total;
+            
+            document.getElementById('kembalian').value = kembalian >= 0 
+                ? 'Rp ' + kembalian.toLocaleString('id-ID') 
+                : 'Uang kurang Rp ' + Math.abs(kembalian).toLocaleString('id-ID');
+        });
     });
 
     // Fungsi cetak struk

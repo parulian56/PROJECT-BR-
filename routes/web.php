@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    Auth\RegisterController,
     Auth\AuthenticatedSessionController,
     ProfileController,
     DataController,
@@ -16,7 +17,6 @@ use App\Http\Controllers\{
     SeragamController,
     UserController,
 };
-use Illuminate\Support\Facades\Route;
 
 // Redirect user berdasarkan role saat akses root '/'
 Route::get('/', function () {
@@ -31,7 +31,9 @@ Route::get('/', function () {
     );
 });
 
-// Auth Routes
+// ========================
+// Guest (Auth) Routes
+// ========================
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'register']);
@@ -40,8 +42,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 });
 
+// ========================
 // Authenticated Routes
-Route::middleware('auth')->group(function () {});
+// ========================
+Route::middleware('auth')->group(function () {
+
+    // Logout
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
     // Profile Routes (semua user)
@@ -65,39 +71,38 @@ Route::middleware('auth')->group(function () {});
             Route::delete('/delete-all', [TransaksiKasirController::class, 'deleteAll'])->name('deleteAll');
             Route::delete('/{transaksi}', [TransaksiKasirController::class, 'destroy'])->name('destroy');
             Route::post('/checkout', [TransaksiKasirController::class, 'checkout'])->name('checkout');
+            Route::get('/transaksi/search-product', [TransaksiKasirController::class, 'searchProduct'])
+            ->name('searchProduct');
         });
     });
 
     // ADMIN Routes (role = admin)
-    Route::prefix('admin')
-        ->middleware('role:admin')
-        ->name('admin.')
-        ->group(function () {
+    Route::prefix('admin')->middleware('role:admin')->name('admin.')->group(function () {
 
-            // Dashboard Admin
-            Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        // Dashboard
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Group route untuk admin/data
-            Route::prefix('data')->name('admin.data.')->group(function () {
-                Route::get('/', [DataController::class, 'index'])->name('index');         // Menampilkan semua data
-                Route::get('/create', [DataController::class, 'create'])->name('create'); // Form tambah data
-                Route::post('/', [DataController::class, 'store'])->name('store');        // Proses simpan data baru
-                Route::get('/{id}/edit', [DataController::class, 'edit'])->name('edit');  // Form edit data
-                Route::put('/{id}', [DataController::class, 'update'])->name('update');   // Proses update data
-                Route::delete('/{id}', [DataController::class, 'destroy'])->name('destroy'); // Proses hapus d
-            });
-            // User Management
-            Route::get('/users', [UserController::class, 'index'])->name('users.index');
-
-            // Reports
-            Route::prefix('reports')->name('reports.')->group(function () {
-                Route::get('/', [ReportController::class, 'index'])->name('index');
-                Route::get('/daily', [ReportController::class, 'daily'])->name('daily');
-                Route::get('/weekly', [ReportController::class, 'weekly'])->name('weekly');
-                Route::get('/monthly', [ReportController::class, 'monthly'])->name('monthly');
-                Route::get('/yearly', [ReportController::class, 'yearly'])->name('yearly');
-                Route::get('/custom', [ReportController::class, 'custom'])->name('custom');
-            });
+        // Data Management
+        Route::prefix('data')->name('data.')->group(function () {
+            Route::get('/', [DataController::class, 'index'])->name('index');
+            Route::get('/create', [DataController::class, 'create'])->name('create');
+            Route::post('/', [DataController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [DataController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [DataController::class, 'update'])->name('update');
+            Route::delete('/{id}', [DataController::class, 'destroy'])->name('destroy');
         });
 
+        // User Management
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
+        // Reports
+        Route::prefix('reports')->name('reports.')->group(function () {
+            Route::get('/', [ReportController::class, 'index'])->name('index');
+            Route::get('/daily', [ReportController::class, 'daily'])->name('daily');
+            Route::get('/weekly', [ReportController::class, 'weekly'])->name('weekly');
+            Route::get('/monthly', [ReportController::class, 'monthly'])->name('monthly');
+            Route::get('/yearly', [ReportController::class, 'yearly'])->name('yearly');
+            Route::get('/custom', [ReportController::class, 'custom'])->name('custom');
+        });
+    });
+});

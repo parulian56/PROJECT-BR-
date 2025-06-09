@@ -11,15 +11,14 @@ class Data extends Model
 
     protected $table = 'data';
 
-    protected $fillable = [
+      protected $fillable = [
         'codetrx',
         'nama_barang',
-        'kategori' ,
-        'deskripsi' ,
+        'kategori',
+        'deskripsi',
         'stok',
         'harga_pokok',
         'harga_jual',
         'lokasi_penyimpanan',
-
     ];
 }
