@@ -48,7 +48,7 @@
                     <thead>
                         <tr>
                             <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">No</th>
-                            <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">Code TRX</th>
+                            <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">Code barang</th> <!-- contoh:AM-15072025-01  -->
                             <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">Nama Barang</th>
                             <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">Jumlah</th>
                             <th class="px-4 py-3 bg-amber-600 text-white font-semibold text-left text-sm tracking-wider">Harga Pokok</th>
@@ -70,10 +70,11 @@
                                     {{ $item->nama_barang }}
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-600">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                        {{ $item->jumlah }}
-                                    </span>
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    {{ $item->stok }}
+                                </span>
                                 </td>
+
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-600">
                                     Rp {{ number_format($item->harga_pokok, 0, ',', '.') }}
                                 </td>
@@ -87,12 +88,6 @@
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-center">
                                     <div class="flex justify-center space-x-2">
-                                        <a href="{{ route('admin.data.edit', $item->id) }}"
-                                           class="bg-stone-300 hover:bg-stone-400 text-stone-800 p-2 rounded-md transition-colors duration-200"
-                                           title="Edit">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                            </svg>
                                         </a>
                                         <form action="{{ route('admin.data.destroy', $item->id) }}"
                                               method="POST"
@@ -128,6 +123,16 @@
                 </table>
             </div>
         </div>
-
+    </div>
         <!-- Pagination with custom design -->
+               
+
+        <div class="mt-6">
+            {{ $data->links() }}
+        </div>
+    </div>
+</div>
 @endsection
+
+
+
