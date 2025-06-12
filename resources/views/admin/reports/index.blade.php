@@ -529,16 +529,8 @@
             <h3 class="text-xl font-semibold text-navy-800">Filter Laporan</h3>
         </div>
 
-        <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div>
-                <label class="block text-sm font-semibold text-navy-700 mb-3">Periode Laporan</label>
-                <select name="filter" class="form-input w-full px-4 py-3 rounded-xl focus:ring-2 focus:ring-navy-600 focus:border-navy-600 transition-smooth">
-                    <option value="harian" {{ $filter == 'harian' ? 'selected' : '' }}>📅 Harian</option>
-                    <option value="mingguan" {{ $filter == 'mingguan' ? 'selected' : '' }}>📊 Mingguan</option>
-                    <option value="bulanan" {{ $filter == 'bulanan' ? 'selected' : '' }}>📈 Bulanan</option>
-                    <option value="tahunan" {{ $filter == 'tahunan' ? 'selected' : '' }}>📋 Tahunan</option>
-                </select>
-            </div>
+   `     <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+           
 
             <div>
                 <label class="block text-sm font-semibold text-navy-700 mb-3">Dari Tanggal</label>
@@ -761,3 +753,4 @@
     });
 </script>
 @endsection
+```
