@@ -18,7 +18,6 @@ class DataController extends Controller
         return view('admin.data.create');
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
@@ -32,7 +31,7 @@ class DataController extends Controller
         ]);
 
         $todayFormatted = now()->format('dmY');
-        $countToday = Data::whereRaw('DATE(created_at) = ?', [now()->toDateString()])->count() + 1;
+        $countToday = Data::whereDate('created_at', now())->count() + 1;
         $order = str_pad($countToday, 2, '0', STR_PAD_LEFT);
         $codetrx = "am-{$order}-{$todayFormatted}-id";
 
@@ -50,30 +49,32 @@ class DataController extends Controller
         return redirect()->route('admin.data.index')->with('success', 'Data berhasil disimpan!');
     }
 
-    public function stok(Request $request, $id)
-{
-    $data = Data::findOrFail($id);
+    // ✅ Tambahkan method ini!
+    public function edit($id)
+    {
+        $data = Data::findOrFail($id);
+        return view('admin.data.edit', compact('data'));
+    }
 
-    if ($request->isMethod('post')) {
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'stok' => 'required|integer|min:1|max:9999',
         ]);
 
-        $data->stok += $request->stok;
-        $data->save();
+        $data = Data::findOrFail($id);
+        $data->update([
+            'stok' => $request->stok,
+        ]);
 
-        return redirect()->route('admin.data.index')->with('success', 'Stok berhasil ditambahkan');
+        return redirect()->route('admin.data.index')->with('success', 'Data berhasil diperbarui!');
     }
-
-    return view('admin.data.stok', compact('data'));
-}
-
 
     public function destroy($id)
     {
         $data = Data::findOrFail($id);
         $data->delete();
 
-        return redirect()->route('admin.data.index')->with('success', 'Data penyimpanan berhasil dihapus');
+        return redirect()->route('admin.data.index')->with('success', 'Data berhasil dihapus!');
     }
 }
