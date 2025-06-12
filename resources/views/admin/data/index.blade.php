@@ -14,6 +14,26 @@
             <p class="text-stone-600 mt-2">Kelola inventaris barang dengan mudah dan efisien</p>
         </div>
 
+        <!-- Search Form -->
+        <form action="{{ route('admin.data.index') }}" method="GET" class="mb-6">
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Cari berdasarkan nama, kode, atau lokasi..."
+                    class="w-full sm:w-80 px-4 py-3 rounded-lg border border-amber-300 focus:ring-2 focus:ring-amber-400 focus:outline-none transition-all shadow-sm"
+                >
+                <button
+                    type="submit"
+                    class="px-6 py-3 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-all shadow-md"
+                >
+                    Cari
+                </button>
+            </div>
+        </form>
+
+        <!-- Action Buttons -->
         <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
             <a href="{{ route('admin.dashboard') }}"
                class="bg-stone-700 hover:bg-stone-800 text-white font-medium rounded-lg py-3 px-6 flex items-center gap-2 shadow-md transition-all duration-300 hover:shadow-lg">
@@ -32,6 +52,7 @@
             </a>
         </div>
 
+        <!-- Table -->
         <div class="overflow-hidden bg-white rounded-xl shadow-lg border border-stone-200">
             <div class="overflow-x-auto">
                 <table class="w-full">
@@ -110,8 +131,9 @@
             </div>
         </div>
 
+        <!-- Pagination -->
         <div class="mt-6">
-            {{ $data->links() }}
+            {{ $data->withQueryString()->links() }}
         </div>
     </div>
 </div>

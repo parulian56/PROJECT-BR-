@@ -7,9 +7,18 @@ use Illuminate\Http\Request;
 
 class DataController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = Data::paginate(10);
+        $query = Data::query();
+
+        if ($search = $request->search) {
+            $query->where('nama_barang', 'like', "%$search%")
+                  ->orWhere('codetrx', 'like', "%$search%")
+                  ->orWhere('lokasi_penyimpanan', 'like', "%$search%");
+        }
+
+        $data = $query->latest()->paginate(10);
+
         return view('admin.data.index', compact('data'));
     }
 
@@ -49,7 +58,6 @@ class DataController extends Controller
         return redirect()->route('admin.data.index')->with('success', 'Data berhasil disimpan!');
     }
 
-    // ✅ Tambahkan method ini!
     public function edit($id)
     {
         $data = Data::findOrFail($id);
