@@ -27,16 +27,26 @@
                 Kembali
             </a>
 
+        <a
+            href="{{ route('admin.data.create') }}"
+            class="bg-stone-800 hover:bg-stone-900 text-white font-medium rounded-lg py-3 px-6 flex items-center justify-center gap-2 shadow-md transition-all duration-300 hover:shadow-lg"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Tambah Data
+        </a>
 
-            <a
-                href="{{ route('admin.data.create') }}"
-                class="bg-stone-800 hover:bg-stone-900 text-white font-medium rounded-lg py-3 px-6 flex items-center justify-center gap-2 shadow-md transition-all duration-300 hover:shadow-lg"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Tambah Data
-            </a>
+        <a
+            href="{{ route('admin.data.stok') }}"
+            class="bg-stone-800 hover:bg-stone-900 text-white font-medium rounded-lg py-3 px-6 flex items-center justify-center gap-2 shadow-md transition-all duration-300 hover:shadow-lg"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Tambah Stok
+        </a>
+
 
 
         </div>
@@ -125,7 +135,7 @@
         </div>
     </div>
         <!-- Pagination with custom design -->
-               
+
 
         <div class="mt-6">
             {{ $data->links() }}
