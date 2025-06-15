@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 py-8">
+<div class="min-h-screen py-8">
     <div class="container mx-auto px-4 max-w-7xl">
         <!-- Header Section -->
         <div class="bg-white rounded-2xl shadow-xl border border-amber-100 mb-8 overflow-hidden">
@@ -223,6 +223,8 @@
             </div>
         </div>
         @endif
+    </div>
+</div>
 
 <style>
 .pagination-wrapper .pagination {
