@@ -103,7 +103,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/yearly', [ReportController::class, 'yearly'])->name('yearly');
             Route::get('/custom', [ReportController::class, 'custom'])->name('custom');
             Route::post('/filter', [ReportController::class, 'filter'])->name('filter');
-            Route::post('/export', [ReportController::class, 'export'])->name('export');
+            Route::match(['get', 'post'], '/export', [ReportController::class, 'export'])->name('export');
         });
     });
 });

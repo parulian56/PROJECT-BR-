@@ -2,972 +2,376 @@
 
 @section('title', 'Laporan Transaksi')
 
-@section('header', 'Laporan Transaksi')
-
 @section('content')
-    <div class="masterpiece-container">
-        <!-- Header Section -->
-        <div class="header-section">
-            <div class="header-content">
-                <div class="icon-container">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div>
-                    <h1 class="main-title">Laporan Transaksi</h1>
-                    <div class="title-divider"></div>
-                </div>
+@php
+    $total = 0;
+    foreach ($transaksis as $t) {
+        $total += $t->total;
+    }
+@endphp
+
+<div class="bg-white rounded-lg shadow-sm p-6 animate-fadeIn">
+    <!-- Header -->
+    <div class="flex flex-col lg:flex-row justify-between items-start mb-8">
+        <div class="mb-6 lg:mb-0">
+            <h1 class="text-2xl font-semibold text-gray-800 mb-2">Laporan Transaksi</h1>
+            <p class="text-gray-600">Ringkasan data transaksi bisnis</p>
+        </div>
+
+        <div class="flex gap-3">
+            <button id="exportExcel" class="bg-green-50 hover:bg-green-100 border border-green-200 px-4 py-2 text-green-700 rounded-lg text-sm font-medium flex items-center transition-colors">
+                <i class="fas fa-file-excel mr-2"></i> Export Excel
+            </button>
+            <button class="bg-red-50 hover:bg-red-100 border border-red-200 px-4 py-2 text-red-700 rounded-lg text-sm font-medium flex items-center transition-colors">
+                <i class="fas fa-file-pdf mr-2"></i> Export PDF
+            </button>
+            <button class="bg-blue-50 hover:bg-blue-100 border border-blue-200 px-4 py-2 text-blue-700 rounded-lg text-sm font-medium flex items-center transition-colors">
+                <i class="fas fa-print mr-2"></i> Print
+            </button>
+        </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-5 mb-8">
+        <h3 class="text-lg font-medium text-blue-800 mb-4">Filter Laporan</h3>
+
+        <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-blue-700 mb-2">Dari Tanggal</label>
+                <input type="date" name="start_date" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
             </div>
-            <p class="subtitle">Analisis mendalam transaksi bisnis Anda</p>
-            
-            <div class="action-buttons">
-                <button class="btn-primary" onclick="exportData('excel')">
-                    <i class="fas fa-file-excel"></i> Export Excel
+
+            <div>
+                <label class="block text-sm font-medium text-blue-700 mb-2">Sampai Tanggal</label>
+                <input type="date" name="end_date" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+            </div>
+
+            <div class="flex items-end">
+                <button type="submit" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium flex items-center justify-center transition-colors">
+                    <i class="fas fa-search mr-2"></i> Terapkan Filter
                 </button>
             </div>
-        </div>
+        </form>
+    </div>
 
-        <!-- Filter Section -->
-        <div class="filter-section" id="filterSection">
-            <div class="filter-header">
-                <div class="filter-icon">
-                    <i class="fas fa-filter"></i>
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Total Transaksi</p>
+                    <h3 class="text-2xl font-semibold text-gray-800">{{ number_format($transaksis->count()) }}</h3>
+                    <p class="text-xs text-gray-500 mt-1">Transaksi tercatat</p>
                 </div>
-                <h3 class="filter-title">Filter Laporan</h3>
-            </div>
-            
-            <form class="filter-form" onsubmit="applyFilter(event)">
-                @csrf
-                <div class="form-group">
-                    <label class="form-label">Dari Tanggal</label>
-                    <input type="date" class="form-input" id="startDate" name="start_date">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Sampai Tanggal</label>
-                    <input type="date" class="form-input" id="endDate" name="end_date">
-                </div>
-                
-                <div class="form-group">
-                    <button type="submit" class="btn-primary" style="height: 52px;">
-                        <i class="fas fa-search"></i> Terapkan Filter
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Statistics Cards -->
-        <div class="stats-grid" id="statsGrid">
-            <div class="stats-card">
-                <div class="stats-content">
-                    <div class="stats-info">
-                        <h4>Total Transaksi</h4>
-                        <div class="stats-value" id="totalTransactions">{{ number_format($totalTransaksiHariIni) }}</div>
-                        <div class="stats-subtitle">Transaksi tercatat</div>
-                    </div>
-                    <div class="stats-icon orange">
-                        <i class="fas fa-receipt"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="stats-card">
-                <div class="stats-content">
-                    <div class="stats-info">
-                        <h4>Total Pendapatan</h4>
-                        <div class="stats-value" id="totalRevenue">Rp {{ number_format($total, 0, ',', '.') }}</div>
-                        <div class="stats-subtitle">Revenue terkumpul</div>
-                    </div>
-                    <div class="stats-icon red-orange">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="stats-card">
-                <div class="stats-content">
-                    <div class="stats-info">
-                        <h4>Rata-rata Transaksi</h4>
-                        <div class="stats-value" id="avgTransaksi">Rp {{ number_format($avgTransaksi, 0, ',', '.') }}</div>
-                        <div class="stats-subtitle">Per transaksi</div>
-                    </div>
-                    <div class="stats-icon amber">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
+                <div class="w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-600 rounded-lg">
+                    <i class="fas fa-receipt"></i>
                 </div>
             </div>
         </div>
 
-        <!-- Transactions Table -->
-        <div class="table-section">
-            <div class="table-header">
-                <div class="table-title">
-                    <i class="fas fa-table"></i>
-                    Daftar Transaksi
+        <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Total Pendapatan</p>
+                    <h3 class="text-2xl font-semibold text-gray-800">Rp {{ number_format($total, 0, ',', '.') }}</h3>
+                    <p class="text-xs text-gray-500 mt-1">Revenue terkumpul</p>
+                </div>
+                <div class="w-10 h-10 flex items-center justify-center bg-green-100 text-green-600 rounded-lg">
+                    <i class="fas fa-coins"></i>
                 </div>
             </div>
-            
-            <div class="table-container">
-                @if($transaksis->count() > 0)
-                    <table>
-                        <thead class="table-head">
-                            <tr>
-                                <th><i class="fas fa-hashtag"></i> ID</th>
-                                <th><i class="fas fa-file-invoice"></i> Invoice</th>
-                                <th><i class="fas fa-user"></i> Pelanggan</th>
-                                <th><i class="fas fa-calendar"></i> Tanggal</th>
-                                <th><i class="fas fa-money-bill-wave"></i> Jumlah</th>
-                                <th><i class="fas fa-tags"></i> Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($transaksis as $transaksis)
-                                <tr class="table-row">
-                                    <td>{{ $transaksis->id }}</td>
-                                    <td>
-                                        <span class="invoice-badge">{{ $transaksis->invoice_number }}</span>
-                                    </td>
-                                    <td>{{ $transaksis->customer->name }}</td>
-                                    <td>
-                                        <div class="date-indicator">
-                                            <span class="date-dot"></span>
-                                            {{ $transaksis->created_at->format('d M Y') }}
-                                        </div>
-                                    </td>
-                                    <td class="amount">Rp {{ number_format($transaksis->amount, 0, ',', '.') }}</td>
-                                    <td>
-                                        @if($transaksis->status == 'completed')
-                                            <span class="badge bg-success">Selesai</span>
-                                        @elseif($transaksis->status == 'pending')
-                                            <span class="badge bg-warning">Pending</span>
-                                        @else
-                                            <span class="badge bg-danger">Dibatalkan</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @else
-                    <div class="empty-state">
-                        <div class="empty-icon">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <h3 class="empty-title">Tidak Ada Data Transaksi</h3>
-                        <p class="empty-subtitle">Tidak ditemukan transaksi dalam rentang waktu yang dipilih</p>
-                    </div>
-                @endif
-            </div>
-            
-            @if($transaksis->count() > 0)
-                <div class="table-footer">
-                    <div class="footer-content">
-                        <div class="footer-label">
-                            <i class="fas fa-info-circle"></i>
-                            Menampilkan {{ $transaksis->firstItem() }} - {{ $transaksis->lastItem() }} dari {{ $transaksis->total() }} transaksi
-                        </div>
-                        <div class="footer-amount">
-                            Total: Rp {{ number_format($transaksis->sum('amount'), 0, ',', '.') }}
-                        </div>
-                    </div>
-                </div>
-            @endif
         </div>
 
-        <!-- Report Footer -->
-        <div class="report-footer">
-            <div class="footer-info">
-                <i class="fas fa-clock"></i>
-                Laporan dihasilkan pada: {{ now()->format('d F Y H:i:s') }}
-            </div>
-            <div class="footer-info">
-                <i class="fas fa-user"></i>
-                Dibuat oleh: {{ Auth::user()->name }}
+        <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Rata-rata Transaksi</p>
+                    <h3 class="text-2xl font-semibold text-gray-800">
+                        @if($transaksis->count() > 0)
+                            Rp {{ number_format($total / $transaksis->count(), 0, ',', '.') }}
+                        @else
+                            Rp 0
+                        @endif
+                    </h3>
+                    <p class="text-xs text-gray-500 mt-1">Per transaksi</p>
+                </div>
+                <div class="w-10 h-10 flex items-center justify-center bg-purple-100 text-purple-600 rounded-lg">
+                    <i class="fas fa-chart-line"></i>
+                </div>
             </div>
         </div>
     </div>
 
-    @push('scripts')
-        <script>
-            function applyFilter(e) {
-                e.preventDefault();
-                document.getElementById('filterSection').classList.add('loading');
-                
-                // Get form data
-                const formData = new FormData(e.target);
-                
-                // You can use fetch API or submit the form normally
-                // Here's an example with fetch:
-                fetch('{{ route('admin.reports.filter') }}', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    <!-- Transaction Table -->
+    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+        <div class="bg-indigo-50 border-b border-indigo-200 px-6 py-4">
+            <h3 class="text-lg font-medium text-indigo-800">Detail Transaksi</h3>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table id="transactionTable" class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-indigo-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">
+                            Tanggal
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">
+                            No. Invoice
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">
+                            Total
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-100">
+                    @forelse ($transaksis as $t)
+                    <tr class="hover:bg-indigo-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                            {{ $t->created_at->format('d M Y') }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">
+                                {{ $t->invoice ?? 'N/A' }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800">
+                            Rp {{ number_format($t->total, 0, ',', '.') }}
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="3" class="px-6 py-12 text-center">
+                            <div class="flex flex-col items-center text-gray-400">
+                                <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg mb-3">
+                                    <i class="fas fa-folder-open text-xl text-gray-400"></i>
+                                </div>
+                                <p class="font-medium text-gray-600 mb-1">Tidak ada data transaksi</p>
+                                <p class="text-sm text-gray-500">Silahkan pilih periode lain atau periksa filter Anda</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+                @if($transaksis->count() > 0)
+                <tfoot class="bg-indigo-50">
+                    <tr>
+                        <td colspan="2" class="px-6 py-4 text-right font-medium text-indigo-800">
+                            Total Keseluruhan
+                        </td>
+                        <td class="px-6 py-4 font-semibold text-indigo-800">
+                            Rp {{ number_format($total, 0, ',', '.') }}
+                        </td>
+                    </tr>
+                </tfoot>
+                @endif
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600 bg-slate-50 border border-slate-200 rounded-lg p-4 mt-6">
+        <div class="flex items-center mb-2 md:mb-0">
+            <i class="fas fa-info-circle mr-2 text-slate-500"></i>
+            <span>Data diperbarui secara real-time</span>
+        </div>
+        <div class="flex items-center">
+            <i class="fas fa-clock mr-2 text-slate-500"></i>
+            <span>Terakhir diperbarui: {{ now()->format('d M Y, H:i') }} WIB</span>
+        </div>
+    </div>
+</div>
+
+@push('styles')
+<style>
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 0.4s ease-out forwards;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<!-- Load SheetJS library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Export to Excel functionality
+        document.getElementById('exportExcel').addEventListener('click', function() {
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+
+            // Create worksheet with data
+            const wsData = [];
+
+            // Add header
+            wsData.push(['LAPORAN TRANSAKSI']);
+            wsData.push(['Tanggal: ' + (new Date()).toLocaleDateString('id-ID')]);
+            wsData.push(['']); // Empty row
+
+            // Add summary
+            wsData.push(['RINGKASAN']);
+            wsData.push(['Total Transaksi', '{{ $transaksis->count() }}']);
+            wsData.push(['Total Pendapatan', 'Rp {{ number_format($total, 0, ",", ".") }}']);
+            wsData.push(['Rata-rata', 'Rp {{ $transaksis->count() > 0 ? number_format($total / $transaksis->count(), 0, ",", ".") : "0" }}']);
+            wsData.push(['']); // Empty row
+
+            // Add table headers
+            wsData.push(['Tanggal', 'No. Invoice', 'Total']);
+
+            // Add data
+            @foreach ($transaksis as $t)
+            wsData.push([
+                '{{ $t->created_at->format("d M Y") }}',
+                '{{ $t->invoice ?? "N/A" }}',
+                'Rp {{ number_format($t->total, 0, ",", ".") }}'
+            ]);
+            @endforeach
+
+            // Add total
+            if ({{ $transaksis->count() }} > 0) {
+                wsData.push(['', 'TOTAL', 'Rp {{ number_format($total, 0, ",", ".") }}']);
+            }
+
+            // Create worksheet
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+            // Set column widths
+            ws['!cols'] = [
+                { wch: 15 },
+                { wch: 20 },
+                { wch: 20 }
+            ];
+
+            // Style cells with clean, minimal styling
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            for (let R = 0; R <= range.e.r; R++) {
+                for (let C = 0; C <= range.e.c; C++) {
+                    const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+                    if (!ws[cellAddress]) continue;
+
+                    if (!ws[cellAddress].s) ws[cellAddress].s = {};
+
+                    // Header styling
+                    if (R === 0) {
+                        ws[cellAddress].s = {
+                            font: { bold: true, sz: 14, color: { rgb: "1F2937" } },
+                            fill: { fgColor: { rgb: "F9FAFB" } },
+                            alignment: { horizontal: "center" }
+                        };
                     }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Update the UI with new data
-                    document.getElementById('totalTransaksiHariIni').textContent = data.totalTransaksiHariIni;
-                    document.getElementById('totalRevenue').textContent = 'Rp ' + data.totalRevenue;
-                    document.getElementById('avgTransaksi').textContent = 'Rp ' + data.avgTransaksi;
-                    
-                    // Update the table (you might want to replace the entire table HTML)
-                    // document.querySelector('tbody').innerHTML = data.tableHtml;
-                    
-                    document.getElementById('filterSection').classList.remove('loading');
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('filterSection').classList.remove('loading');
-                });
-            }
-            
-            function exportData(type) {
-                // Get current filter values
-                const startDate = document.getElementById('startDate').value;
-                const endDate = document.getElementById('endDate').value;
-                
-                // Create export URL
-                let url = '{{ route('admin.reports.export') }}?type=' + type;
-                
-                if (startDate) {
-                    url += '&start_date=' + startDate;
-                }
-                
-                if (endDate) {
-                    url += '&end_date=' + endDate;
-                }
-                
-                // Redirect to export URL
-                window.location.href = url;
-            }
-        </script>
-    @endpush
-
-    @push('styles')
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: 'Inter', sans-serif;
-            }
-
-            :root {
-                --orange-50: #fff7ed;
-                --orange-100: #ffedd5;
-                --orange-200: #fed7aa;
-                --orange-300: #fdba74;
-                --orange-400: #fb923c;
-                --orange-500: #f97316;
-                --orange-600: #ea580c;
-                --orange-700: #c2410c;
-                --orange-800: #9a3412;
-                --orange-900: #7c2d12;
-                --orange-950: #431407;
-
-                --red-orange-400: #ff6b35;
-                --red-orange-500: #ff5722;
-                --red-orange-600: #e64a19;
-                --red-orange-700: #d84315;
-
-                --amber-50: #fffbeb;
-                --amber-100: #fef3c7;
-                --amber-200: #fde68a;
-                --amber-300: #fcd34d;
-                --amber-400: #fbbf24;
-                --amber-500: #f59e0b;
-
-                --white: #ffffff;
-                --white-95: rgba(255, 255, 255, 0.95);
-                --white-90: rgba(255, 255, 255, 0.9);
-                --white-80: rgba(255, 255, 255, 0.8);
-                --white-50: rgba(255, 255, 255, 0.5);
-                --white-30: rgba(255, 255, 255, 0.3);
-                --white-20: rgba(255, 255, 255, 0.2);
-                --white-10: rgba(255, 255, 255, 0.1);
-                --white-05: rgba(255, 255, 255, 0.05);
-
-                --gray-50: #f9fafb;
-                --gray-100: #f3f4f6;
-                --gray-200: #e5e7eb;
-                --gray-600: #4b5563;
-                --gray-700: #374151;
-                --gray-800: #1f2937;
-                --gray-900: #111827;
-            }
-
-            body {
-                background: linear-gradient(135deg, var(--orange-50) 0%, var(--amber-50) 25%, var(--orange-100) 50%, var(--white-95) 75%, var(--orange-50) 100%),
-                            radial-gradient(circle at top right, var(--orange-100) 0%, transparent 50%),
-                            radial-gradient(circle at bottom left, var(--amber-100) 0%, transparent 50%);
-                min-height: 100vh;
-                background-attachment: fixed;
-                padding: 20px;
-            }
-
-            .masterpiece-container {
-                max-width: 1400px;
-                margin: 0 auto;
-                background: linear-gradient(135deg, var(--white-95) 0%, var(--orange-50) 25%, var(--amber-50) 50%, var(--orange-50) 75%, var(--white-95) 100%),
-                            radial-gradient(circle at top left, var(--orange-100) 0%, transparent 50%),
-                            radial-gradient(circle at bottom right, var(--amber-100) 0%, transparent 50%);
-                backdrop-filter: blur(20px);
-                border: 2px solid var(--white-30);
-                border-radius: 24px;
-                padding: 40px;
-                box-shadow: 0 25px 50px -12px rgba(194, 65, 12, 0.15),
-                            0 0 0 1px var(--white-20),
-                            inset 0 1px 0 var(--white-50);
-                animation: fadeInUp 0.8s ease-out;
-            }
-
-            .header-section {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-bottom: 60px;
-                text-align: center;
-            }
-
-            .header-content {
-                display: flex;
-                align-items: center;
-                margin-bottom: 20px;
-            }
-
-            .icon-container {
-                width: 80px;
-                height: 80px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 20px;
-                background: linear-gradient(135deg, var(--orange-500) 0%, var(--orange-600) 50%, var(--orange-700) 100%);
-                margin-right: 24px;
-                position: relative;
-                overflow: hidden;
-                box-shadow: 0 10px 25px rgba(249, 115, 22, 0.4);
-            }
-
-            .icon-container::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: linear-gradient(45deg, var(--white-20) 0%, var(--white-10) 50%, transparent 100%),
-                            radial-gradient(circle, var(--white-10) 0%, transparent 70%);
-            }
-
-            .icon-container i {
-                font-size: 32px;
-                color: white;
-                z-index: 2;
-                position: relative;
-                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-            }
-
-            .main-title {
-                font-size: 48px;
-                font-weight: 800;
-                color: var(--orange-900);
-                margin-bottom: 12px;
-                background: linear-gradient(135deg, var(--orange-900), var(--orange-700), var(--red-orange-500));
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-            }
-
-            .title-divider {
-                height: 4px;
-                width: 120px;
-                background: linear-gradient(90deg, var(--orange-500), var(--amber-400), var(--orange-500));
-                border-radius: 2px;
-                margin: 0 auto 16px;
-                animation: shimmer 2s ease-in-out infinite alternate;
-            }
-
-            @keyframes shimmer {
-                0% { opacity: 0.7; transform: scaleX(1); }
-                100% { opacity: 1; transform: scaleX(1.1); }
-            }
-
-            .subtitle {
-                font-size: 20px;
-                color: var(--orange-800);
-                font-weight: 500;
-                margin-bottom: 32px;
-            }
-
-            .action-buttons {
-                display: flex;
-                gap: 16px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .btn-primary {
-                background: linear-gradient(135deg, var(--orange-600) 0%, var(--orange-700) 50%, var(--orange-800) 100%),
-                            radial-gradient(circle at top, var(--white-10) 0%, transparent 60%);
-                color: white;
-                border: 2px solid var(--orange-500);
-                padding: 16px 32px;
-                border-radius: 16px;
-                font-weight: 600;
-                font-size: 14px;
-                cursor: pointer;
-                position: relative;
-                overflow: hidden;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: 0 8px 25px rgba(194, 65, 12, 0.3),
-                            0 0 0 1px var(--white-10),
-                            inset 0 1px 0 var(--white-20);
-                text-decoration: none;
-                display: inline-flex;
-                align-items: center;
-                min-width: 160px;
-                justify-content: center;
-            }
-
-            .btn-primary::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, transparent, var(--white-30), var(--amber-200), var(--white-30), transparent);
-                transition: left 0.8s ease;
-            }
-
-            .btn-primary:hover::before {
-                left: 100%;
-            }
-
-            .btn-primary:hover {
-                transform: translateY(-3px) scale(1.02);
-                box-shadow: 0 15px 35px rgba(194, 65, 12, 0.4),
-                            0 0 0 1px var(--white-20),
-                            inset 0 1px 0 var(--white-30);
-            }
-
-            .btn-primary i {
-                margin-right: 8px;
-            }
-
-            .filter-section {
-                background: linear-gradient(135deg, var(--orange-50) 0%, var(--amber-50) 30%, var(--white-95) 70%, var(--orange-50) 100%);
-                padding: 32px;
-                border-radius: 20px;
-                margin-bottom: 40px;
-                border: 2px solid var(--orange-200);
-                box-shadow: 0 10px 25px rgba(194, 65, 12, 0.08);
-                backdrop-filter: blur(12px);
-                animation: fadeInUp 0.8s ease-out 0.2s both;
-            }
-
-            .filter-header {
-                display: flex;
-                align-items: center;
-                margin-bottom: 24px;
-            }
-
-            .filter-icon {
-                width: 48px;
-                height: 48px;
-                background: linear-gradient(135deg, var(--orange-700) 0%, var(--orange-800) 100%);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 12px;
-                margin-right: 16px;
-                box-shadow: 0 4px 12px rgba(194, 65, 12, 0.3);
-            }
-
-            .filter-icon i {
-                color: white;
-                font-size: 18px;
-            }
-
-            .filter-title {
-                font-size: 24px;
-                font-weight: 700;
-                color: var(--orange-800);
-            }
-
-            .filter-form {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 24px;
-                align-items: end;
-            }
-
-            .form-group {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .form-label {
-                font-size: 14px;
-                font-weight: 600;
-                color: var(--orange-700);
-                margin-bottom: 8px;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-
-            .form-input {
-                background: linear-gradient(135deg, var(--white) 0%, var(--white-95) 50%, var(--orange-50) 100%);
-                border: 2px solid var(--orange-200);
-                padding: 16px;
-                border-radius: 12px;
-                font-size: 16px;
-                color: var(--orange-800);
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: 0 2px 8px rgba(194, 65, 12, 0.05),
-                            inset 0 1px 0 var(--white);
-            }
-
-            .form-input:focus {
-                outline: none;
-                border-color: var(--orange-500);
-                box-shadow: 0 0 0 4px var(--orange-100),
-                            0 4px 12px rgba(194, 65, 12, 0.1),
-                            inset 0 1px 0 var(--white);
-                transform: translateY(-2px);
-            }
-
-            .stats-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 24px;
-                margin-bottom: 40px;
-                animation: fadeInUp 0.8s ease-out 0.4s both;
-            }
-
-            .stats-card {
-                background: linear-gradient(135deg, var(--white-95) 0%, var(--orange-50) 30%, var(--amber-50) 70%, var(--orange-50) 100%),
-                            radial-gradient(circle at top right, var(--orange-100) 0%, transparent 60%),
-                            radial-gradient(circle at bottom left, var(--amber-100) 0%, transparent 60%);
-                padding: 32px;
-                border-radius: 20px;
-                border: 2px solid var(--orange-200);
-                position: relative;
-                overflow: hidden;
-                cursor: pointer;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: 0 10px 25px rgba(194, 65, 12, 0.1),
-                            0 0 0 1px var(--white-20),
-                            inset 0 1px 0 var(--white-50);
-            }
-
-            .stats-card::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 4px;
-                background: linear-gradient(90deg, var(--orange-500) 0%, var(--red-orange-500) 25%, var(--amber-400) 50%, var(--red-orange-500) 75%, var(--orange-500) 100%);
-                box-shadow: 0 2px 8px rgba(194, 65, 12, 0.2);
-            }
-
-            .stats-card::after {
-                content: '';
-                position: absolute;
-                bottom: -50px;
-                right: -50px;
-                width: 150px;
-                height: 150px;
-                background: radial-gradient(circle, var(--orange-100) 0%, transparent 70%);
-                opacity: 0.6;
-                pointer-events: none;
-                transition: all 0.4s ease;
-            }
-
-            .stats-card:hover {
-                transform: translateY(-8px) scale(1.02);
-                box-shadow: 0 25px 50px rgba(194, 65, 12, 0.15),
-                            0 0 0 1px var(--orange-300),
-                            inset 0 1px 0 var(--white-60);
-            }
-
-            .stats-card:hover::after {
-                bottom: -30px;
-                right: -30px;
-                opacity: 0.8;
-            }
-
-            .stats-content {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .stats-info h4 {
-                font-size: 14px;
-                font-weight: 600;
-                color: var(--orange-700);
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                margin-bottom: 8px;
-            }
-
-            .stats-value {
-                font-size: 36px;
-                font-weight: 800;
-                color: var(--orange-900);
-                margin-bottom: 4px;
-                background: linear-gradient(135deg, var(--orange-900), var(--orange-700));
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-            }
-
-            .stats-subtitle {
-                font-size: 12px;
-                color: var(--orange-600);
-                font-weight: 500;
-            }
-
-            .stats-icon {
-                width: 64px;
-                height: 64px;
-                border-radius: 16px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 8px 20px rgba(194, 65, 12, 0.15);
-                position: relative;
-                z-index: 2;
-            }
-
-            .stats-icon.orange {
-                background: linear-gradient(135deg, var(--orange-500) 0%, var(--orange-600) 100%);
-            }
-
-            .stats-icon.red-orange {
-                background: linear-gradient(135deg, var(--red-orange-500) 0%, var(--red-orange-600) 100%);
-            }
-
-            .stats-icon.amber {
-                background: linear-gradient(135deg, var(--amber-400) 0%, var(--amber-500) 100%);
-            }
-
-            .stats-icon i {
-                font-size: 24px;
-                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-            }
-
-            .stats-icon.orange i { color: white; }
-            .stats-icon.red-orange i { color: white; }
-            .stats-icon.amber i { color: var(--orange-800); }
-
-            .table-section {
-                background: white;
-                border-radius: 20px;
-                overflow: hidden;
-                box-shadow: 0 20px 40px rgba(194, 65, 12, 0.12);
-                animation: fadeInUp 0.8s ease-out 0.6s both;
-                border: 2px solid var(--orange-200);
-            }
-
-            .table-header {
-                background: linear-gradient(135deg, var(--orange-700) 0%, var(--orange-800) 50%, var(--orange-900) 100%),
-                            radial-gradient(circle at top left, var(--white-10) 0%, transparent 60%);
-                padding: 24px 32px;
-                position: relative;
-            }
-
-            .table-header::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: linear-gradient(45deg, var(--white-05) 25%, transparent 25%),
-                            linear-gradient(-45deg, var(--white-05) 25%, transparent 25%);
-                background-size: 20px 20px;
-                opacity: 0.3;
-            }
-
-            .table-header::after {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                height: 4px;
-                background: linear-gradient(90deg, var(--amber-400) 0%, var(--white) 25%, var(--red-orange-400) 50%, var(--white) 75%, var(--amber-400) 100%);
-            }
-
-            .table-title {
-                display: flex;
-                align-items: center;
-                color: white;
-                font-size: 20px;
-                font-weight: 700;
-                position: relative;
-                z-index: 2;
-            }
-
-            .table-title i {
-                margin-right: 12px;
-                padding: 8px;
-                background: var(--amber-200);
-                color: var(--orange-800);
-                border-radius: 8px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1));
-            }
-
-            .table-container {
-                overflow-x: auto;
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-
-            .table-head {
-                background: var(--orange-50);
-            }
-
-            .table-head th {
-                padding: 20px 24px;
-                text-align: left;
-                font-size: 12px;
-                font-weight: 700;
-                color: var(--orange-800);
-                text-transform: uppercase;
-                letter-spacing: 0.8px;
-                border-bottom: 2px solid var(--orange-200);
-            }
-
-            .table-head th i {
-                margin-right: 8px;
-                color: var(--orange-600);
-            }
-
-            .table-row {
-                transition: all 0.3s ease;
-                border-bottom: 1px solid var(--orange-100);
-            }
-
-            .table-row:hover {
-                background: linear-gradient(135deg, var(--white-95) 0%, var(--orange-50) 50%, var(--amber-50) 100%),
-                            radial-gradient(circle at center, var(--orange-50) 0%, transparent 60%);
-                transform: scale(1.001);
-                box-shadow: 0 4px 20px rgba(194, 65, 12, 0.08);
-                border-left: 4px solid var(--orange-500);
-            }
-
-            .table-row td {
-                padding: 20px 24px;
-                color: var(--orange-800);
-                font-weight: 500;
-            }
-
-            .invoice-badge {
-                background: linear-gradient(135deg, var(--amber-100) 0%, var(--amber-200) 100%);
-                color: var(--orange-800);
-                padding: 8px 16px;
-                border-radius: 20px;
-                font-size: 12px;
-                font-weight: 600;
-                border: 1px solid var(--amber-300);
-                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            }
-
-            .amount {
-                font-size: 18px;
-                font-weight: 700;
-                color: var(--orange-900);
-            }
-
-            .date-indicator {
-                display: flex;
-                align-items: center;
-            }
-
-            .date-dot {
-                width: 8px;
-                height: 8px;
-                background: linear-gradient(135deg, var(--orange-500), var(--orange-600));
-                border-radius: 50%;
-                margin-right: 12px;
-                box-shadow: 0 2px 4px rgba(249, 115, 22, 0.3);
-            }
-
-            .empty-state {
-                text-align: center;
-                padding: 80px 24px;
-                color: var(--orange-600);
-            }
-
-            .empty-icon {
-                width: 80px;
-                height: 80px;
-                background: var(--orange-100);
-                color: var(--orange-500);
-                border-radius: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: 0 auto 24px;
-            }
-
-            .empty-icon i {
-                font-size: 32px;
-            }
-
-            .empty-title {
-                font-size: 24px;
-                font-weight: 700;
-                color: var(--orange-800);
-                margin-bottom: 8px;
-            }
-
-            .empty-subtitle {
-                font-size: 16px;
-                color: var(--orange-600);
-            }
-
-            .table-footer {
-                background: linear-gradient(135deg, var(--orange-50) 0%, var(--amber-50) 30%, var(--white-95) 70%, var(--orange-50) 100%);
-                padding: 24px;
-                border-top: 2px solid var(--orange-200);
-            }
-
-            .footer-content {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                font-weight: 700;
-                color: var(--orange-800);
-            }
-
-            .footer-label {
-                font-size: 16px;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-                display: flex;
-                align-items: center;
-            }
-
-            .footer-label i {
-                margin-right: 8px;
-                color: var(--orange-600);
-            }
-
-            .footer-amount {
-                font-size: 24px;
-                color: var(--orange-900);
-            }
-
-            .report-footer {
-                display: flex;
-                flex-direction: column;
-                gap: 16px;
-                align-items: center;
-                padding: 24px;
-                background: linear-gradient(135deg, var(--orange-50) 0%, var(--amber-50) 100%);
-                border-radius: 16px;
-                margin-top: 32px;
-                border: 2px solid var(--orange-200);
-                color: var(--orange-700);
-                font-size: 14px;
-                animation: fadeInUp 0.8s ease-out 0.8s both;
-            }
-
-            .footer-info {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                font-weight: 500;
-            }
-
-            .footer-info i {
-                color: var(--orange-600);
-            }
-
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
+                    // Sub header
+                    else if (R === 1) {
+                        ws[cellAddress].s = {
+                            font: { sz: 11, color: { rgb: "6B7280" } },
+                            fill: { fgColor: { rgb: "F9FAFB" } },
+                            alignment: { horizontal: "center" }
+                        };
+                    }
+                    // Summary header
+                    else if (R === 3) {
+                        ws[cellAddress].s = {
+                            font: { bold: true, sz: 12, color: { rgb: "1F2937" } },
+                            fill: { fgColor: { rgb: "E5E7EB" } },
+                            alignment: { horizontal: "center" }
+                        };
+                    }
+                    // Summary data
+                    else if (R >= 4 && R <= 7) {
+                        ws[cellAddress].s = {
+                            font: { bold: C === 0 ? true : false, color: { rgb: "374151" } },
+                            fill: { fgColor: { rgb: "F9FAFB" } },
+                            border: {
+                                top: { style: "thin", color: { rgb: "E5E7EB" } },
+                                bottom: { style: "thin", color: { rgb: "E5E7EB" } },
+                                left: { style: "thin", color: { rgb: "E5E7EB" } },
+                                right: { style: "thin", color: { rgb: "E5E7EB" } }
+                            }
+                        };
+                    }
+                    // Table headers
+                    else if (R === 9) {
+                        ws[cellAddress].s = {
+                            font: { bold: true, color: { rgb: "1F2937" } },
+                            fill: { fgColor: { rgb: "E5E7EB" } },
+                            alignment: { horizontal: "center" },
+                            border: {
+                                top: { style: "medium", color: { rgb: "9CA3AF" } },
+                                bottom: { style: "medium", color: { rgb: "9CA3AF" } },
+                                left: { style: "thin", color: { rgb: "E5E7EB" } },
+                                right: { style: "thin", color: { rgb: "E5E7EB" } }
+                            }
+                        };
+                    }
+                    // Data rows
+                    else if (R > 9) {
+                        const isTotal = ws[cellAddress].v && ws[cellAddress].v.toString().includes('TOTAL');
+                        if (isTotal) {
+                            ws[cellAddress].s = {
+                                font: { bold: true, color: { rgb: "1F2937" } },
+                                fill: { fgColor: { rgb: "E5E7EB" } },
+                                border: {
+                                    top: { style: "medium", color: { rgb: "9CA3AF" } },
+                                    bottom: { style: "medium", color: { rgb: "9CA3AF" } },
+                                    left: { style: "thin", color: { rgb: "E5E7EB" } },
+                                    right: { style: "thin", color: { rgb: "E5E7EB" } }
+                                }
+                            };
+                        } else {
+                            const isEven = (R % 2 === 0);
+                            ws[cellAddress].s = {
+                                font: { color: { rgb: "374151" } },
+                                fill: { fgColor: { rgb: isEven ? "FFFFFF" : "F9FAFB" } },
+                                border: {
+                                    top: { style: "thin", color: { rgb: "F3F4F6" } },
+                                    bottom: { style: "thin", color: { rgb: "F3F4F6" } },
+                                    left: { style: "thin", color: { rgb: "F3F4F6" } },
+                                    right: { style: "thin", color: { rgb: "F3F4F6" } }
+                                }
+                            };
+                        }
+                    }
                 }
             }
 
-            @media (max-width: 768px) {
-                .masterpiece-container {
-                    padding: 24px;
-                }
-                
-                .main-title {
-                    font-size: 32px;
-                }
-                
-                .header-content {
-                    flex-direction: column;
-                    text-align: center;
-                }
-                
-                .icon-container {
-                    margin-right: 0;
-                    margin-bottom: 16px;
-                }
-                
-                .action-buttons {
-                    flex-direction: column;
-                    width: 100%;
-                }
-                
-                .btn-primary {
-                    width: 100%;
-                }
-                
-                .filter-form {
-                    grid-template-columns: 1fr;
-                }
-                
-                .stats-grid {
-                    grid-template-columns: 1fr;
-                }
-                
-                .footer-content {
-                    flex-direction: column;
-                    gap: 12px;
-                    text-align: center;
-                }
-                
-                .report-footer {
-                    flex-direction: column;
-                    text-align: center;
-                }
-            }
+            // Merge header cells
+            ws['!merges'] = [
+                { s: { r: 0, c: 0 }, e: { r: 0, c: 2 } },
+                { s: { r: 1, c: 0 }, e: { r: 1, c: 2 } },
+                { s: { r: 3, c: 0 }, e: { r: 3, c: 2 } }
+            ];
 
-            /* Loading animation */
-            .loading {
-                opacity: 0.7;
-                pointer-events: none;
-            }
+            XLSX.utils.book_append_sheet(wb, ws, 'Laporan Transaksi');
+            XLSX.writeFile(wb, 'Laporan_Transaksi.xlsx');
+        });
 
-            .loading * {
-                animation: pulse 1.5s ease-in-out infinite;
-            }
+        // Button loading states
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                if (icon && this.type === 'submit') {
+                    const originalClass = icon.className;
+                    icon.className = 'fas fa-spinner fa-spin mr-2';
+                    this.disabled = true;
 
-            @keyframes pulse {
-                0%, 100% { opacity: 1; }
-                50% { opacity: 0.5; }
-            }
-        </style>
-    @endpush
+                    setTimeout(() => {
+                        icon.className = originalClass;
+                        this.disabled = false;
+                    }, 1500);
+                }
+            });
+        });
+    });
+</script>
+@endpush
 @endsection
