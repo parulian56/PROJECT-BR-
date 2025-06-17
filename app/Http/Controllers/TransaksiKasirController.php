@@ -2,170 +2,136 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TransaksiKasir;
-use App\Models\Produk;
+use App\Models\Data;
 use App\Models\Transaksi;
+use App\Models\TransaksiDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransaksiKasirController extends Controller
 {
     public function index()
-    {
-        $transaksis = TransaksiKasir::latest()->get();
-        $grandTotal = $transaksis->sum('total');
-
-        return view('user.transaksi.index', compact('transaksis', 'grandTotal'));
-    }
-
-    public function create()
-    {
-        $produks = Produk::select('plu', 'nama_barang', 'harga_jual', 'kategori')
-                        ->orderBy('nama_barang')
-                        ->get();
-
-        return view('user.transaksi.create', compact('produks'));
-    }
-
-    public function store(Request $request)
-    {
-        $harga = floatval($request->harga);
-        $qty = intval($request->qty);
-        $maxDiskon = $harga * $qty;
-
-        $validated = $request->validate([
-            'plu' => 'required|string',
-            'deskripsi' => 'required|string|max:255',
-            'kategori' => 'required|string|in:Makanan,Minuman,Alat Tulis,Seragam,Kesehatan & Kebersihan,Lainnya',
-            'qty' => 'required|integer|min:1',
-            'harga' => 'required|numeric|min:0',
-            'diskon' => 'nullable|numeric|min:0|max:' . $maxDiskon
-        ]);
-
-        $total = ($validated['harga'] * $validated['qty']) - ($validated['diskon'] ?? 0);
-
-        TransaksiKasir::create([
-            'plu' => $validated['plu'],
-            'deskripsi' => $validated['deskripsi'],
-            'kategori' => $validated['kategori'],
-            'qty' => $validated['qty'],
-            'harga' => $validated['harga'],
-            'diskon' => $validated['diskon'] ?? 0,
-            'total' => $total
-        ]);
-
-        return redirect()->route('transaksi.index')
-                         ->with('success', 'Transaksi berhasil ditambahkan!');
-    }
-
-    public function edit($id)
-    {
-        $transaksi = TransaksiKasir::findOrFail($id);
-        $produks = Produk::select('plu', 'nama_barang', 'harga_jual', 'kategori')
-                        ->orderBy('nama_barang')
-                        ->get();
-
-        return view('user.transaksi.edit', compact('transaksi', 'produks'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $harga = floatval($request->harga);
-        $qty = intval($request->qty);
-        $maxDiskon = $harga * $qty;
-
-        $validated = $request->validate([
-            'plu' => 'required|string',
-            'deskripsi' => 'required|string|max:255',
-            'kategori' => 'required|string|in:Makanan,Minuman,Alat Tulis,Seragam,Kesehatan & Kebersihan,Lainnya',
-            'qty' => 'required|integer|min:1',
-            'harga' => 'required|numeric|min:0',
-            'diskon' => 'nullable|numeric|min:0|max:' . $maxDiskon
-        ]);
-
-        $total = ($validated['harga'] * $validated['qty']) - ($validated['diskon'] ?? 0);
-
-        $transaksi = TransaksiKasir::findOrFail($id);
-        $transaksi->update([
-            'plu' => $validated['plu'],
-            'deskripsi' => $validated['deskripsi'],
-            'kategori' => $validated['kategori'],
-            'qty' => $validated['qty'],
-            'harga' => $validated['harga'],
-            'diskon' => $validated['diskon'] ?? 0,
-            'total' => $total
-        ]);
-
-        return redirect()->route('transaksi.index')
-                         ->with('success', 'Transaksi berhasil diperbarui!');
-    }
-
-    public function destroy($id)
-    {
-        $transaksi = TransaksiKasir::findOrFail($id);
-        $transaksi->delete();
-
-        return redirect()->route('transaksi.index')
-                         ->with('success', 'Item berhasil dihapus dari transaksi!');
-    }
-
-    public function deleteAll()
-    {
-        TransaksiKasir::truncate();
-
-        return redirect()->route('transaksi.index')
-                         ->with('success', 'Semua item transaksi berhasil dihapus!');
-    }
-
-    public function checkout(Request $request)
-    {
-        $transaksis = TransaksiKasir::all();
-        $grandTotal = $transaksis->sum('total');
-
-        if ($transaksis->isEmpty()) {
-            return redirect()->route('transaksi.index')
-                             ->with('warning', 'Tidak ada item untuk diproses.');
-        }
-
-        $request->validate([
-            'uang_dibayar' => 'required|numeric|min:' . $grandTotal
-        ]);
-
-        $transaksi = Transaksi::create([
-            'kode_transaksi' => 'TRX-' . date('YmdHis') . '-' . uniqid(),
-            'total' => $grandTotal,
-            'uang_dibayar' => $request->uang_dibayar,
-            'kembalian' => $request->uang_dibayar - $grandTotal,
-            'tanggal' => now(),
-            'status' => 'selesai',
-            'user_id' => auth()->id()
-        ]);
-
-        foreach ($transaksis as $item) {
-            $transaksi->items()->create([
-                'plu' => $item->plu,
-                'nama_barang' => $item->deskripsi,
-                'kategori' => $item->kategori,
-                'qty' => $item->qty,
-                'harga_satuan' => $item->harga,
-                'diskon' => $item->diskon,
-                'total' => $item->total
-            ]);
-        }
-
-        TransaksiKasir::truncate();
-
-        return redirect()->route('transaksi.index')
-                         ->with('success', 'Transaksi berhasil diselesaikan! Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
-    }
-    //method untuk mencari produk
-    public function searchProduct(Request $request)
 {
-    $term = $request->get('term');
-    
-    $products = Produk::where('codetrx', 'like', '%'.$term.'%')
-                     ->orWhere('nama_barang', 'like', '%'.$term.'%')
-                     ->get(['codetrx', 'nama_barang', 'harga_jual', 'kategori']);
-    
-    return response()->json($products);
+    $transaksis = TransaksiDetail::with('data')->whereNull('transaksi_id')->latest()->get();
+    $grandTotal = $transaksis->sum(function($item) {
+        return $item->qty * $item->data->harga_jual;
+    });
+
+    $products = Data::where('stok', '>', 0)
+                  ->orderBy('nama_barang')
+                  ->get();
+
+    return view('user.transaksi.index', [
+        'transaksis' => $transaksis,
+        'grandTotal' => $grandTotal,
+        'products' => $products
+    ]);
 }
+    public function store(Request $request)
+{
+    $request->validate([
+        'data_id' => 'required|exists:data,id',
+        'codetrx' => 'required',
+        'nama_barang' => 'required',
+        'kategori' => 'required',
+        'harga_jual' => 'required|numeric|min:0',
+        'qty' => 'required|integer|min:1'
+    ]);
+
+    $product = Data::findOrFail($request->data_id);
+
+    // Check stock availability
+    if ($product->stok < $request->qty) {
+        return back()->with('error', 'Stok tidak mencukupi! Stok tersedia: ' . $product->stok);
+    }
+
+    // Check if item already exists in current transaction
+    $existingItem = TransaksiDetail::where('data_id', $request->data_id)
+                                 ->whereNull('transaksi_id')
+                                 ->first();
+
+    if ($existingItem) {
+        // Update existing item
+        $existingItem->qty += $request->qty;
+        $existingItem->save();
+    } else {
+        // Create new transaction item
+        TransaksiDetail::create([
+            'data_id' => $request->data_id,
+            'codetrx' => $request->codetrx,
+            'nama_barang' => $request->nama_barang,
+            'kategori' => $request->kategori,
+            'harga_jual' => $request->harga_jual,
+            'qty' => $request->qty
+        ]);
+    }
+
+    return redirect()->route('transaksi.index')->with('success', 'Item berhasil ditambahkan ke transaksi!');
+}
+    // ... (method lainnya tetap sama)
+
+public function destroy($id)
+{
+    $transaksi = Transaksi::findOrFail($id); // <== You were missing this line
+    $transaksi->delete();
+
+    return redirect()->route('transaksi.index')->with('success', 'Data berhasil dihapus!');
+}
+
+
+public function deleteAll()
+{
+    // Delete all transaction items not yet tied to a finalized transaction
+    TransaksiDetail::whereNull('transaksi_id')->delete();
+
+    return redirect()->route('transaksi.index')->with('success', 'Semua item transaksi berhasil dihapus!');
+}
+
+public function checkout(Request $request)
+{
+    $request->validate([
+    'codetrx' => 'required|string',
+    'uang_dibayar' => 'required|numeric|min:0',
+]);
+
+
+    $transaksiDetails = TransaksiDetail::whereNull('transaksi_id')->get();
+
+    if ($transaksiDetails->isEmpty()) {
+        return redirect()->route('transaksi.index')->with('error', 'Tidak ada item untuk diproses.');
+    }
+
+    $grandTotal = $transaksiDetails->sum(function ($item) {
+        return $item->qty * $item->harga_jual;
+    });
+
+    if ($request->uang_dibayar < $grandTotal) {
+        return redirect()->route('transaksi.index')->with('error', 'Uang yang dibayar kurang dari total belanja.');
+    }
+
+    // Simpan transaksi utama
+$transaksi = Transaksi::create([
+    'user_id' => auth()->id(), // pastikan user sedang login!
+    'kode_transaksi' => $request->codetrx,
+    'total_harga' => $grandTotal,
+    'uang_dibayar' => $request->uang_dibayar,
+    'kembalian' => $request->uang_dibayar - $grandTotal
+]);
+
+
+
+
+    // Update setiap detail transaksi
+    foreach ($transaksiDetails as $item) {
+        $item->transaksi_id = $transaksi->id;
+        $item->save();
+
+        // Kurangi stok barang
+        $item->data->decrement('stok', $item->qty);
+    }
+
+    return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil disimpan!');
+}
+
+
 }

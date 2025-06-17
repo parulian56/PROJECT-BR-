@@ -66,6 +66,8 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{transaksi}', [TransaksiKasirController::class, 'destroy'])->name('destroy');
             Route::post('/checkout', [TransaksiKasirController::class, 'checkout'])->name('checkout');
             Route::get('/transaksi/search-product', [TransaksiKasirController::class, 'searchProduct'])->name('searchProduct');
+            Route::post('/transaksi/checkout', [TransaksiKasirController::class, 'checkout'])->name('transaksi.checkout');
+
         });
     });
 
@@ -77,16 +79,17 @@ Route::middleware('auth')->group(function () {
 
         // Data Management
         Route::prefix('data')->name('data.')->group(function () {
-            Route::get('/', [DataController::class, 'index'])->name('index');
-            Route::get('/create', [DataController::class, 'create'])->name('create');
-            Route::post('/', [DataController::class, 'store'])->name('store');
-            Route::get('/{id}/edit', [DataController::class, 'edit'])->name('edit');
-            Route::delete('/{id}', [DataController::class, 'destroy'])->name('destroy');
+    Route::get('/', [DataController::class, 'index'])->name('index');
+    Route::get('/create', [DataController::class, 'create'])->name('create');
+    Route::post('/', [DataController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [DataController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [DataController::class, 'update'])->name('update'); // Tambahkan ini
+    Route::delete('/{id}', [DataController::class, 'destroy'])->name('destroy');
 
-            // Tambah stok: GET (tampilkan form) dan POST (proses tambah stok)
-            Route::get('/{id}/tambah-stok', [DataController::class, 'stok'])->name('stok.form');
-            Route::post('/{id}/tambah-stok', [DataController::class, 'stok'])->name('stok');
-        });
+    Route::get('/{id}/tambah-stok', [DataController::class, 'stok'])->name('stok.form');
+    Route::post('/{id}/tambah-stok', [DataController::class, 'stok'])->name('stok');
+});
+
 
         // User Management
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -99,6 +102,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/monthly', [ReportController::class, 'monthly'])->name('monthly');
             Route::get('/yearly', [ReportController::class, 'yearly'])->name('yearly');
             Route::get('/custom', [ReportController::class, 'custom'])->name('custom');
+            Route::post('/filter', [ReportController::class, 'filter'])->name('filter');
+            Route::post('/export', [ReportController::class, 'export'])->name('export');
         });
     });
 });
