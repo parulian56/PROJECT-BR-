@@ -134,7 +134,7 @@
                             </td>
                             <td class="px-6 py-4">
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold
-                                    @if($item->stok > 10) bg-green-100 text-green-800 border border-green-200
+                                    @if($item->stok > 30) bg-green-100 text-green-800 border border-green-200
                                     @elseif($item->stok > 5) bg-yellow-100 text-yellow-800 border border-yellow-200
                                     @else bg-red-100 text-red-800 border border-red-200
                                     @endif">
