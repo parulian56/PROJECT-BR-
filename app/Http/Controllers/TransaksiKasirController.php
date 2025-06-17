@@ -90,10 +90,9 @@ public function deleteAll()
 public function checkout(Request $request)
 {
     $request->validate([
-    'codetrx' => 'required|string',
-    'uang_dibayar' => 'required|numeric|min:0',
-]);
-
+        'codetrx' => 'required|string',
+        'uang_dibayar' => 'required|numeric|min:0',
+    ]);
 
     $transaksiDetails = TransaksiDetail::whereNull('transaksi_id')->get();
 
@@ -105,33 +104,45 @@ public function checkout(Request $request)
         return $item->qty * $item->harga_jual;
     });
 
+    // Validasi ketat bahwa uang dibayar harus >= total
     if ($request->uang_dibayar < $grandTotal) {
-        return redirect()->route('transaksi.index')->with('error', 'Uang yang dibayar kurang dari total belanja.');
+        return back()
+            ->withInput()
+            ->with('error', 'Uang yang dibayar kurang dari total belanja. Kurang: Rp ' . number_format($grandTotal - $request->uang_dibayar, 0, ',', '.'));
     }
 
-    // Simpan transaksi utama
-$transaksi = Transaksi::create([
-    'user_id' => auth()->id(), // pastikan user sedang login!
-    'kode_transaksi' => $request->codetrx,
-    'total_harga' => $grandTotal,
-    'uang_dibayar' => $request->uang_dibayar,
-    'kembalian' => $request->uang_dibayar - $grandTotal
-]);
+    // Mulai transaction database untuk memastikan konsistensi data
+    DB::beginTransaction();
 
+    try {
+        $transaksi = Transaksi::create([
+            'user_id' => auth()->id(),
+            'kode_transaksi' => $request->codetrx,
+            'total_harga' => $grandTotal,
+            'uang_dibayar' => $request->uang_dibayar,
+            'kembalian' => $request->uang_dibayar - $grandTotal
+        ]);
 
+        foreach ($transaksiDetails as $item) {
+            $item->transaksi_id = $transaksi->id;
+            $item->save();
 
+            // Kurangi stok barang dengan pengecekan
+            $product = Data::find($item->data_id);
+            if ($product->stok < $item->qty) {
+                throw new \Exception("Stok {$product->nama_barang} tidak mencukupi");
+            }
+            $product->decrement('stok', $item->qty);
+        }
 
-    // Update setiap detail transaksi
-    foreach ($transaksiDetails as $item) {
-        $item->transaksi_id = $transaksi->id;
-        $item->save();
+        DB::commit();
+        
+        return redirect()->route('transaksi.index')
+            ->with('success', 'Transaksi berhasil disimpan! Kembalian: Rp ' . number_format($request->uang_dibayar - $grandTotal, 0, ',', '.'));
 
-        // Kurangi stok barang
-        $item->data->decrement('stok', $item->qty);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->with('error', 'Transaksi gagal: ' . $e->getMessage());
     }
-
-    return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil disimpan!');
 }
-
-
 }

@@ -232,19 +232,36 @@
             }
         });
 
-        // Hitung kembalian
-        document.getElementById('uang_dibayar').addEventListener('input', function() {
+        // Hitung kembalian dengan feedback visual
+        $("#uang_dibayar").on('input', function() {
             const total = {{ $grandTotal }};
-            const uangDibayar = parseFloat(this.value) || 0;
+            const uangDibayar = parseFloat($(this).val()) || 0;
             const kembalian = uangDibayar - total;
+            const kembalianField = $("#kembalian");
             
-            document.getElementById('kembalian').value = kembalian >= 0 
-                ? 'Rp ' + kembalian.toLocaleString('id-ID') 
-                : 'Uang kurang Rp ' + Math.abs(kembalian).toLocaleString('id-ID');
+            if (kembalian >= 0) {
+                kembalianField.val('Rp ' + kembalian.toLocaleString('id-ID'));
+                kembalianField.removeClass('text-red-500').addClass('text-green-500');
+            } else {
+                kembalianField.val('Uang kurang Rp ' + Math.abs(kembalian).toLocaleString('id-ID'));
+                kembalianField.removeClass('text-green-500').addClass('text-red-500');
+            }
+        });
+
+        // Validasi form checkout
+        $("form[action='{{ route('transaksi.checkout') }}']").on('submit', function(e) {
+            const total = {{ $grandTotal }};
+            const uangDibayar = parseFloat($("#uang_dibayar").val()) || 0;
+            
+            if (uangDibayar < total) {
+                e.preventDefault();
+                alert('Uang yang dibayar kurang dari total belanja. Silakan masukkan jumlah yang cukup.');
+                $("#uang_dibayar").focus();
+            }
         });
     });
 
-    // Fungsi cetak struk
+    // Fungsi cetak struk (tetap sama)
     function printReceipt() {
         const transaksis = {!! json_encode($transaksis) !!};
         const grandTotal = {!! $grandTotal !!};
