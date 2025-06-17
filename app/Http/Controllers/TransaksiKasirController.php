@@ -57,13 +57,11 @@ class TransaksiKasirController extends Controller
     } else {
         // Create new transaction item
         TransaksiDetail::create([
-            'data_id' => $request->data_id,
-            'codetrx' => $request->codetrx,
-            'nama_barang' => $request->nama_barang,
-            'kategori' => $request->kategori,
-            'harga_jual' => $request->harga_jual,
-            'qty' => $request->qty
-        ]);
+    'data_id' => $request->data_id,
+    'codetrx' => $request->codetrx,
+    'qty' => $request->qty
+]);
+
     }
 
     return redirect()->route('transaksi.index')->with('success', 'Item berhasil ditambahkan ke transaksi!');

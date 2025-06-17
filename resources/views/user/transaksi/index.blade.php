@@ -42,38 +42,39 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-stone-100">
-                        @forelse($transaksis as $item)
-                        <tr class="hover:bg-amber-50">
-                            <td class="py-4 px-4">{{ $loop->iteration }}</td>
-                            <td class="py-4 px-4">{{ $item->codetrx }}</td>
-                            <td class="py-4 px-4 font-medium">{{ $item->nama_barang }}</td>
-                            <td class="py-4 px-4">
-                                <span class="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-800">
-                                    {{ $item->kategori }}
-                                </span>
-                            </td>
-                            <td class="py-4 px-4">{{ $item->qty }}</td>
-                            <td class="py-4 px-4">Rp {{ number_format($item->harga_jual, 0, ',', '.') }}</td>
-                            <td class="py-4 px-4 font-medium">Rp {{ number_format($item->harga_jual * $item->qty, 0, ',', '.') }}</td>
-                            <td class="py-4 px-4">
-                                <div class="flex space-x-2">
-                                    <form action="{{ route('transaksi.destroy', $item->id) }}" method="POST">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:text-red-700" onclick="return confirm('Hapus item ini?')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="8" class="py-8 text-center text-stone-500">
-                                <i class="fas fa-shopping-cart text-3xl mb-2"></i>
-                                <p>Belum ada transaksi</p>
-                            </td>
-                        </tr>
-                        @endforelse
+                       @forelse($transaksis as $item)
+                    <tr class="hover:bg-amber-50">
+                        <td class="py-4 px-4">{{ $loop->iteration }}</td>
+                        <td class="py-4 px-4">{{ $item->data->codetrx ?? '-' }}</td>
+                        <td class="py-4 px-4 font-medium">{{ $item->data->nama_barang ?? '-' }}</td>
+                        <td class="py-4 px-4">
+                            <span class="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-800">
+                                {{ $item->data->kategori ?? '-' }}
+                            </span>
+                        </td>
+                        <td class="py-4 px-4">{{ $item->qty }}</td>
+                        <td class="py-4 px-4">Rp {{ number_format($item->data->harga_jual ?? 0, 0, ',', '.') }}</td>
+                        <td class="py-4 px-4 font-medium">Rp {{ number_format($item->qty * ($item->data->harga_jual ?? 0), 0, ',', '.') }}</td>
+                        <td class="py-4 px-4">
+                            <div class="flex space-x-2">
+                                <form action="{{ route('transaksi.destroy', $item->id) }}" method="POST">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="text-red-500 hover:text-red-700" onclick="return confirm('Hapus item ini?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="8" class="py-8 text-center text-stone-500">
+                            <i class="fas fa-shopping-cart text-3xl mb-2"></i>
+                            <p>Belum ada transaksi</p>
+                        </td>
+                    </tr>
+                    @endforelse
+
                     </tbody>
                 </table>
             </div>

@@ -19,6 +19,9 @@ class TransaksiDetail extends Model
 
     public function data()
     {
-        return $this->belongsTo(Data::class);
+  
+    return $this->belongsTo(\App\Models\Data::class, 'data_id');
     }
+
+    
 }
