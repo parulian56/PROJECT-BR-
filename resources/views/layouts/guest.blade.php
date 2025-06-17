@@ -9,67 +9,215 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        
         <style>
-            /* Custom colors for the login page */
-            :root {
-                --login-primary: #f5a623;   /* Primary orange color */
-                --login-secondary: #fff8e7;  /* Light background color */
-                --login-accent: #ffb84d;     /* Accent color for buttons */
-                --login-text: #4a4a4a;       /* Text color */
-            }
-            
             body {
-                background-color: var(--login-primary);
-                overflow-x: hidden;
-                font-family: 'Figtree', sans-serif;
+                font-family: 'Inter', sans-serif;
             }
             
-            .login-curve-shape {
+            .main-gradient {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #22354f 75%, #182b47 100%);
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .main-gradient::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                           radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+                z-index: 0;
+            }
+            
+            .card-glass {
+                background: rgba(15, 23, 42, 0.4);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(148, 163, 184, 0.1);
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            }
+            
+            .welcome-gradient {
+                background: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #581c87 100%);
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .welcome-gradient::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+                animation: rotate 20s linear infinite;
+                z-index: 0;
+            }
+            
+            @keyframes rotate {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            .input-glass {
+                background: rgba(15, 23, 42, 0.3);
+                border: 1px solid rgba(148, 163, 184, 0.2);
+                backdrop-filter: blur(10px);
+                transition: all 0.3s ease;
+            }
+            
+            .input-glass:focus {
+                background: rgba(15, 23, 42, 0.5);
+                border-color: rgba(59, 130, 246, 0.5);
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+                transform: translateY(-1px);
+            }
+            
+            .btn-signin {
+                background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .btn-signin::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                transition: left 0.5s;
+            }
+            
+            .btn-signin:hover::before {
+                left: 100%;
+            }
+            
+            .btn-signin:hover {
+                background: linear-gradient(135deg, #1d4ed8 0%, #4338ca 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 20px 40px -12px rgba(30, 64, 175, 0.4);
+            }
+            
+            .btn-signup {
+                background: rgba(255, 255, 255, 0.1);
+                border: 2px solid rgba(255, 255, 255, 0.2);
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .btn-signup::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+                transition: left 0.5s;
+            }
+            
+            .btn-signup:hover::before {
+                left: 100%;
+            }
+            
+            .btn-signup:hover {
+                background: rgba(255, 255, 255, 0.2);
+                transform: translateY(-2px);
+            }
+            
+            .social-btn {
+                background: rgba(15, 23, 42, 0.4);
+                border: 1px solid rgba(148, 163, 184, 0.2);
+                backdrop-filter: blur(10px);
+                transition: all 0.3s ease;
+            }
+            
+            .social-btn:hover {
+                background: rgba(59, 130, 246, 0.2);
+                border-color: rgba(59, 130, 246, 0.3);
+                transform: translateY(-2px) scale(1.05);
+                box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.2);
+            }
+            
+            .floating-shapes {
                 position: absolute;
                 width: 100%;
                 height: 100%;
-                top: 0;
-                left: 0;
-                z-index: 0;
-                clip-path: polygon(0 0, 70% 0, 100% 100%, 0% 100%);
-                background-color: white;
+                overflow: hidden;
+                z-index: 1;
             }
             
-            .login-container {
+            .shape {
+                position: absolute;
+                opacity: 0.1;
+                animation: float 6s ease-in-out infinite;
+            }
+            
+            .shape:nth-child(1) {
+                top: 20%;
+                left: 10%;
+                animation-delay: 0s;
+            }
+            
+            .shape:nth-child(2) {
+                top: 60%;
+                right: 10%;
+                animation-delay: 2s;
+            }
+            
+            .shape:nth-child(3) {
+                bottom: 20%;
+                left: 20%;
+                animation-delay: 4s;
+            }
+            
+            @keyframes float {
+                0%, 100% { transform: translateY(0px) rotate(0deg); }
+                50% { transform: translateY(-20px) rotate(180deg); }
+            }
+            
+            .content-wrapper {
                 position: relative;
-                z-index: 1;
+                z-index: 10;
             }
         </style>
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 relative">
-            <!-- Curved background shape -->
-            <div class="login-curve-shape"></div>
-            
-            <!-- Login container -->
-            <div class="login-container w-full max-w-5xl flex flex-col md:flex-row rounded-2xl shadow-2xl overflow-hidden">
-                <!-- Left side with illustration -->
-                <div class="md:w-1/2 bg-white p-8 flex flex-col justify-center items-start">
-                    <div class="text-2xl font-bold text-amber-500 mb-6">BISNIS RITEL</div>
-                    <div class="w-full h-64 flex justify-center items-center mb-6">
-                       <p class="font-bold">"Bisnis Ritel adalah jurusan yang fokus pada penjualan langsung ke konsumen, seperti di toko, minimarket, atau online."</p>
-                       
-                            
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <div class="h-1 w-12 bg-amber-500 rounded-full"></div>
-                        <div class="text-sm text-gray-500">Work together seamlessly</div>
-                    </div>
-                </div>
+   <body class="font-sans antialiased main-gradient min-h-screen">
+    <!-- Floating Shapes - KIRI -->
+    <div class="floating-shapes absolute top-10 left-10">
+        <div class="shape w-32 h-32 bg-blue-500 rounded-full opacity-60"></div>
+        <div class="shape w-24 h-24 bg-purple-500 rounded-full opacity-60 mt-4"></div>
+        <div class="shape w-28 h-28 bg-indigo-500 rounded-full opacity-60 mt-4"></div>
+    </div>
+
+   
+</body>
+
+        <!-- Main Container -->
+        <div class="min-h-screen flex items-center justify-center p-6 content-wrapper">
+            <div class="flex w-full max-w-6xl space-x-12">
                 
-                <!-- Right side with login form -->
-                <div class="md:w-1/2 bg-white p-6">
-                    {{ $slot }}
+                <!-- Parent Container -->
+                <div class="w-full h-screen flex items-center justify-center">
+                <!-- Card -->
+                <div class="card-glass rounded-3xl p-10 w-full max-w-md mx-auto relative">
+                
+ 
+                        {{ $slot }}
+                    </div>
                 </div>
+
+               
             </div>
         </div>
     </body>
