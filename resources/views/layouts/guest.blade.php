@@ -20,7 +20,7 @@
             }
             
             .main-gradient {
-                background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #22354f 75%, #182b47 100%);
+                background: linear-gradient(135deg, #0f172a 0%, #112057 25%, #7088b4 50%, #112057 75%, #0f172a 100%);
                 position: relative;
                 overflow: hidden;
             }
@@ -33,12 +33,12 @@
                 right: 0;
                 bottom: 0;
                 background: radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-                           radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+                           radial-gradient(circle at 70% 80%, rgba(60, 109, 223, 0.15) 0%, transparent 50%);
                 z-index: 0;
             }
             
             .card-glass {
-                background: rgba(15, 23, 42, 0.4);
+                background: rgba(4, 16, 64, 0.366);
                 backdrop-filter: blur(20px);
                 border: 1px solid rgba(148, 163, 184, 0.1);
                 box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -195,9 +195,10 @@
    <body class="font-sans antialiased main-gradient min-h-screen">
     <!-- Floating Shapes - KIRI -->
     <div class="floating-shapes absolute top-10 left-10">
-        <div class="shape w-32 h-32 bg-blue-500 rounded-full opacity-60"></div>
-        <div class="shape w-24 h-24 bg-purple-500 rounded-full opacity-60 mt-4"></div>
-        <div class="shape w-28 h-28 bg-indigo-500 rounded-full opacity-60 mt-4"></div>
+        <div class="shape w-32 h-32 bg-slate-100 rounded-full opacity-60"></div>
+        <div class="shape w-24 h-24 bg-slate-100 rounded-full opacity-60 mt-4"></div>
+        <div class="shape w-28 h-28 bg-slate-300 rounded-full opacity-60 mt-4"></div>
+          
     </div>
 
    
