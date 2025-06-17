@@ -1,29 +1,24 @@
 <?php
+// app/Models/Transaksi.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Transaksi extends Model
 {
     protected $fillable = [
-        'kode_transaksi',
-        'total',
-        'uang_dibayar',
-        'kembalian',
-        'tanggal',
-        'status',
         'user_id',
+        'kode_transaksi',
+        'total_harga',
+        'uang_dibayar',
+        'kembalian'
     ];
 
-    // Tambahkan $casts untuk konversi otomatis
-    protected $casts = [
-        'tanggal' => 'datetime', // Konversi string DB ke Carbon
-    ];
-
-    public function items(): HasMany
+    public function items()
     {
-        return $this->hasMany(TransaksiItem::class); 
+        return $this->hasMany(TransaksiDetail::class);
     }
 }
+
+

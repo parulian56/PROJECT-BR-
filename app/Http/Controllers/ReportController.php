@@ -39,7 +39,25 @@ class ReportController extends Controller
 
         $total = $transaksis->sum('total');
 
-        return view('admin.reports.index', compact('transaksis', 'filter', 'total'));
+        $rataTransaksiHariIni = $transaksis->count() > 0
+            ? round($total / $transaksis->count())
+            : 0;
+
+        return view('admin.reports.index', [
+            'transaksis' => $transaksis,
+            'filter' => $filter,
+            'total' => $total,
+            'totalTransaksiHariIni' => $transaksis->count(),
+            'pendapatanHariIni' => $total,
+            'produkTerjualHariIni' => 0,
+            'rataTransaksiHariIni' => $rataTransaksiHariIni,
+            'avgTransaksi' => $rataTransaksiHariIni,
+            'kenaikan' => ['transaksi' => 0, 'pendapatan' => 0],
+            'transaksiTerbaru' => [],
+            'produkTerlaris' => [],
+        ]);
+
+
     }
 
     /**
