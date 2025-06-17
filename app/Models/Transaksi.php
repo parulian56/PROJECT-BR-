@@ -19,6 +19,11 @@ class Transaksi extends Model
     {
         return $this->hasMany(TransaksiDetail::class);
     }
+    public function details()
+    {
+        return $this->hasMany(\App\Models\TransaksiDetail::class);
+    }
+
 }
 
 
