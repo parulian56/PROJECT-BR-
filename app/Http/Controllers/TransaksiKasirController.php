@@ -11,105 +11,97 @@ use Illuminate\Support\Facades\DB;
 class TransaksiKasirController extends Controller
 {
     public function index()
-{
-    $transaksis = TransaksiDetail::with('data')->whereNull('transaksi_id')->latest()->get();
-    $grandTotal = $transaksis->sum(function($item) {
-        return $item->qty * $item->data->harga_jual;
-    });
+    {
+        $transaksis = TransaksiDetail::with('data')->whereNull('transaksi_id')->latest()->get();
+        $grandTotal = $transaksis->sum(function($item) {
+            return $item->qty * $item->data->harga_jual;
+        });
 
-    $products = Data::where('stok', '>', 0)
-                  ->orderBy('nama_barang')
-                  ->get();
+        $products = Data::where('stok', '>', 0)
+                      ->orderBy('nama_barang')
+                      ->get();
 
-    return view('user.transaksi.index', [
-        'transaksis' => $transaksis,
-        'grandTotal' => $grandTotal,
-        'products' => $products
-    ]);
-}
+        return view('user.transaksi.index', [
+            'transaksis' => $transaksis,
+            'grandTotal' => $grandTotal,
+            'products' => $products
+        ]);
+    }
+
     public function store(Request $request)
-{
-    $request->validate([
-        'data_id' => 'required|exists:data,id',
-        'codetrx' => 'required',
-        'nama_barang' => 'required',
-        'kategori' => 'required',
-        'harga_jual' => 'required|numeric|min:0',
-        'qty' => 'required|integer|min:1'
-    ]);
+    {
+        $request->validate([
+            'data_id' => 'required|exists:data,id',
+            'codetrx' => 'required',
+            'nama_barang' => 'required',
+            'kategori' => 'required',
+            'harga_jual' => 'required|numeric|min:0',
+            'qty' => 'required|integer|min:1'
+        ]);
 
-    $product = Data::findOrFail($request->data_id);
+        $product = Data::findOrFail($request->data_id);
 
-    // Check stock availability
-    if ($product->stok < $request->qty) {
-        return back()->with('error', 'Stok tidak mencukupi! Stok tersedia: ' . $product->stok);
+        if ($product->stok < $request->qty) {
+            return back()->with('error', 'Stok tidak mencukupi! Stok tersedia: ' . $product->stok);
+        }
+
+        $existingItem = TransaksiDetail::where('data_id', $request->data_id)
+                                     ->whereNull('transaksi_id')
+                                     ->first();
+
+        if ($existingItem) {
+            $existingItem->qty += $request->qty;
+            $existingItem->save();
+        } else {
+            TransaksiDetail::create([
+                'data_id' => $request->data_id,
+                'codetrx' => $request->codetrx,
+                'qty' => $request->qty
+            ]);
+        }
+
+        return redirect()->route('transaksi.index')->with('success', 'Item berhasil ditambahkan ke transaksi!');
     }
 
-    // Check if item already exists in current transaction
-    $existingItem = TransaksiDetail::where('data_id', $request->data_id)
-                                 ->whereNull('transaksi_id')
-                                 ->first();
+    public function destroy($id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+        $transaksi->delete();
 
-    if ($existingItem) {
-        // Update existing item
-        $existingItem->qty += $request->qty;
-        $existingItem->save();
-    } else {
-        // Create new transaction item
-        TransaksiDetail::create([
-    'data_id' => $request->data_id,
-    'codetrx' => $request->codetrx,
-    'qty' => $request->qty
-]);
-
+        return redirect()->route('transaksi.index')->with('success', 'Data berhasil dihapus!');
     }
 
-    return redirect()->route('transaksi.index')->with('success', 'Item berhasil ditambahkan ke transaksi!');
-}
-    // ... (method lainnya tetap sama)
+    public function deleteAll()
+    {
+        TransaksiDetail::whereNull('transaksi_id')->delete();
 
-public function destroy($id)
-{
-    $transaksi = Transaksi::findOrFail($id); // <== You were missing this line
-    $transaksi->delete();
+        return redirect()->route('transaksi.index')->with('success', 'Semua item transaksi berhasil dihapus!');
+    }
 
-    return redirect()->route('transaksi.index')->with('success', 'Data berhasil dihapus!');
-}
-
-
-public function deleteAll()
-{
-    // Delete all transaction items not yet tied to a finalized transaction
-    TransaksiDetail::whereNull('transaksi_id')->delete();
-
-    return redirect()->route('transaksi.index')->with('success', 'Semua item transaksi berhasil dihapus!');
-}
-
-public function checkout(Request $request)
+    public function checkout(Request $request)
 {
     $request->validate([
         'codetrx' => 'required|string',
         'uang_dibayar' => 'required|numeric|min:0',
     ]);
 
-    $transaksiDetails = TransaksiDetail::whereNull('transaksi_id')->get();
+    $transaksiDetails = TransaksiDetail::with('data')->whereNull('transaksi_id')->get();
 
     if ($transaksiDetails->isEmpty()) {
-        return redirect()->route('transaksi.index')->with('error', 'Tidak ada item untuk diproses.');
+        return response()->json(['success' => false, 'message' => 'Tidak ada item untuk diproses.']);
     }
 
     $grandTotal = $transaksiDetails->sum(function ($item) {
-        return $item->qty * $item->harga_jual;
+        return $item->qty * $item->data->harga_jual;
     });
 
-    // Validasi ketat bahwa uang dibayar harus >= total
     if ($request->uang_dibayar < $grandTotal) {
-        return back()
-            ->withInput()
-            ->with('error', 'Uang yang dibayar kurang dari total belanja. Kurang: Rp ' . number_format($grandTotal - $request->uang_dibayar, 0, ',', '.'));
+        return response()->json([
+            'success' => false,
+            'message' => 'Uang dibayar kurang dari total belanja. Kurang: Rp ' . number_format($grandTotal - $request->uang_dibayar, 0, ',', '.')
+        ]);
     }
 
-    // Mulai transaction database untuk memastikan konsistensi data
     DB::beginTransaction();
 
     try {
@@ -125,7 +117,6 @@ public function checkout(Request $request)
             $item->transaksi_id = $transaksi->id;
             $item->save();
 
-            // Kurangi stok barang dengan pengecekan
             $product = Data::find($item->data_id);
             if ($product->stok < $item->qty) {
                 throw new \Exception("Stok {$product->nama_barang} tidak mencukupi");
@@ -134,13 +125,31 @@ public function checkout(Request $request)
         }
 
         DB::commit();
-        
-        return redirect()->route('transaksi.index')
-            ->with('success', 'Transaksi berhasil disimpan! Kembalian: Rp ' . number_format($request->uang_dibayar - $grandTotal, 0, ',', '.'));
+
+        return response()->json([
+            'success' => true,
+            'struk_url' => route('transaksi.struk', $transaksi->id)
+        ]);
 
     } catch (\Exception $e) {
         DB::rollBack();
-        return back()->with('error', 'Transaksi gagal: ' . $e->getMessage());
+        return response()->json(['success' => false, 'message' => 'Transaksi gagal: ' . $e->getMessage()]);
     }
 }
+
+    public function showStruk($id)
+    {
+        $transaksi = Transaksi::with(['user', 'details.data'])->findOrFail($id);
+        return view('transaksi.struk', compact('transaksi'));
+    }
+
+    public function cetakStruk($id)
+{
+    $transaksi = Transaksi::with(['details.data', 'user'])->findOrFail($id);
+
+    return view('user.transaksi.struk', [
+        'transaksi' => $transaksi
+    ]);
+}
+
 }
