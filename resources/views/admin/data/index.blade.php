@@ -4,8 +4,8 @@
 <div class="min-h-screen py-8">
     <div class="container mx-auto px-4 max-w-7xl">
         <!-- Header Section -->
-        <div class="bg-white rounded-2xl shadow-xl border border-amber-100 mb-8 overflow-hidden">
-            <div class="bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-6">
+        <div class="bg-white rounded-2xl shadow-xl border border-indigo-100 mb-8 overflow-hidden">
+            <div class="bg-gradient-to-r from-indigo-500 to-blue-500 px-8 py-6">
                 <div class="flex items-center justify-between">
                     <div>
                         <h1 class="text-3xl md:text-4xl font-bold text-white flex items-center group">
@@ -17,7 +17,7 @@
                                 <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-white/30 transition-all duration-300 group-hover:w-full"></span>
                             </span>
                         </h1>
-                        <p class="text-amber-100 mt-2 text-lg">Kelola inventaris barang dengan mudah dan efisien</p>
+                        <p class="text-indigo-100 mt-2 text-lg">Kelola inventaris barang dengan mudah dan efisien</p>
                     </div>
                     <div class="hidden lg:flex items-center space-x-4">
                         <div class="bg-white/20 rounded-lg p-3">
@@ -31,7 +31,7 @@
         </div>
 
         <!-- Action Buttons & Search Section -->
-        <div class="bg-white rounded-2xl shadow-xl border border-amber-100 p-6 mb-8">
+        <div class="bg-white rounded-2xl shadow-xl border border-indigo-100 p-6 mb-8">
             <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
                 <!-- Tombol Kembali -->
                 <a href="{{ route('admin.dashboard') }}"
@@ -55,7 +55,7 @@
                                 </svg>
                             </a>
                             @else
-                            <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 text-amber-400 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 text-indigo-400 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                             @endif
@@ -64,12 +64,12 @@
                                 name="search"
                                 value="{{ request('search') }}"
                                 placeholder="Cari berdasarkan nama, kode, atau lokasi..."
-                                class="w-full pl-12 pr-4 py-3 border-2 border-amber-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 hover:border-amber-300"
+                                class="w-full pl-12 pr-4 py-3 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:border-indigo-300"
                             />
                         </div>
                         <button
                             type="submit"
-                            class="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
+                            class="px-6 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
                         >
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -81,7 +81,7 @@
 
                 <!-- Tombol Tambah -->
                 <a href="{{ route('admin.data.create') }}"
-                   class="w-full lg:w-auto inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 group">
+                   class="w-full lg:w-auto inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 group">
                     <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
@@ -91,11 +91,11 @@
         </div>
 
         <!-- Table Section -->
-        <div class="bg-white rounded-2xl shadow-xl border border-amber-100 overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-xl border border-indigo-100 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead>
-                        <tr class="bg-gradient-to-r from-amber-500 to-orange-500">
+                        <tr class="bg-gradient-to-r from-indigo-500 to-blue-500">
                             <th class="px-6 py-4 text-white text-sm font-bold text-left tracking-wider">No</th>
                             <th class="px-6 py-4 text-white text-sm font-bold text-left tracking-wider">Kode Barang</th>
                             <th class="px-6 py-4 text-white text-sm font-bold text-left tracking-wider">Nama Barang</th>
@@ -106,20 +106,20 @@
                             <th class="px-6 py-4 text-white text-sm font-bold text-center tracking-wider">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-amber-100">
+                    <tbody class="divide-y divide-indigo-100">
                         @forelse ($data as $item)
-                        <tr class="hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 transition-all duration-200 group">
+                        <tr class="hover:bg-gradient-to-r hover:from-indigo-50 hover:to-blue-50 transition-all duration-200 group">
                             <td class="px-6 py-4 text-sm text-gray-600 font-medium">
                                 {{ $loop->iteration + ($data->perPage() * ($data->currentPage() - 1)) }}
                             </td>
                             <td class="px-6 py-4">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-100 text-blue-800 border border-indigo-200">
                                     {{ $item->codetrx }}
                                 </span>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center">
-                                    <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-400 rounded-lg flex items-center justify-center mr-3">
+                                    <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-indigo-400 to-blue-400 rounded-lg flex items-center justify-center mr-3">
                                         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                                         </svg>
@@ -127,7 +127,7 @@
                                     <div>
                                         <div class="text-sm font-semibold text-gray-900">{{ $item->nama_barang }}</div>
                                         @if($item->kategori)
-                                        <div class="text-xs text-amber-600">{{ $item->kategori }}</div>
+                                        <div class="text-xs text-indigo-600">{{ $item->kategori }}</div>
                                         @endif
                                     </div>
                                 </div>
@@ -159,7 +159,7 @@
                             <td class="px-6 py-4">
                                 <div class="flex justify-center items-center space-x-2">
                                     <a href="{{ route('admin.data.edit', $item->id) }}"
-                                       class="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-lg transition-all duration-200 transform hover:scale-110 group"
+                                       class="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white rounded-lg transition-all duration-200 transform hover:scale-110 group"
                                        title="Edit Data">
                                         <svg class="w-4 h-4 group-hover:rotate-12 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
@@ -185,8 +185,8 @@
                         <tr>
                             <td colspan="8" class="px-6 py-12 text-center">
                                 <div class="flex flex-col items-center space-y-4">
-                                    <div class="w-20 h-20 bg-gradient-to-r from-amber-100 to-orange-100 rounded-full flex items-center justify-center">
-                                        <svg class="w-10 h-10 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="w-20 h-20 bg-gradient-to-r from-indigo-100 to-blue-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
                                         </svg>
                                     </div>
