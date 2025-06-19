@@ -194,7 +194,7 @@
                                         <h3 class="text-lg font-semibold text-gray-900 mb-1">Belum Ada Data Barang</h3>
                                         <p class="text-gray-500 mb-4">Tambahkan data barang pertama untuk memulai inventaris</p>
                                         <a href="{{ route('admin.data.create') }}"
-                                           class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105">
+                                           class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105">
                                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                             </svg>
