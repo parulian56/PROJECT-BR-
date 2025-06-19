@@ -29,7 +29,7 @@
     </div>
 
     <!-- Filter Section -->
-    <div class="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-8">
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-5 mb-8">
         <h3 class="text-lg font-medium text-black mb-4">Filter Laporan</h3>
 
         <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -44,7 +44,7 @@
             </div>
 
             <div class="flex items-end">
-                <button type="submit" class="w-full px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium flex items-center justify-center transition-colors">
+                <button type="submit" class="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium flex items-center justify-center transition-colors">
                     <i class="fas fa-search mr-2"></i> Terapkan Filter
                 </button>
             </div>
@@ -101,13 +101,13 @@
 
     <!-- Transaction Table -->
     <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        <div class="bg-amber-50 border-b border-amber-200 px-6 py-4">
+        <div class="bg-indigo-50 border-b border-indigo-200 px-6 py-4">
             <h3 class="text-lg font-medium text-black">Detail Transaksi</h3>
         </div>
 
         <div class="overflow-x-auto">
             <table id="transactionTable" class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-amber-50">
+                <thead class="bg-indigo-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                             Tanggal
