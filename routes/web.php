@@ -67,6 +67,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/checkout', [TransaksiKasirController::class, 'checkout'])->name('checkout');
             Route::get('/transaksi/search-product', [TransaksiKasirController::class, 'searchProduct'])->name('searchProduct');
             Route::post('/transaksi/checkout', [TransaksiKasirController::class, 'checkout'])->name('transaksi.checkout');
+            Route::get('/transaksi/success', [TransaksiKasirController::class, 'success'])->name('transaksi.success');
+           Route::get('/struk/{id}', [TransaksiKasirController::class, 'cetakStruk'])->name('struk');
+
 
         });
     });
