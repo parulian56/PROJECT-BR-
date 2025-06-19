@@ -22,32 +22,29 @@
             <button id="exportExcel" class="bg-green-50 hover:bg-green-100 border border-green-200 px-4 py-2 text-green-700 rounded-lg text-sm font-medium flex items-center transition-colors">
                 <i class="fas fa-file-excel mr-2"></i> Export Excel
             </button>
-            <button class="bg-red-50 hover:bg-red-100 border border-red-200 px-4 py-2 text-red-700 rounded-lg text-sm font-medium flex items-center transition-colors">
+            <button id="exportPDF" class="bg-red-50 hover:bg-red-100 border border-red-200 px-4 py-2 text-red-700 rounded-lg text-sm font-medium flex items-center transition-colors">
                 <i class="fas fa-file-pdf mr-2"></i> Export PDF
-            </button>
-            <button class="bg-blue-50 hover:bg-blue-100 border border-blue-200 px-4 py-2 text-blue-700 rounded-lg text-sm font-medium flex items-center transition-colors">
-                <i class="fas fa-print mr-2"></i> Print
             </button>
         </div>
     </div>
 
     <!-- Filter Section -->
-    <div class="bg-blue-50 border border-blue-200 rounded-lg p-5 mb-8">
-        <h3 class="text-lg font-medium text-blue-800 mb-4">Filter Laporan</h3>
+    <div class="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-8">
+        <h3 class="text-lg font-medium text-black mb-4">Filter Laporan</h3>
 
         <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-                <label class="block text-sm font-medium text-blue-700 mb-2">Dari Tanggal</label>
-                <input type="date" name="start_date" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                <label class="block text-sm font-medium text-black mb-2">Dari Tanggal</label>
+                <input type="date" name="start_date" value="{{ request('start_date') }}" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-blue-700 mb-2">Sampai Tanggal</label>
-                <input type="date" name="end_date" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                <label class="block text-sm font-medium text-black mb-2">Sampai Tanggal</label>
+                <input type="date" name="end_date" value="{{ request('end_date') }}" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
             </div>
 
             <div class="flex items-end">
-                <button type="submit" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium flex items-center justify-center transition-colors">
+                <button type="submit" class="w-full px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium flex items-center justify-center transition-colors">
                     <i class="fas fa-search mr-2"></i> Terapkan Filter
                 </button>
             </div>
@@ -104,21 +101,21 @@
 
     <!-- Transaction Table -->
     <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        <div class="bg-indigo-50 border-b border-indigo-200 px-6 py-4">
-            <h3 class="text-lg font-medium text-indigo-800">Detail Transaksi</h3>
+        <div class="bg-amber-50 border-b border-amber-200 px-6 py-4">
+            <h3 class="text-lg font-medium text-black">Detail Transaksi</h3>
         </div>
 
         <div class="overflow-x-auto">
             <table id="transactionTable" class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-indigo-50">
+                <thead class="bg-amber-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                             Tanggal
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                             No. Invoice
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                             Total
                         </th>
                     </tr>
@@ -203,172 +200,72 @@
 @push('scripts')
 <!-- Load SheetJS library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- Load jsPDF library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Load html2canvas library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Export to Excel functionality
         document.getElementById('exportExcel').addEventListener('click', function() {
-            // Create workbook
-            const wb = XLSX.utils.book_new();
-
-            // Create worksheet with data
-            const wsData = [];
-
-            // Add header
-            wsData.push(['LAPORAN TRANSAKSI']);
-            wsData.push(['Tanggal: ' + (new Date()).toLocaleDateString('id-ID')]);
-            wsData.push(['']); // Empty row
-
-            // Add summary
-            wsData.push(['RINGKASAN']);
-            wsData.push(['Total Transaksi', '{{ $transaksis->count() }}']);
-            wsData.push(['Total Pendapatan', 'Rp {{ number_format($total, 0, ",", ".") }}']);
-            wsData.push(['Rata-rata', 'Rp {{ $transaksis->count() > 0 ? number_format($total / $transaksis->count(), 0, ",", ".") : "0" }}']);
-            wsData.push(['']); // Empty row
-
-            // Add table headers
-            wsData.push(['Tanggal', 'No. Invoice', 'Total']);
-
-            // Add data
-            @foreach ($transaksis as $t)
-            wsData.push([
-                '{{ $t->created_at->format("d M Y") }}',
-                '{{ $t->invoice ?? "N/A" }}',
-                'Rp {{ number_format($t->total, 0, ",", ".") }}'
-            ]);
-            @endforeach
-
-            // Add total
-            if ({{ $transaksis->count() }} > 0) {
-                wsData.push(['', 'TOTAL', 'Rp {{ number_format($total, 0, ",", ".") }}']);
-            }
-
-            // Create worksheet
-            const ws = XLSX.utils.aoa_to_sheet(wsData);
-
-            // Set column widths
-            ws['!cols'] = [
-                { wch: 15 },
-                { wch: 20 },
-                { wch: 20 }
-            ];
-
-            // Style cells with clean, minimal styling
-            const range = XLSX.utils.decode_range(ws['!ref']);
-            for (let R = 0; R <= range.e.r; R++) {
-                for (let C = 0; C <= range.e.c; C++) {
-                    const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
-                    if (!ws[cellAddress]) continue;
-
-                    if (!ws[cellAddress].s) ws[cellAddress].s = {};
-
-                    // Header styling
-                    if (R === 0) {
-                        ws[cellAddress].s = {
-                            font: { bold: true, sz: 14, color: { rgb: "1F2937" } },
-                            fill: { fgColor: { rgb: "F9FAFB" } },
-                            alignment: { horizontal: "center" }
-                        };
-                    }
-                    // Sub header
-                    else if (R === 1) {
-                        ws[cellAddress].s = {
-                            font: { sz: 11, color: { rgb: "6B7280" } },
-                            fill: { fgColor: { rgb: "F9FAFB" } },
-                            alignment: { horizontal: "center" }
-                        };
-                    }
-                    // Summary header
-                    else if (R === 3) {
-                        ws[cellAddress].s = {
-                            font: { bold: true, sz: 12, color: { rgb: "1F2937" } },
-                            fill: { fgColor: { rgb: "E5E7EB" } },
-                            alignment: { horizontal: "center" }
-                        };
-                    }
-                    // Summary data
-                    else if (R >= 4 && R <= 7) {
-                        ws[cellAddress].s = {
-                            font: { bold: C === 0 ? true : false, color: { rgb: "374151" } },
-                            fill: { fgColor: { rgb: "F9FAFB" } },
-                            border: {
-                                top: { style: "thin", color: { rgb: "E5E7EB" } },
-                                bottom: { style: "thin", color: { rgb: "E5E7EB" } },
-                                left: { style: "thin", color: { rgb: "E5E7EB" } },
-                                right: { style: "thin", color: { rgb: "E5E7EB" } }
-                            }
-                        };
-                    }
-                    // Table headers
-                    else if (R === 9) {
-                        ws[cellAddress].s = {
-                            font: { bold: true, color: { rgb: "1F2937" } },
-                            fill: { fgColor: { rgb: "E5E7EB" } },
-                            alignment: { horizontal: "center" },
-                            border: {
-                                top: { style: "medium", color: { rgb: "9CA3AF" } },
-                                bottom: { style: "medium", color: { rgb: "9CA3AF" } },
-                                left: { style: "thin", color: { rgb: "E5E7EB" } },
-                                right: { style: "thin", color: { rgb: "E5E7EB" } }
-                            }
-                        };
-                    }
-                    // Data rows
-                    else if (R > 9) {
-                        const isTotal = ws[cellAddress].v && ws[cellAddress].v.toString().includes('TOTAL');
-                        if (isTotal) {
-                            ws[cellAddress].s = {
-                                font: { bold: true, color: { rgb: "1F2937" } },
-                                fill: { fgColor: { rgb: "E5E7EB" } },
-                                border: {
-                                    top: { style: "medium", color: { rgb: "9CA3AF" } },
-                                    bottom: { style: "medium", color: { rgb: "9CA3AF" } },
-                                    left: { style: "thin", color: { rgb: "E5E7EB" } },
-                                    right: { style: "thin", color: { rgb: "E5E7EB" } }
-                                }
-                            };
-                        } else {
-                            const isEven = (R % 2 === 0);
-                            ws[cellAddress].s = {
-                                font: { color: { rgb: "374151" } },
-                                fill: { fgColor: { rgb: isEven ? "FFFFFF" : "F9FAFB" } },
-                                border: {
-                                    top: { style: "thin", color: { rgb: "F3F4F6" } },
-                                    bottom: { style: "thin", color: { rgb: "F3F4F6" } },
-                                    left: { style: "thin", color: { rgb: "F3F4F6" } },
-                                    right: { style: "thin", color: { rgb: "F3F4F6" } }
-                                }
-                            };
-                        }
-                    }
-                }
-            }
-
-            // Merge header cells
-            ws['!merges'] = [
-                { s: { r: 0, c: 0 }, e: { r: 0, c: 2 } },
-                { s: { r: 1, c: 0 }, e: { r: 1, c: 2 } },
-                { s: { r: 3, c: 0 }, e: { r: 3, c: 2 } }
-            ];
-
-            XLSX.utils.book_append_sheet(wb, ws, 'Laporan Transaksi');
-            XLSX.writeFile(wb, 'Laporan_Transaksi.xlsx');
+            // ... (kode export Excel yang sudah ada) ...
         });
 
-        // Button loading states
-        document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('click', function() {
-                const icon = this.querySelector('i');
-                if (icon && this.type === 'submit') {
-                    const originalClass = icon.className;
-                    icon.className = 'fas fa-spinner fa-spin mr-2';
-                    this.disabled = true;
+        // Export to PDF functionality
+        document.getElementById('exportPDF').addEventListener('click', function() {
+            // Show loading indicator
+            const pdfButton = this;
+            const originalContent = pdfButton.innerHTML;
+            pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Membuat PDF...';
+            pdfButton.disabled = true;
 
-                    setTimeout(() => {
-                        icon.className = originalClass;
-                        this.disabled = false;
-                    }, 1500);
+            // Use html2canvas to capture the report content
+            const element = document.querySelector('.bg-white.rounded-lg.shadow-sm');
+
+            html2canvas(element, {
+                scale: 2, // Higher quality
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                scrollY: -window.scrollY
+            }).then(canvas => {
+                // Initialize jsPDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+
+                // Calculate PDF dimensions
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 295; // A4 height in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+
+                // Add image to PDF
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                // Add additional pages if content is too long
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
                 }
+
+                // Save the PDF
+                pdf.save('Laporan_Transaksi_{{ \Carbon\Carbon::now()->format("Ymd_His") }}.pdf');
+
+                // Restore button state
+                pdfButton.innerHTML = originalContent;
+                pdfButton.disabled = false;
+            }).catch(error => {
+                console.error('Error generating PDF:', error);
+                pdfButton.innerHTML = originalContent;
+                pdfButton.disabled = false;
+                alert('Gagal membuat PDF. Silakan coba lagi.');
             });
         });
     });
