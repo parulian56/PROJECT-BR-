@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Data;
-use App\Models\Transaksi;
+use App\Models\TransaksiKasir;
 use App\Models\TransaksiDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
