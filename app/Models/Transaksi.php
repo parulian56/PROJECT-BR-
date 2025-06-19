@@ -15,15 +15,20 @@ class Transaksi extends Model
         'kembalian'
     ];
 
+    // Relasi ke tabel transaksi_details
     public function items()
     {
         return $this->hasMany(TransaksiDetail::class);
     }
+
     public function details()
     {
-        return $this->hasMany(\App\Models\TransaksiDetail::class);
+        return $this->hasMany(TransaksiDetail::class);
     }
 
+    // ✅ Relasi ke User (yang tadi error)
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
-
-

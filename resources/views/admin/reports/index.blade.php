@@ -3,14 +3,13 @@
 @section('title', 'Laporan Transaksi')
 
 @section('content')
-@php
-    $total = 0;
-    foreach ($transaksis as $t) {
-        $total += $t->total;
-    }
-@endphp
-
 <div class="bg-white rounded-lg shadow-sm p-6 animate-fadeIn">
+    @php
+        $totalPendapatan = $total ?? 0;
+        $totalTransaksi = $transaksis->count();
+        $rataRata = $totalTransaksi > 0 ? $totalPendapatan / $totalTransaksi : 0;
+    @endphp
+
     <!-- Header -->
     <div class="flex flex-col lg:flex-row justify-between items-start mb-8">
         <div class="mb-6 lg:mb-0">
@@ -28,78 +27,46 @@
         </div>
     </div>
 
-    <!-- Filter Section -->
+    <!-- Filter Info -->
+    @if(request('start_date') && request('end_date'))
+        <div class="text-sm text-gray-600 mb-4">
+            Menampilkan data dari <strong>{{ request('start_date') }}</strong> sampai <strong>{{ request('end_date') }}</strong>
+        </div>
+    @elseif(request('filter'))
+        <div class="text-sm text-gray-600 mb-4">
+            Menampilkan data filter: <strong>{{ ucfirst(request('filter')) }}</strong>
+        </div>
+    @endif
+
+    <!-- Filter Form -->
     <div class="bg-blue-50 border border-blue-200 rounded-lg p-5 mb-8">
         <h3 class="text-lg font-medium text-black mb-4">Filter Laporan</h3>
 
         <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
                 <label class="block text-sm font-medium text-black mb-2">Dari Tanggal</label>
-                <input type="date" name="start_date" value="{{ request('start_date') }}" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                <input type="date" name="start_date" value="{{ request('start_date') }}" class="w-full px-3 py-2 rounded-lg border border-gray-300">
             </div>
-
             <div>
                 <label class="block text-sm font-medium text-black mb-2">Sampai Tanggal</label>
-                <input type="date" name="end_date" value="{{ request('end_date') }}" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                <input type="date" name="end_date" value="{{ request('end_date') }}" class="w-full px-3 py-2 rounded-lg border border-gray-300">
             </div>
-
             <div class="flex items-end">
-                <button type="submit" class="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium flex items-center justify-center transition-colors">
+                <button type="submit" class="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium">
                     <i class="fas fa-search mr-2"></i> Terapkan Filter
                 </button>
             </div>
         </form>
     </div>
 
-    <!-- Summary Cards -->
+    <!-- Summary -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 mb-1">Total Transaksi</p>
-                    <h3 class="text-2xl font-semibold text-gray-800">{{ number_format($transaksis->count()) }}</h3>
-                    <p class="text-xs text-gray-500 mt-1">Transaksi tercatat</p>
-                </div>
-                <div class="w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-600 rounded-lg">
-                    <i class="fas fa-receipt"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 mb-1">Total Pendapatan</p>
-                    <h3 class="text-2xl font-semibold text-gray-800">Rp {{ number_format($total, 0, ',', '.') }}</h3>
-                    <p class="text-xs text-gray-500 mt-1">Revenue terkumpul</p>
-                </div>
-                <div class="w-10 h-10 flex items-center justify-center bg-green-100 text-green-600 rounded-lg">
-                    <i class="fas fa-coins"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 mb-1">Rata-rata Transaksi</p>
-                    <h3 class="text-2xl font-semibold text-gray-800">
-                        @if($transaksis->count() > 0)
-                            Rp {{ number_format($total / $transaksis->count(), 0, ',', '.') }}
-                        @else
-                            Rp 0
-                        @endif
-                    </h3>
-                    <p class="text-xs text-gray-500 mt-1">Per transaksi</p>
-                </div>
-                <div class="w-10 h-10 flex items-center justify-center bg-purple-100 text-purple-600 rounded-lg">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-            </div>
-        </div>
+        <x-summary-card title="Total Transaksi" value="{{ number_format($totalTransaksi) }}" icon="fas fa-receipt" color="blue" desc="Transaksi tercatat" />
+        <x-summary-card title="Total Pendapatan" value="Rp {{ number_format($totalPendapatan, 0, ',', '.') }}" icon="fas fa-coins" color="green" desc="Revenue terkumpul" />
+        <x-summary-card title="Rata-rata Transaksi" value="Rp {{ number_format($rataRata, 0, ',', '.') }}" icon="fas fa-chart-line" color="purple" desc="Per transaksi" />
     </div>
 
-    <!-- Transaction Table -->
+    <!-- Tabel Transaksi -->
     <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div class="bg-indigo-50 border-b border-indigo-200 px-6 py-4">
             <h3 class="text-lg font-medium text-black">Detail Transaksi</h3>
@@ -107,63 +74,41 @@
 
         <div class="overflow-x-auto">
             <table id="transactionTable" class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-indigo-50">
+                <thead class="bg-indigo-50 sticky top-0 z-10">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
-                            Tanggal
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
-                            No. Invoice
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
-                            Total
-                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase">No</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase">Kode</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase">Tanggal</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase">Kasir</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase">Item</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-black uppercase">Total</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-100">
-                    @forelse ($transaksis as $t)
-                    <tr class="hover:bg-indigo-50 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                            {{ $t->created_at->format('d M Y') }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">
-                                {{ $t->invoice ?? 'N/A' }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800">
-                            Rp {{ number_format($t->total, 0, ',', '.') }}
-                        </td>
-                    </tr>
+                    @forelse($transaksis as $transaksi)
+                        <tr class="hover:bg-indigo-50">
+                            <td class="px-6 py-4 text-sm text-gray-800">{{ $loop->iteration }}</td>
+                            <td class="px-6 py-4 text-sm font-medium text-blue-600">{{ $transaksi->kode_transaksi }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">{{ $transaksi->created_at->format('d/m/Y H:i') }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">{{ $transaksi->user->name ?? '-' }}</td>
+                            <td class="px-6 py-4 text-sm text-center text-gray-700">{{ $transaksi->details->sum('qty') }}</td>
+                            <td class="px-6 py-4 text-sm font-semibold text-gray-800">Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
+                        </tr>
                     @empty
-                    <tr>
-                        <td colspan="3" class="px-6 py-12 text-center">
-                            <div class="flex flex-col items-center text-gray-400">
-                                <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg mb-3">
-                                    <i class="fas fa-folder-open text-xl text-gray-400"></i>
-                                </div>
-                                <p class="font-medium text-gray-600 mb-1">Tidak ada data transaksi</p>
-                                <p class="text-sm text-gray-500">Silahkan pilih periode lain atau periksa filter Anda</p>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center text-gray-500">Tidak ada transaksi ditemukan.</td>
+                        </tr>
                     @endforelse
                 </tbody>
-                @if($transaksis->count() > 0)
-                <tfoot class="bg-indigo-50">
-                    <tr>
-                        <td colspan="2" class="px-6 py-4 text-right font-medium text-indigo-800">
-                            Total Keseluruhan
-                        </td>
-                        <td class="px-6 py-4 font-semibold text-indigo-800">
-                            Rp {{ number_format($total, 0, ',', '.') }}
-                        </td>
-                    </tr>
-                </tfoot>
-                @endif
             </table>
         </div>
     </div>
+
+    @if($transaksis instanceof \Illuminate\Pagination\LengthAwarePaginator)
+        <div class="mt-4 px-4">
+            {{ $transaksis->withQueryString()->links() }}
+        </div>
+    @endif
 
     <!-- Footer -->
     <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600 bg-slate-50 border border-slate-200 rounded-lg p-4 mt-6">
@@ -177,98 +122,71 @@
         </div>
     </div>
 </div>
+@endsection
 
 @push('styles')
 <style>
     @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .animate-fadeIn {
         animation: fadeIn 0.4s ease-out forwards;
     }
+
+    thead th.sticky {
+        position: sticky;
+        top: 0;
+        background-color: #eef2ff;
+    }
 </style>
 @endpush
 
 @push('scripts')
-<!-- Load SheetJS library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<!-- Load jsPDF library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<!-- Load html2canvas library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Export to Excel functionality
-        document.getElementById('exportExcel').addEventListener('click', function() {
-            // ... (kode export Excel yang sudah ada) ...
-        });
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('exportPDF').addEventListener('click', function () {
+            const btn = this;
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Membuat PDF...';
+            btn.disabled = true;
 
-        // Export to PDF functionality
-        document.getElementById('exportPDF').addEventListener('click', function() {
-            // Show loading indicator
-            const pdfButton = this;
-            const originalContent = pdfButton.innerHTML;
-            pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Membuat PDF...';
-            pdfButton.disabled = true;
-
-            // Use html2canvas to capture the report content
             const element = document.querySelector('.bg-white.rounded-lg.shadow-sm');
 
             html2canvas(element, {
-                scale: 2, // Higher quality
-                logging: false,
+                scale: 2,
                 useCORS: true,
-                allowTaint: true,
                 scrollY: -window.scrollY
             }).then(canvas => {
-                // Initialize jsPDF
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
-
-                // Calculate PDF dimensions
                 const imgData = canvas.toDataURL('image/png');
-                const imgWidth = 210; // A4 width in mm
-                const pageHeight = 295; // A4 height in mm
+                const imgWidth = 210;
                 const imgHeight = canvas.height * imgWidth / canvas.width;
-
-                // Add image to PDF
-                let heightLeft = imgHeight;
                 let position = 0;
 
                 pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-
-                // Add additional pages if content is too long
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    pdf.addPage();
-                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-
-                // Save the PDF
                 pdf.save('Laporan_Transaksi_{{ \Carbon\Carbon::now()->format("Ymd_His") }}.pdf');
-
-                // Restore button state
-                pdfButton.innerHTML = originalContent;
-                pdfButton.disabled = false;
-            }).catch(error => {
-                console.error('Error generating PDF:', error);
-                pdfButton.innerHTML = originalContent;
-                pdfButton.disabled = false;
-                alert('Gagal membuat PDF. Silakan coba lagi.');
+                btn.innerHTML = original;
+                btn.disabled = false;
+            }).catch(err => {
+                console.error(err);
+                alert('Gagal membuat PDF');
+                btn.innerHTML = original;
+                btn.disabled = false;
             });
+        });
+
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            const table = document.getElementById('transactionTable');
+            const wb = XLSX.utils.table_to_book(table, { sheet: "Laporan" });
+            XLSX.writeFile(wb, 'Laporan_Transaksi_{{ \Carbon\Carbon::now()->format("Ymd_His") }}.xlsx');
         });
     });
 </script>
 @endpush
-@endsection

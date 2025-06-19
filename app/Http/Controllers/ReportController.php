@@ -2,62 +2,112 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TransaksiKasir;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-    /**
-     * Menampilkan laporan utama berdasarkan filter (harian, mingguan, bulanan, tahunan)
-     */
     public function index(Request $request)
     {
-        $filter = $request->input('filter', 'harian'); // Default: harian
-
+        $filter = $request->input('filter', 'harian');
+        
         switch ($filter) {
             case 'mingguan':
-                $dateFrom = Carbon::now()->startOfWeek();
-                $dateTo = Carbon::now()->endOfWeek();
+                $dateFrom = Carbon::now('Asia/Jakarta')->startOfWeek();
+                $dateTo = Carbon::now('Asia/Jakarta')->endOfWeek();
                 break;
             case 'bulanan':
-                $dateFrom = Carbon::now()->startOfMonth();
-                $dateTo = Carbon::now()->endOfMonth();
+                $dateFrom = Carbon::now('Asia/Jakarta')->startOfMonth();
+                $dateTo = Carbon::now('Asia/Jakarta')->endOfMonth();
                 break;
             case 'tahunan':
-                $dateFrom = Carbon::now()->startOfYear();
-                $dateTo = Carbon::now()->endOfYear();
+                $dateFrom = Carbon::now('Asia/Jakarta')->startOfYear();
+                $dateTo = Carbon::now('Asia/Jakarta')->endOfYear();
                 break;
             default:
-                $dateFrom = Carbon::now()->startOfDay();
-                $dateTo = Carbon::now()->endOfDay();
+                $dateFrom = Carbon::now('Asia/Jakarta')->startOfDay();
+                $dateTo = Carbon::now('Asia/Jakarta')->endOfDay();
         }
 
-        $transaksis = TransaksiKasir::whereBetween('created_at', [$dateFrom, $dateTo])
-            ->orderBy('created_at', 'desc')
+        $transaksis = Transaksi::with(['details.data', 'user'])
+        ->whereBetween('created_at', [$dateFrom, $dateTo])
+        ->orderBy('created_at', 'desc')
+        ->paginate(10); 
+
+
+        // Calculate metrics similar to dashboard
+        $totalTransaksi = $transaksis->count();
+        $totalPendapatan = $transaksis->sum('total_harga');
+        
+        $produkTerjual = $transaksis->sum(function($transaksi) {
+            return $transaksi->details->sum('qty');
+        });
+
+        $rataTransaksi = $totalTransaksi > 0 ? round($totalPendapatan / $totalTransaksi) : 0;
+
+        // Get popular products for the period
+        $produkTerlaris = DB::table('transaksi_details')
+            ->join('data', 'transaksi_details.data_id', '=', 'data.id')
+            ->join('transaksis', 'transaksi_details.transaksi_id', '=', 'transaksis.id')
+            ->select(
+                'data.nama_barang as name',
+                'data.codetrx as plu',
+                DB::raw('SUM(transaksi_details.qty) as sold'),
+                DB::raw('SUM(transaksi_details.qty * data.harga_jual) as revenue')
+            )
+            ->whereBetween('transaksis.created_at', [$dateFrom, $dateTo])
+            ->groupBy('data.codetrx', 'data.nama_barang')
+            ->orderByDesc('sold')
+            ->take(4)
             ->get();
-
-        $total = $transaksis->sum('total');
-
-        $rataTransaksiHariIni = $transaksis->count() > 0
-            ? round($total / $transaksis->count())
-            : 0;
 
         return view('admin.reports.index', [
             'transaksis' => $transaksis,
             'filter' => $filter,
-            'total' => $total,
-            'totalTransaksiHariIni' => $transaksis->count(),
-            'pendapatanHariIni' => $total,
-            'produkTerjualHariIni' => 0,
-            'rataTransaksiHariIni' => $rataTransaksiHariIni,
-            'avgTransaksi' => $rataTransaksiHariIni,
-            'kenaikan' => ['transaksi' => 0, 'pendapatan' => 0],
-            'transaksiTerbaru' => [],
-            'produkTerlaris' => [],
+            'total' => $totalPendapatan,
+            'totalTransaksiHariIni' => $totalTransaksi,
+            'pendapatanHariIni' => $totalPendapatan,
+            'produkTerjualHariIni' => $produkTerjual,
+            'rataTransaksiHariIni' => $rataTransaksi,
+            'avgTransaksi' => $rataTransaksi,
+            'kenaikan' => $this->hitungKenaikanDariKemarin($dateFrom, $dateTo),
+            'transaksiTerbaru' => $transaksis->take(5),
+            'produkTerlaris' => $produkTerlaris,
         ]);
+    }
 
+    protected function hitungKenaikanDariKemarin($currentStart, $currentEnd)
+    {
+        $previousStart = Carbon::parse($currentStart)->subDay()->startOfDay();
+        $previousEnd = Carbon::parse($currentEnd)->subDay()->endOfDay();
 
+        // Current period stats
+        $currentPendapatan = Transaksi::whereBetween('created_at', [$currentStart, $currentEnd])
+            ->sum('total_harga');
+        $currentTransaksi = Transaksi::whereBetween('created_at', [$currentStart, $currentEnd])
+            ->count();
+
+        // Previous period stats
+        $previousPendapatan = Transaksi::whereBetween('created_at', [$previousStart, $previousEnd])
+            ->sum('total_harga');
+        $previousTransaksi = Transaksi::whereBetween('created_at', [$previousStart, $previousEnd])
+            ->count();
+
+        // Calculate percentage changes
+        $kenaikanTransaksi = $previousTransaksi > 0
+            ? (($currentTransaksi - $previousTransaksi) / $previousTransaksi) * 100
+            : ($currentTransaksi > 0 ? 100 : 0);
+
+        $kenaikanPendapatan = $previousPendapatan > 0
+            ? (($currentPendapatan - $previousPendapatan) / $previousPendapatan) * 100
+            : ($currentPendapatan > 0 ? 100 : 0);
+
+        return [
+            'transaksi' => round($kenaikanTransaksi, 2),
+            'pendapatan' => round($kenaikanPendapatan, 2)
+        ];
     }
 
     /**

@@ -12,14 +12,18 @@ class TransaksiKasirController extends Controller
 {
     public function index()
     {
-        $transaksis = TransaksiDetail::with('data')->whereNull('transaksi_id')->latest()->get();
+        $transaksis = TransaksiDetail::with('data')
+            ->whereNull('transaksi_id')
+            ->latest()
+            ->get();
+            
         $grandTotal = $transaksis->sum(function($item) {
             return $item->qty * $item->data->harga_jual;
         });
 
         $products = Data::where('stok', '>', 0)
-                      ->orderBy('nama_barang')
-                      ->get();
+            ->orderBy('nama_barang')
+            ->get();
 
         return view('user.transaksi.index', [
             'transaksis' => $transaksis,
@@ -27,6 +31,8 @@ class TransaksiKasirController extends Controller
             'products' => $products
         ]);
     }
+
+    // Keep other methods but ensure they use Transaksi model
 
     public function store(Request $request)
     {

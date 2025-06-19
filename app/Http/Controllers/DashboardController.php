@@ -9,78 +9,58 @@ use Carbon\Carbon;
 class DashboardController extends Controller
 {
     public function index()
-    {
-        if (auth()->user()->role === 'admin') {
-            $hariIni = Carbon::now('Asia/Jakarta')->toDateString();
+{
+    if (auth()->user()->role === 'admin') {
+        $hariIni = Carbon::now('Asia/Jakarta')->toDateString();
+        $startOfDay = Carbon::now('Asia/Jakarta')->startOfDay();
+        $endOfDay = Carbon::now('Asia/Jakarta')->endOfDay();
 
-            // Jumlah transaksi hari ini
-            $totalTransaksiHariIni = Transaksi::whereDate('created_at', $hariIni)->count();
+        // Get today's transactions with details
+        $transaksisHariIni = Transaksi::with(['details.data', 'user'])
+            ->whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->orderByDesc('created_at')
+            ->get();
 
-            // Total pendapatan hari ini (langsung dari transaksi_details)
-            $pendapatanHariIni = DB::table('transaksi_details')
-                ->join('data', 'transaksi_details.data_id', '=', 'data.id')
-                ->join('transaksis', 'transaksi_details.transaksi_id', '=', 'transaksis.id')
-                ->whereDate('transaksis.created_at', $hariIni)
-                ->sum(DB::raw('transaksi_details.qty * data.harga_jual'));
+        // Calculate metrics
+        $totalTransaksiHariIni = $transaksisHariIni->count();
+        $pendapatanHariIni = $transaksisHariIni->sum('total_harga');
+        $produkTerjualHariIni = $transaksisHariIni->sum(function($transaksi) {
+            return $transaksi->details->sum('qty');
+        });
+        
+        $rataTransaksiHariIni = $totalTransaksiHariIni > 0 
+            ? round($pendapatanHariIni / $totalTransaksiHariIni)
+            : 0;
 
-            // Total produk terjual hari ini
-            $produkTerjualHariIni = DB::table('transaksi_details')
-                ->join('transaksis', 'transaksi_details.transaksi_id', '=', 'transaksis.id')
-                ->whereDate('transaksis.created_at', $hariIni)
-                ->sum('qty');
+        // Get popular products today
+        $produkTerlaris = DB::table('transaksi_details')
+            ->join('data', 'transaksi_details.data_id', '=', 'data.id')
+            ->join('transaksis', 'transaksi_details.transaksi_id', '=', 'transaksis.id')
+            ->select(
+                'data.nama_barang as name',
+                'data.codetrx as plu',
+                DB::raw('SUM(transaksi_details.qty) as sold'),
+                DB::raw('SUM(transaksi_details.qty * data.harga_jual) as revenue')
+            )
+            ->whereBetween('transaksis.created_at', [$startOfDay, $endOfDay])
+            ->groupBy('data.codetrx', 'data.nama_barang')
+            ->orderByDesc('sold')
+            ->take(4)
+            ->get();
 
-            // Rata-rata pendapatan per transaksi
-            $rataTransaksiHariIni = $totalTransaksiHariIni > 0
-                ? $pendapatanHariIni / $totalTransaksiHariIni
-                : 0;
-
-            // Persentase kenaikan dari kemarin
-            $kenaikan = $this->hitungKenaikanDariKemarin();
-
-            // Transaksi terbaru hari ini + total hitung manual
-            $transaksiTerbaru = Transaksi::with('details.data')
-                ->whereDate('created_at', $hariIni)
-                ->orderByDesc('created_at')
-                ->take(5)
-                ->get()
-                ->map(function ($transaksi) {
-                    $total = $transaksi->details->sum(function ($item) {
-                        return $item->qty * $item->data->harga_jual;
-                    });
-                    $transaksi->total = $total;
-                    return $transaksi;
-                });
-
-            // Produk terlaris hari ini
-            $produkTerlaris = DB::table('transaksi_details')
-                ->join('data', 'transaksi_details.data_id', '=', 'data.id')
-                ->join('transaksis', 'transaksi_details.transaksi_id', '=', 'transaksis.id')
-                ->select(
-                    'data.nama_barang as name',
-                    'data.codetrx as plu',
-                    DB::raw('SUM(transaksi_details.qty) as sold'),
-                    DB::raw('SUM(transaksi_details.qty * data.harga_jual) as revenue')
-                )
-                ->whereDate('transaksis.created_at', Carbon::today('Asia/Jakarta'))
-                ->groupBy('data.codetrx', 'data.nama_barang')
-                ->orderByDesc('sold')
-                ->take(4)
-                ->get();
-
-            return view('admin.dashboard', compact(
-                'totalTransaksiHariIni',
-                'pendapatanHariIni',
-                'produkTerjualHariIni',
-                'rataTransaksiHariIni',
-                'kenaikan',
-                'transaksiTerbaru',
-                'produkTerlaris'
-            ));
-        }
-
-        return view('user.dashboard');
+        return view('admin.dashboard', [
+            'totalTransaksiHariIni' => $totalTransaksiHariIni,
+            'pendapatanHariIni' => $pendapatanHariIni,
+            'produkTerjualHariIni' => $produkTerjualHariIni,
+            'rataTransaksiHariIni' => $rataTransaksiHariIni,
+            'kenaikan' => $this->hitungKenaikanDariKemarin(),
+            'transaksiTerbaru' => $transaksisHariIni->take(5),
+            'produkTerlaris' => $produkTerlaris
+        ]);
     }
 
+    return view('user.dashboard');
+}
     protected function hitungKenaikanDariKemarin()
     {
         $hariIni = Carbon::now('Asia/Jakarta')->toDateString();
