@@ -71,11 +71,11 @@
         }
 
         .bg-amber-600 {
-            background-color: #d97706;
+            background-color: rgb(49, 128, 254);
         }
 
         .bg-amber-700 {
-            background-color: #b45309;
+            background-color: s#b45309;
         }
 
         .border-stone-100 {
@@ -83,7 +83,7 @@
         }
 
         .border-amber-200 {
-            border-color: #fde68a;
+            border-color: #8dc2ff;
         }
 
         .divide-stone-100 {
@@ -91,11 +91,11 @@
         }
 
         .text-amber-600 {
-            color: #d97706;
+            color: #ffdcb4;
         }
 
         .text-amber-700 {
-            color: #b45309;
+            color: hsl(220, 100%, 66%);
         }
 
         table {
@@ -116,21 +116,21 @@
 <body class="bg-stone-100">
     <div class="min-h-screen">
         <!-- Header -->
-        <header class="bg-amber-700 text-white shadow-md">
+        <header class="bg-indigo-700 text-white shadow-md">
             <div class="container mx-auto px-4 py-4 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
                     <i class="fas fa-store text-2xl"></i>
                     <h1 class="text-xl font-bold">Kasir Amaliah</h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <div class="date-display flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100 text-stone-700 shadow-md border border-amber-200">
-                        <i class="far fa-calendar-alt text-amber-600"></i>
+                    <div class="date-display flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-50 to-indigo-100 text-stone-700 shadow-md border border-indigo-200">
+                        <i class="far fa-calendar-alt text-indigo-600"></i>
                         <span class="font-medium tracking-wide">{{ now()->format('d M Y') }}</span>
                     </div>
                     <span class="text-sm"><i class="far fa-user mr-1"></i> {{ auth()->user()->name }}</span>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="text-sm hover:text-amber-200 transition">
+                        <button type="submit" class="text-sm hover:text-indigo-200 transition">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </button>
                     </form>
