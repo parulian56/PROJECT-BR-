@@ -14,11 +14,11 @@ return new class extends Migration {
             $table->decimal('harga', 10, 2); // Harga produk
             $table->decimal('diskon', 10, 2)->default(0); // Diskon produk
             $table->decimal('total', 10, 2); // Total harga produk
-            $table->timestamps(); // Kolom created_at dan updated_at
+            $table->timestamps(); // Kolom created_at dan updated_a
         });
     }
 
     public function down() {
-        Schema::dropIfExists('transaksi_kasir'); 
-    }  
+        Schema::dropIfExists('transaksi_kasir');
+    }
 };
