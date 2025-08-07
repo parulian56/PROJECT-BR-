@@ -48,7 +48,7 @@ class DataController extends Controller
             'codetrx' => $codetrx,
             'nama_barang' => $request->nama_barang,
             'kategori' => $request->kategori,
-            'deskripsi' => $request->deskripsi,
+            'deskripsi' => $request  ->deskripsi,
             'stok' => $request->stok,
             'harga_pokok' => $request->harga_pokok,
             'harga_jual' => $request->harga_jual,
