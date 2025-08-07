@@ -127,57 +127,61 @@
             </div>
         </div>
 
-        <!-- Main Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Transaksi Hari Ini -->
-            <div class="lg:col-span-2">
-                <div class="rounded-xl bg-white border border-slate-200 shadow-sm overflow-hidden">
-                    <!-- Header -->
-                    <div class="border-b border-slate-200 p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <div>
-                            <h3 class="font-bold text-lg text-slate-800">Transaksi Hari Ini</h3>
-                            <p class="text-slate-500 text-sm">Daftar transaksi terbaru</p>
-                        </div>
-                        <a href="{{ route('admin.reports.daily') }}" class="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors duration-300 text-sm font-medium flex items-center gap-2">
-                            <i class="fas fa-filter text-xs"></i>
-                            <span>Lihat Laporan</span>
-                        </a>
-                    </div>
-                    <!-- Table -->
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead class="bg-slate-50">
-                                <tr>
-                                    <th class="py-3 px-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">ID Transaksi</th>
-                                    <th class="py-3 px-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Waktu</th>
-                                    <th class="py-3 px-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Total</th>
-                                    <th class="py-3 px-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-200">
-                                @forelse($transaksiTerbaru as $transaksi)
-                                <tr class="hover:bg-slate-50 transition-colors duration-200">
-                                    <td class="py-3 px-4 font-medium text-slate-800 text-sm">#{{ $transaksi->kode_transaksi }}</td>
-                                    <td class="py-3 px-4 text-slate-600 text-sm">
-                                        {{ $transaksi->tanggal instanceof \DateTime ? $transaksi->tanggal->format('H:i') : \Carbon\Carbon::parse($transaksi->tanggal)->format('H:i') }} WIB
-                                    </td>
-                                    <td class="py-3 px-4 font-medium text-slate-800 text-sm">@currency($transaksi->total)</td>
-                                    <td class="py-3 px-4">
-                                        <span class="px-2 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
-                                            {{ ucfirst($transaksi->status) }}
-                                        </span>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="4" class="py-4 text-center text-slate-500 text-sm">
-                                        Belum ada transaksi hari ini
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Transaksi Hari Ini -->
+    <div class="lg:col-span-2">
+        <div class="rounded-xl bg-white border border-slate-200 shadow-sm overflow-hidden">
+            <!-- Header -->
+            <div class="border-b border-slate-200 p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h3 class="font-bold text-lg text-slate-800">Transaksi Hari Ini</h3>
+                    <p class="text-slate-500 text-sm">Daftar transaksi terbaru</p>
+                </div>
+                <a href="{{ route('admin.reports.daily') }}" class="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors duration-300 text-sm font-medium flex items-center gap-2">
+                    <i class="fas fa-filter text-xs"></i>
+                    <span>Lihat Laporan</span>
+                </a>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="py-3 px-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">ID Transaksi</th>
+                            <th class="py-3 px-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Waktu</th>
+                            <th class="py-3 px-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Total</th>
+                            <th class="py-3 px-4 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        @forelse($transaksiTerbaru as $transaksi)
+                        <tr class="hover:bg-slate-50 transition-colors duration-200">
+                            <td class="py-3 px-4 font-medium text-slate-800 text-sm">#{{ $transaksi->kode_transaksi }}</td>
+                            <td class="py-3 px-4 text-slate-600 text-sm">
+                                {{ \Carbon\Carbon::parse($transaksi->created_at)->format('H:i') }} WIB
+                            </td>
+                            <td class="py-3 px-4 font-medium text-slate-800 text-sm">
+                                @currency($transaksi->total_harga)
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                                    {{ ucfirst($transaksi->status) }}
+                                </span>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="py-4 text-center text-slate-500 text-sm">
+                                Belum ada transaksi hari ini
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        
                     <!-- Footer -->
                     <div class="border-t border-slate-200 p-4 text-center">
                         <a href="{{ route('admin.reports.daily') }}" class="px-4 py-2 rounded-lg font-medium text-purple-600 hover:text-purple-800 transition-colors duration-300 text-sm flex items-center justify-center gap-2 mx-auto">
